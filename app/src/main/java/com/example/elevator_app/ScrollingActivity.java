@@ -1,10 +1,10 @@
 package com.example.elevator_app;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,12 +53,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
                 //Pull out elevator alerts
                 NodeList nList = doc.getElementsByTagName("Alert");
-                Log.d("NumberAlerts", Integer.toString(nList.getLength()));
                 for (int i = 0; i < nList.getLength(); i++) {
                     Element alertElem = (Element) nList.item(i);
                     if (alertElem.getElementsByTagName("Impact").item(0).getTextContent().equals("Elevator Status")) {
-                        Log.d("Elevator?", "YES");
-
                         //Create new ElevatorAlert object for each elevator alert
                         ElevatorAlert newalert = new ElevatorAlert();
                         elevatorAlerts.add(newalert);
@@ -70,40 +67,48 @@ public class ScrollingActivity extends AppCompatActivity {
                         //Add station and line info to ElevatorAlert
                         NodeList impactedService = alertElem.getElementsByTagName("ImpactedService");
                         NodeList service = ((Element) impactedService.item(0)).getElementsByTagName("Service");
-                        Log.d("NumberService", Integer.toString(service.getLength()));
 
                         for (int j = 0; j < service.getLength(); j++) {
-                            NodeList serviceType = ((Element) service.item(j)).getElementsByTagName("ServiceType");
-                            NodeList serviceName = ((Element) service.item(j)).getElementsByTagName("ServiceName");
+                            Element elem = (Element) service.item(j);
+                            NodeList serviceType = elem.getElementsByTagName("ServiceType");
+                            NodeList serviceName = elem.getElementsByTagName("ServiceName");
+                            NodeList backColor = elem.getElementsByTagName("ServiceBackColor");
+                            NodeList textColor = elem.getElementsByTagName("ServiceTextColor");
 
                             if (serviceType.item(0).getTextContent().equals("T")) {
                                 newalert.setStation(serviceName.item(0).getTextContent());
-                                Log.d("Station", newalert.getStation());
                             }
-                            if (serviceType.item(0).getTextContent().equals("R")) {
-                                newalert.addRoutes(serviceName.item(0).getTextContent());
+                            else if (serviceType.item(0).getTextContent().equals("R")) {
+                                String[] str = new String[3];
+                                str[0] = serviceName.item(0).getTextContent();
+                                str[1] = backColor.item(0).getTextContent();
+                                str[2] = textColor.item(0).getTextContent();
+                                newalert.addRoutesWithColors(str);
                             }
+
                         }
                     }
                 }
             } catch (IOException | ParserConfigurationException | SAXException e) {
                 Log.d("Exception", e.toString());
             } finally {
-                Log.d("NumberElevatorAlerts", Integer.toString(elevatorAlerts.size()));
                 return elevatorAlerts;
             }
         }
 
         protected void onPostExecute(ArrayList<ElevatorAlert> alerts) {
+            stationsTempOut.setTextColor(Color.BLACK);
+            stationsTempOut.setTextSize(20);
+            stationsTempOut.append("ELEVATORS TEMPORARILY DOWN\n\n");
+            stationsTempOut.setTextSize(15);
             for (ElevatorAlert elevAlert : alerts) {
-                stationsTempOut.append("Station: ");
-                stationsTempOut.append(elevAlert.getStation() + "\n");
-
-                for (String s : elevAlert.getRoutes()) {
-                    stationsTempOut.append("Route: ");
-                    stationsTempOut.append(s + "\n");
+                for (String[] str : elevAlert.getRoutesWithColors()) {
+                    stationsTempOut.setBackgroundColor(Color.parseColor("#" + str[1]));
+                    stationsTempOut.setTextColor(Color.parseColor("#" + str[2]));
+                    stationsTempOut.append("Route: " + str[0] + "\n");
+                    stationsTempOut.append("Station: " + elevAlert.getStation() + "\n");
+                    stationsTempOut.append(elevAlert.getShortDesc() + "\n\n");
                 }
-                stationsTempOut.append(elevAlert.getShortDesc() + "\n\n");
             }
         }
     }

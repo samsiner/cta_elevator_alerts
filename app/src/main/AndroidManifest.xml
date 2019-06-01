@@ -15,7 +15,7 @@
 
         <activity
             android:name=".ScrollingActivity"
-            android:label="@string/app_name"
+            android:label="CTA Elevator Alerts"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

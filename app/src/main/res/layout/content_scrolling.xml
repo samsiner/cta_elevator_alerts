@@ -13,13 +13,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_elevDownTempTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="Elevators Temporarily Down" />
-
-        <TextView
             android:id="@+id/text_elevDownTempList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
