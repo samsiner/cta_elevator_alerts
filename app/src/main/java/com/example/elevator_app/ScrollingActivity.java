@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -19,10 +20,12 @@ import java.util.ArrayList;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.*;
+import android.widget.LinearLayout.LayoutParams;
 
 public class ScrollingActivity extends AppCompatActivity {
 
     private TextView stationsTempOut;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class ScrollingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        linearLayout = findViewById(R.id.linearLayout);
         stationsTempOut = findViewById(R.id.text_elevDownTempList);
         new displayTemporaryElevatorOutAlerts().execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx");
     }
@@ -99,15 +103,21 @@ public class ScrollingActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<ElevatorAlert> alerts) {
             stationsTempOut.setTextColor(Color.BLACK);
             stationsTempOut.setTextSize(20);
-            stationsTempOut.append("ELEVATORS TEMPORARILY DOWN\n\n");
-            stationsTempOut.setTextSize(15);
+            stationsTempOut.append("ELEVATORS TEMPORARILY DOWN");
+
             for (ElevatorAlert elevAlert : alerts) {
                 for (String[] str : elevAlert.getRoutesWithColors()) {
-                    stationsTempOut.setBackgroundColor(Color.parseColor("#" + str[1]));
-                    stationsTempOut.setTextColor(Color.parseColor("#" + str[2]));
-                    stationsTempOut.append("Route: " + str[0] + "\n");
-                    stationsTempOut.append("Station: " + elevAlert.getStation() + "\n");
-                    stationsTempOut.append(elevAlert.getShortDesc() + "\n\n");
+                    // Add textview for each individual alert
+                    TextView textView1 = new TextView(ScrollingActivity.this);
+                    textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+                            LayoutParams.WRAP_CONTENT));
+                    textView1.setTextSize(15);
+                    textView1.append("Route: " + str[0] + "\n");
+                    textView1.append("Station: " + elevAlert.getStation() + "\n");
+                    textView1.append(elevAlert.getShortDesc() + "\n");
+                    textView1.setBackgroundColor(Color.parseColor("#" + str[1]));
+                    textView1.setTextColor(Color.parseColor("#" + str[2]));
+                    linearLayout.addView(textView1);
                 }
             }
         }
