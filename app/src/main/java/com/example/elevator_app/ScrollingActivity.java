@@ -95,9 +95,8 @@ public class ScrollingActivity extends AppCompatActivity {
                 }
             } catch (IOException | ParserConfigurationException | SAXException e) {
                 Log.d("Exception", e.toString());
-            } finally {
-                return elevatorAlerts;
             }
+            return elevatorAlerts;
         }
 
         protected void onPostExecute(ArrayList<ElevatorAlert> alerts) {

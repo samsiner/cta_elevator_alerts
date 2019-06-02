@@ -12,10 +12,10 @@ public class ElevatorAlert{
         routesWithColors = new ArrayList<>();
     }
 
-    public void setHeadline(String headline){ this.headline = headline;};
-    public void setShortDesc(String shortDesc){ this.shortDesc = shortDesc;};
-    public void setFullDesc(String fullDesc){ this.fullDesc = fullDesc;};
-    public void setStation(String station){ this.station = station;};
+    public void setHeadline(String headline){ this.headline = headline;}
+    public void setShortDesc(String shortDesc){ this.shortDesc = shortDesc;}
+    public void setFullDesc(String fullDesc){ this.fullDesc = fullDesc;}
+    public void setStation(String station){ this.station = station;}
     public void addRoutesWithColors(String[] routesList){ this.routesWithColors.add(routesList);}
 
     public String getHeadline(){ return headline; }
