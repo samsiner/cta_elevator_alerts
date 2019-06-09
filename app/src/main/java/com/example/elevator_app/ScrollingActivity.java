@@ -23,7 +23,7 @@ import javax.xml.parsers.*;
 import android.widget.LinearLayout.LayoutParams;
 
 public class ScrollingActivity extends AppCompatActivity {
-
+    //Sam's comment
     private TextView stationsTempOut;
     private LinearLayout linearLayout;
 
