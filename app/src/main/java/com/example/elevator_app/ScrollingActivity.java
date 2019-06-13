@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -23,10 +24,13 @@ import javax.xml.parsers.*;
 import android.widget.LinearLayout.LayoutParams;
 
 public class ScrollingActivity extends AppCompatActivity {
-    //Tyler's comment
-    //Sam's comment
     private TextView stationsTempOut;
     private LinearLayout linearLayout;
+    private HashMap<String, String> favorites;
+    //TODO: check for duplicate key entry from user
+    private ArrayList<String> elevatorOutStationIDs;
+    private HashMap<String, Station> allStations;
+    //TODO: figure out how to store people's favorites in local memory
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +38,30 @@ public class ScrollingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        linearLayout = findViewById(R.id.linearLayout);
         stationsTempOut = findViewById(R.id.text_elevDownTempList);
-        new displayTemporaryElevatorOutAlerts().execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx");
+        linearLayout = findViewById(R.id.linearLayout);
+        elevatorOutStationIDs = new ArrayList<>();
+        favorites = new HashMap<>();
+        buildStations();
+        buildAlerts();
     }
 
-    class displayTemporaryElevatorOutAlerts extends AsyncTask<String, Void, ArrayList<ElevatorAlert>> {
+    public void buildStations(){
+        //TODO: pull in real stations from URL
+        allStations = new HashMap<>();
+        allStations.put("1000", new Station("State/Lake", false, new String[]{"Brown", "Green", "Orange", "Pink", "Purple"}));
+        //TODO: organize routes to reflect order on CTA site
+        allStations.put("1001", new Station("Lake", true, new String[]{"Red"}));
+        allStations.put("40780", new Station("Central Park", true, new String[]{"Pink"}));
+    }
 
-        protected ArrayList<ElevatorAlert> doInBackground(String... urls) {
-            ArrayList<ElevatorAlert> elevatorAlerts = new ArrayList<>();
+    public void buildAlerts(){
+        new CurrentElevatorAlerts().execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx");
+    }
 
+    class CurrentElevatorAlerts extends AsyncTask<String, Void, Void> {
+
+        protected Void doInBackground(String... urls) {
             try {
                 //Call API and create document to parse XML using DOM
                 URL url = new URL(urls[0]);
@@ -62,63 +80,56 @@ public class ScrollingActivity extends AppCompatActivity {
                     Element alertElem = (Element) nList.item(i);
                     if (alertElem.getElementsByTagName("Impact").item(0).getTextContent().equals("Elevator Status")) {
                         //Create new ElevatorAlert object for each elevator alert
-//                        ElevatorAlert newalert = new ElevatorAlert();
-//                        elevatorAlerts.add(newalert);
 
-//                        newalert.setHeadline(alertElem.getElementsByTagName("Headline").item(0).getTextContent());
-//                        newalert.setShortDesc(alertElem.getElementsByTagName("ShortDescription").item(0).getTextContent());
-//                        newalert.setFullDesc(alertElem.getElementsByTagName("FullDescription").item(0).getTextContent());
+                        String headline = alertElem.getElementsByTagName("Headline").item(0).getTextContent();
+                        String shortDesc = alertElem.getElementsByTagName("ShortDescription").item(0).getTextContent();
+                        String longDesc = alertElem.getElementsByTagName("FullDescription").item(0).getTextContent();
+                        String beginDateTime = alertElem.getElementsByTagName("EventStart").item(0).getTextContent();
+                        //TODO: convert date time to readable format
+
+                        ElevatorAlert currentAlert = new ElevatorAlert(headline, shortDesc, longDesc, beginDateTime);
 
                         //Add station and line info to ElevatorAlert
                         NodeList impactedService = alertElem.getElementsByTagName("ImpactedService");
-                        NodeList service = ((Element) impactedService.item(0)).getElementsByTagName("Service");
+                        NodeList services = ((Element) impactedService.item(0)).getElementsByTagName("Service");
 
-                        for (int j = 0; j < service.getLength(); j++) {
-                            Element elem = (Element) service.item(j);
+                        for (int j = 0; j < services.getLength(); j++) {
+                            Element elem = (Element) services.item(j);
                             NodeList serviceType = elem.getElementsByTagName("ServiceType");
-                            NodeList serviceName = elem.getElementsByTagName("ServiceName");
-                            NodeList backColor = elem.getElementsByTagName("ServiceBackColor");
-                            NodeList textColor = elem.getElementsByTagName("ServiceTextColor");
+                            NodeList serviceId = elem.getElementsByTagName("ServiceId");
 
-//                            if (serviceType.item(0).getTextContent().equals("T")) {
-////                                newalert.setStation(serviceName.item(0).getTextContent());
-//                            }
-//                            else if (serviceType.item(0).getTextContent().equals("R")) {
-//                                String[] str = new String[3];
-//                                str[0] = serviceName.item(0).getTextContent();
-//                                str[1] = backColor.item(0).getTextContent();
-//                                str[2] = textColor.item(0).getTextContent();
-////                                newalert.addRoutesWithColors(str);
-//                            }
-
+                            if (serviceType.item(0).getTextContent().equals("T")) {
+                                //TODO: error checking for station existing in allStations
+                                elevatorOutStationIDs.add(serviceId.item(0).getTextContent());
+                                Station currentStation = allStations.get(serviceId);
+                                currentStation.addAlert(currentAlert);
+                            }
                         }
                     }
                 }
             } catch (IOException | ParserConfigurationException | SAXException e) {
                 Log.d("Exception", e.toString());
             }
-            return elevatorAlerts;
+            return null;
         }
 
-        protected void onPostExecute(ArrayList<ElevatorAlert> alerts) {
+        protected void onPostExecute(Void v) {
             stationsTempOut.setTextColor(Color.BLACK);
             stationsTempOut.setTextSize(20);
             stationsTempOut.append("ELEVATORS TEMPORARILY DOWN");
 
-            for (ElevatorAlert elevAlert : alerts) {
-//                for (String[] str : elevAlert.getRoutesWithColors()) {
-//                    // Add textview for each individual alert
-//                    TextView textView1 = new TextView(ScrollingActivity.this);
-//                    textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-//                            LayoutParams.WRAP_CONTENT));
-//                    textView1.setTextSize(15);
-//                    textView1.append("Route: " + str[0] + "\n");
-//                    textView1.append("Station: " + elevAlert.getStation() + "\n");
-//                    textView1.append(elevAlert.getShortDesc() + "\n");
-//                    textView1.setBackgroundColor(Color.parseColor("#" + str[1]));
-//                    textView1.setTextColor(Color.parseColor("#" + str[2]));
-//                    linearLayout.addView(textView1);
-//                }
+            for (String str : elevatorOutStationIDs) {
+                    //TODO: check to make sure station still exists in allStations
+                    Station s = allStations.get(str);
+                    TextView textView1 = new TextView(ScrollingActivity.this);
+                    textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+                            LayoutParams.WRAP_CONTENT));
+                    textView1.setTextSize(15);
+                    textView1.append("Station: " + s.getName() + "\n");
+                    for (ElevatorAlert alert : s.getAlerts()) {
+                        textView1.append(alert.getShortDesc() + "\n");
+                    }
+                    linearLayout.addView(textView1);
             }
         }
     }
