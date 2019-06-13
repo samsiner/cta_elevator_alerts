@@ -62,12 +62,12 @@ public class ScrollingActivity extends AppCompatActivity {
                     Element alertElem = (Element) nList.item(i);
                     if (alertElem.getElementsByTagName("Impact").item(0).getTextContent().equals("Elevator Status")) {
                         //Create new ElevatorAlert object for each elevator alert
-                        ElevatorAlert newalert = new ElevatorAlert();
-                        elevatorAlerts.add(newalert);
+//                        ElevatorAlert newalert = new ElevatorAlert();
+//                        elevatorAlerts.add(newalert);
 
-                        newalert.setHeadline(alertElem.getElementsByTagName("Headline").item(0).getTextContent());
-                        newalert.setShortDesc(alertElem.getElementsByTagName("ShortDescription").item(0).getTextContent());
-                        newalert.setFullDesc(alertElem.getElementsByTagName("FullDescription").item(0).getTextContent());
+//                        newalert.setHeadline(alertElem.getElementsByTagName("Headline").item(0).getTextContent());
+//                        newalert.setShortDesc(alertElem.getElementsByTagName("ShortDescription").item(0).getTextContent());
+//                        newalert.setFullDesc(alertElem.getElementsByTagName("FullDescription").item(0).getTextContent());
 
                         //Add station and line info to ElevatorAlert
                         NodeList impactedService = alertElem.getElementsByTagName("ImpactedService");
@@ -80,16 +80,16 @@ public class ScrollingActivity extends AppCompatActivity {
                             NodeList backColor = elem.getElementsByTagName("ServiceBackColor");
                             NodeList textColor = elem.getElementsByTagName("ServiceTextColor");
 
-                            if (serviceType.item(0).getTextContent().equals("T")) {
-                                newalert.setStation(serviceName.item(0).getTextContent());
-                            }
-                            else if (serviceType.item(0).getTextContent().equals("R")) {
-                                String[] str = new String[3];
-                                str[0] = serviceName.item(0).getTextContent();
-                                str[1] = backColor.item(0).getTextContent();
-                                str[2] = textColor.item(0).getTextContent();
-                                newalert.addRoutesWithColors(str);
-                            }
+//                            if (serviceType.item(0).getTextContent().equals("T")) {
+////                                newalert.setStation(serviceName.item(0).getTextContent());
+//                            }
+//                            else if (serviceType.item(0).getTextContent().equals("R")) {
+//                                String[] str = new String[3];
+//                                str[0] = serviceName.item(0).getTextContent();
+//                                str[1] = backColor.item(0).getTextContent();
+//                                str[2] = textColor.item(0).getTextContent();
+////                                newalert.addRoutesWithColors(str);
+//                            }
 
                         }
                     }
@@ -106,19 +106,19 @@ public class ScrollingActivity extends AppCompatActivity {
             stationsTempOut.append("ELEVATORS TEMPORARILY DOWN");
 
             for (ElevatorAlert elevAlert : alerts) {
-                for (String[] str : elevAlert.getRoutesWithColors()) {
-                    // Add textview for each individual alert
-                    TextView textView1 = new TextView(ScrollingActivity.this);
-                    textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-                            LayoutParams.WRAP_CONTENT));
-                    textView1.setTextSize(15);
-                    textView1.append("Route: " + str[0] + "\n");
-                    textView1.append("Station: " + elevAlert.getStation() + "\n");
-                    textView1.append(elevAlert.getShortDesc() + "\n");
-                    textView1.setBackgroundColor(Color.parseColor("#" + str[1]));
-                    textView1.setTextColor(Color.parseColor("#" + str[2]));
-                    linearLayout.addView(textView1);
-                }
+//                for (String[] str : elevAlert.getRoutesWithColors()) {
+//                    // Add textview for each individual alert
+//                    TextView textView1 = new TextView(ScrollingActivity.this);
+//                    textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+//                            LayoutParams.WRAP_CONTENT));
+//                    textView1.setTextSize(15);
+//                    textView1.append("Route: " + str[0] + "\n");
+//                    textView1.append("Station: " + elevAlert.getStation() + "\n");
+//                    textView1.append(elevAlert.getShortDesc() + "\n");
+//                    textView1.setBackgroundColor(Color.parseColor("#" + str[1]));
+//                    textView1.setTextColor(Color.parseColor("#" + str[2]));
+//                    linearLayout.addView(textView1);
+//                }
             }
         }
     }

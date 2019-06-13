@@ -4,23 +4,20 @@ import java.util.*;
 
 public class ElevatorAlert{
 
-    private String headline = "", shortDesc = "", fullDesc = "", station = "";
-    //String array documentation: Route, BackColor, TextColor
-    private ArrayList<String[]> routesWithColors;
+    private String headline, shortDesc, fullDesc, beginDateTime, endDateTime;
 
-    public ElevatorAlert(){
-        routesWithColors = new ArrayList<>();
+    public ElevatorAlert(String headline, String shortDesc, String fullDesc, String beginDateTime, String endDateTime){
+        this.headline = headline;
+        this.shortDesc = shortDesc;
+        this.fullDesc = fullDesc;
+        this.beginDateTime = beginDateTime;
+        this.endDateTime = endDateTime;
     }
-
-    public void setHeadline(String headline){ this.headline = headline;}
-    public void setShortDesc(String shortDesc){ this.shortDesc = shortDesc;}
-    public void setFullDesc(String fullDesc){ this.fullDesc = fullDesc;}
-    public void setStation(String station){ this.station = station;}
-    public void addRoutesWithColors(String[] routesList){ this.routesWithColors.add(routesList);}
 
     public String getHeadline(){ return headline; }
     public String getShortDesc(){ return shortDesc; }
     public String getFullDesc(){ return fullDesc; }
-    public String getStation(){ return station; }
-    public ArrayList<String[]> getRoutesWithColors(){ return routesWithColors; }
+    public String getBeginDateTime(){ return beginDateTime; }
+    public String getEndDateTime() { return endDateTime; }
+
 }
