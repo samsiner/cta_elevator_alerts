@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".DisplayAlertActivity"
+            android:label="@string/title_activity_display_alert"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ScrollingActivity"
             android:label="CTA Elevator Alerts"

@@ -1,8 +1,8 @@
 package com.example.elevator_app;
 
-import java.util.*;
+import java.io.Serializable;
 
-public class ElevatorAlert{
+public class ElevatorAlert implements Serializable {
 
     private String headline, shortDesc, fullDesc, beginDateTime;
 

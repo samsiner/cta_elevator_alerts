@@ -1,5 +1,6 @@
 package com.example.elevator_app;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,7 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.w3c.dom.*;
@@ -85,7 +91,7 @@ public class ScrollingActivity extends AppCompatActivity {
                         String headline = alertElem.getElementsByTagName("Headline").item(0).getTextContent();
                         String shortDesc = alertElem.getElementsByTagName("ShortDescription").item(0).getTextContent();
                         String longDesc = alertElem.getElementsByTagName("FullDescription").item(0).getTextContent();
-                        String beginDateTime = alertElem.getElementsByTagName("EventStart").item(0).getTextContent();
+                        String beginDateTime = convertDateTime(alertElem.getElementsByTagName("EventStart").item(0).getTextContent());
                         //TODO: convert date time to readable format
 
                         ElevatorAlert currentAlert = new ElevatorAlert(headline, shortDesc, longDesc, beginDateTime);
@@ -125,8 +131,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
             for (String str : elevatorOutStationIDs) {
                     //TODO: check to make sure station still exists in allStations
+                    //Create new TextView with the alert
                     try {
-                        Station s = allStations.get(str);
+                        final Station s = allStations.get(str);
                         TextView textView1 = new TextView(ScrollingActivity.this);
                         textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
                                 LayoutParams.WRAP_CONTENT));
@@ -135,13 +142,33 @@ public class ScrollingActivity extends AppCompatActivity {
                         for (ElevatorAlert alert : s.getAlerts()) {
                             textView1.append(alert.getShortDesc() + "\n");
                         }
+                        textView1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(ScrollingActivity.this, DisplayAlertActivity.class);
+                                intent.putExtra("Station", s);
+                                startActivity(intent);
+                            }
+                        });
+                        linearLayout.addView(textView1);
 
-                    linearLayout.addView(textView1);
                     } catch (Exception e){
                         Log.d("Exception", e.toString());
                     }
             }
         }
+    }
+
+    public String convertDateTime(String s){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm");
+            Date convertedDate = new Date();
+            try {
+                convertedDate = dateFormat.parse(s);
+            } catch (ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return convertedDate.toString();
     }
 
     @Override
