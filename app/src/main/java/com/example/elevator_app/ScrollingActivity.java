@@ -53,6 +53,7 @@ public class ScrollingActivity extends AppCompatActivity {
         //TODO: organize routes to reflect order on CTA site
         allStations.put("1001", new Station("Lake", true, new String[]{"Red"}));
         allStations.put("40780", new Station("Central Park", true, new String[]{"Pink"}));
+        allStations.put("41140", new Station("King Drive", true, new String[]{"Green"}));
     }
 
     public void buildAlerts(){
@@ -100,9 +101,13 @@ public class ScrollingActivity extends AppCompatActivity {
 
                             if (serviceType.item(0).getTextContent().equals("T")) {
                                 //TODO: error checking for station existing in allStations
-                                elevatorOutStationIDs.add(serviceId.item(0).getTextContent());
-                                Station currentStation = allStations.get(serviceId);
-                                currentStation.addAlert(currentAlert);
+                                try {
+                                    elevatorOutStationIDs.add(serviceId.item(0).getTextContent());
+                                    Station currentStation = allStations.get(serviceId.item(0).getTextContent());
+                                    currentStation.addAlert(currentAlert);
+                                } catch (Exception e){
+                                    Log.d("Exception", e.toString());
+                                }
                             }
                         }
                     }
@@ -120,16 +125,21 @@ public class ScrollingActivity extends AppCompatActivity {
 
             for (String str : elevatorOutStationIDs) {
                     //TODO: check to make sure station still exists in allStations
-                    Station s = allStations.get(str);
-                    TextView textView1 = new TextView(ScrollingActivity.this);
-                    textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-                            LayoutParams.WRAP_CONTENT));
-                    textView1.setTextSize(15);
-                    textView1.append("Station: " + s.getName() + "\n");
-                    for (ElevatorAlert alert : s.getAlerts()) {
-                        textView1.append(alert.getShortDesc() + "\n");
-                    }
+                    try {
+                        Station s = allStations.get(str);
+                        TextView textView1 = new TextView(ScrollingActivity.this);
+                        textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+                                LayoutParams.WRAP_CONTENT));
+                        textView1.setTextSize(15);
+                        textView1.append("Station: " + s.getName() + "\n");
+                        for (ElevatorAlert alert : s.getAlerts()) {
+                            textView1.append(alert.getShortDesc() + "\n");
+                        }
+
                     linearLayout.addView(textView1);
+                    } catch (Exception e){
+                        Log.d("Exception", e.toString());
+                    }
             }
         }
     }
