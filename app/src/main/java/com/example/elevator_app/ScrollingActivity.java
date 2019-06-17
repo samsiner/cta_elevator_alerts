@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -30,7 +31,7 @@ import javax.xml.parsers.*;
 import android.widget.LinearLayout.LayoutParams;
 
 public class ScrollingActivity extends AppCompatActivity {
-    private TextView stationsTempOut;
+    private TextView stationsTempOut, favoriteAlerts;
     private LinearLayout linearLayout;
     private HashMap<String, String> favorites;
     //TODO: check for duplicate key entry from user
@@ -45,11 +46,49 @@ public class ScrollingActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         stationsTempOut = findViewById(R.id.text_elevDownTempList);
-        linearLayout = findViewById(R.id.linearLayout);
+        favoriteAlerts = findViewById(R.id.text_favoritesList);
+        linearLayout = findViewById(R.id.LinearLayout);
         elevatorOutStationIDs = new ArrayList<>();
         favorites = new HashMap<>();
+
         buildStations();
         buildAlerts();
+        buildFavorites();
+    }
+
+    public void buildFavorites(){
+        //TODO: Replace with functionality to add favorites
+        //temporary data for testing
+        favorites.put("Home", "40780");
+        favorites.put("Work", "41140");
+        favorites.put("Friend", "1000");
+        favorites.put("Mom", "1001");
+
+        favoriteAlerts.setTextColor(Color.BLACK);
+        favoriteAlerts.setTextSize(16);
+        favoriteAlerts.append("Favorite Stations - Elevator Status\n\n");
+        for (String nickname: favorites.keySet()){
+            favoriteAlerts.append(nickname + "\n");
+            try{
+                String favoriteStationID = favorites.get(nickname);
+                Station favoriteStation = allStations.get(favoriteStationID);
+                favoriteAlerts.append(favoriteStation.getName() + "\n");
+                boolean hasElevator = favoriteStation.getElevator();
+
+                //Print elevator status
+                if (!hasElevator){
+                    favoriteAlerts.append("Status: No elevator present\n\n");
+                }
+                else if (elevatorOutStationIDs.contains(favoriteStationID)){
+                    favoriteAlerts.append("Status: Elevator temporarily not working\n\n");
+                }
+                else {
+                    favoriteAlerts.append("Status: All elevators working\n\n");
+                }
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public void buildStations(){
@@ -63,7 +102,12 @@ public class ScrollingActivity extends AppCompatActivity {
     }
 
     public void buildAlerts(){
-        new CurrentElevatorAlerts().execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx");
+        try{
+            new CurrentElevatorAlerts().execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx").get();
+        } catch (ExecutionException | InterruptedException e){
+            e.printStackTrace();
+        }
+
     }
 
     class CurrentElevatorAlerts extends AsyncTask<String, Void, Void> {
@@ -108,18 +152,23 @@ public class ScrollingActivity extends AppCompatActivity {
                             if (serviceType.item(0).getTextContent().equals("T")) {
                                 //TODO: error checking for station existing in allStations
                                 try {
-                                    elevatorOutStationIDs.add(serviceId.item(0).getTextContent());
-                                    Station currentStation = allStations.get(serviceId.item(0).getTextContent());
-                                    currentStation.addAlert(currentAlert);
-                                } catch (Exception e){
-                                    Log.d("Exception", e.toString());
+                                    String currStationID = serviceId.item(0).getTextContent();
+                                    elevatorOutStationIDs.add(currStationID);
+                                    Log.d("IDs", elevatorOutStationIDs.toString());
+                                    //Add alert into associated Station
+                                    if (allStations.containsKey(currStationID)) {
+                                        Station currentStation = allStations.get(currStationID);
+                                        currentStation.addAlert(currentAlert);
+                                    }
+                                } catch (NullPointerException e){
+                                    e.printStackTrace();
                                 }
                             }
                         }
                     }
                 }
             } catch (IOException | ParserConfigurationException | SAXException e) {
-                Log.d("Exception", e.toString());
+                e.printStackTrace();
             }
             return null;
         }
@@ -139,9 +188,9 @@ public class ScrollingActivity extends AppCompatActivity {
                                 LayoutParams.WRAP_CONTENT));
                         textView1.setTextSize(15);
                         textView1.append("Station: " + s.getName() + "\n");
-                        for (ElevatorAlert alert : s.getAlerts()) {
-                            textView1.append(alert.getShortDesc() + "\n");
-                        }
+//                        for (ElevatorAlert alert : s.getAlerts()) {
+//                            textView1.append(alert.getShortDesc() + "\n");
+//                        }
                         textView1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -157,6 +206,7 @@ public class ScrollingActivity extends AppCompatActivity {
                     }
             }
         }
+
     }
 
     public String convertDateTime(String s){

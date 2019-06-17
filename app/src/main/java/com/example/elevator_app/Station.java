@@ -13,7 +13,7 @@ public class Station implements Serializable {
         this.name = name;
         this.hasElevator = hasElevator;
         this.routes = routes;
-        alerts = new ArrayList<ElevatorAlert>();
+        alerts = new ArrayList<>();
     }
 
     public String getName(){ return name; }

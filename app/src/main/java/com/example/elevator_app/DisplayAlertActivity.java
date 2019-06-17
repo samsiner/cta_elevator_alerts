@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,10 +30,11 @@ public class DisplayAlertActivity extends AppCompatActivity {
         display.setTextSize(15);
         display.setTextColor(Color.BLACK);
         display.append(s.getName() + "\n\n");
+        Log.d("Alerts", Integer.toString(s.getAlerts().size()));
         for (ElevatorAlert alert : s.getAlerts()){
             display.append("Starting " + alert.getBeginDateTime() + "\n\n");
             display.append(alert.getHeadline() + "\n\n");
-            display.append(Html.fromHtml(alert.getFullDesc() + "\n\n"));
+                        display.append(Html.fromHtml(alert.getFullDesc() + "\n\n"));
             display.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
