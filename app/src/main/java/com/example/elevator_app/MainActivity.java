@@ -9,8 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,13 +30,14 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.*;
 import android.widget.LinearLayout.LayoutParams;
 
-public class ScrollingActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private TextView stationsTempOut, favoriteAlerts;
     private LinearLayout linearLayout;
     private HashMap<String, String> favorites;
+    private Button addFavorite;
     //TODO: check for duplicate key entry from user
     private ArrayList<String> elevatorOutStationIDs;
-    private HashMap<String, Station> allStations;
+    final private HashMap<String, Station> allStations = new HashMap<>();
     //TODO: figure out how to store people's favorites in local memory
 
     @Override
@@ -48,15 +49,10 @@ public class ScrollingActivity extends AppCompatActivity {
         stationsTempOut = findViewById(R.id.text_elevDownTempList);
         favoriteAlerts = findViewById(R.id.text_favoritesList);
         linearLayout = findViewById(R.id.LinearLayout);
+        addFavorite = findViewById(R.id.button_addFavorite);
         elevatorOutStationIDs = new ArrayList<>();
         favorites = new HashMap<>();
 
-        buildStations();
-        buildAlerts();
-        buildFavorites();
-    }
-
-    public void buildFavorites(){
         //TODO: Replace with functionality to add favorites
         //temporary data for testing
         favorites.put("Home", "40780");
@@ -64,6 +60,39 @@ public class ScrollingActivity extends AppCompatActivity {
         favorites.put("Friend", "1000");
         favorites.put("Mom", "1001");
 
+        buildButtonClickable();
+        buildStations();
+        buildAlerts();
+        buildFavorites();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Intent intent = getIntent();
+        try {
+            String nickname = intent.getStringExtra("Nickname");
+            String stationID = intent.getStringExtra("stationID");
+            favorites.put(nickname, stationID);
+            buildFavorites();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void buildButtonClickable(){
+        addFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddFavorite.class);
+                intent.putExtra("AllStations", allStations);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void buildFavorites(){
+        favoriteAlerts.setText("");
         favoriteAlerts.setTextColor(Color.BLACK);
         favoriteAlerts.setTextSize(16);
         favoriteAlerts.append("Favorite Stations - Elevator Status\n\n");
@@ -93,7 +122,6 @@ public class ScrollingActivity extends AppCompatActivity {
 
     public void buildStations(){
         //TODO: pull in real stations from URL
-        allStations = new HashMap<>();
         allStations.put("1000", new Station("State/Lake", false, new String[]{"Brown", "Green", "Orange", "Pink", "Purple"}));
         //TODO: organize routes to reflect order on CTA site
         allStations.put("1001", new Station("Lake", true, new String[]{"Red"}));
@@ -183,7 +211,7 @@ public class ScrollingActivity extends AppCompatActivity {
                     //Create new TextView with the alert
                     try {
                         final Station s = allStations.get(str);
-                        TextView textView1 = new TextView(ScrollingActivity.this);
+                        TextView textView1 = new TextView(MainActivity.this);
                         textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
                                 LayoutParams.WRAP_CONTENT));
                         textView1.setTextSize(15);
@@ -194,7 +222,7 @@ public class ScrollingActivity extends AppCompatActivity {
                         textView1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(ScrollingActivity.this, DisplayAlertActivity.class);
+                                Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
                                 intent.putExtra("Station", s);
                                 startActivity(intent);
                             }

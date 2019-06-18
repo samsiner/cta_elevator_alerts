@@ -13,11 +13,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".DisplayAlertActivity"
-            android:label="@string/title_activity_display_alert"
+            android:name=".AddFavorite"
+            android:label="@string/title_activity_add_favorite"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ScrollingActivity"
+            android:name=".DisplayAlertActivity"
+            android:label="@string/title_activity_display_alert"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
             android:label="CTA Elevator Alerts"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

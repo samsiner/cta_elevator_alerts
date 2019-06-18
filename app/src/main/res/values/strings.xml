@@ -2,4 +2,6 @@
     <string name="app_name">elevator_app</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_display_alert">DisplayAlertActivity</string>
+    <string name="button_add_favorite">Add Favorite</string>
+    <string name="title_activity_add_favorite">AddFavorite</string>
 </resources>
