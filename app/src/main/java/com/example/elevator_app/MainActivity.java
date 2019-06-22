@@ -33,7 +33,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class MainActivity extends AppCompatActivity {
     private TextView stationsTempOut, favoriteAlerts;
     private LinearLayout linearLayout;
-    private HashMap<String, String> favorites;
+    private ArrayList<String[]> favorites;
     private Button addFavorite;
     //TODO: check for duplicate key entry from user
     private ArrayList<String> elevatorOutStationIDs;
@@ -51,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.LinearLayout);
         addFavorite = findViewById(R.id.button_addFavorite);
         elevatorOutStationIDs = new ArrayList<>();
-        favorites = new HashMap<>();
+        favorites = new ArrayList<>();
 
         //TODO: Replace with functionality to add favorites
         //temporary data for testing
-        favorites.put("Home", "40780");
-        favorites.put("Work", "41140");
-        favorites.put("Friend", "1000");
-        favorites.put("Mom", "1001");
+        favorites.add(new String[]{"Home", "40780"});
+        favorites.add(new String[]{"Work", "41140"});
+        favorites.add(new String[]{"Friend", "1000"});
+        favorites.add(new String[]{"Mom", "1001"});
 
         buildButtonClickable();
         buildStations();
@@ -67,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
-        super.onStart();
-        Intent intent = getIntent();
+    protected void onResume(){
+        super.onResume();
         try {
+            Intent intent = getIntent();
             String nickname = intent.getStringExtra("Nickname");
             String stationID = intent.getStringExtra("stationID");
-            favorites.put(nickname, stationID);
+            favorites.add(new String[]{nickname, stationID});
             buildFavorites();
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -96,10 +96,11 @@ public class MainActivity extends AppCompatActivity {
         favoriteAlerts.setTextColor(Color.BLACK);
         favoriteAlerts.setTextSize(16);
         favoriteAlerts.append("Favorite Stations - Elevator Status\n\n");
-        for (String nickname: favorites.keySet()){
-            favoriteAlerts.append(nickname + "\n");
+
+        for (String[] favorite : favorites){
+            favoriteAlerts.append(favorite[0] + "\n");
             try{
-                String favoriteStationID = favorites.get(nickname);
+                String favoriteStationID = favorite[1];
                 Station favoriteStation = allStations.get(favoriteStationID);
                 favoriteAlerts.append(favoriteStation.getName() + "\n");
                 boolean hasElevator = favoriteStation.getElevator();
