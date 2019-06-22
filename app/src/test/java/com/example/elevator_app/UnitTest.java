@@ -29,12 +29,18 @@ public class UnitTest {
 
     @Test
     public void testStationClass(){
-        Station newStation = new Station( "name", true,
-                new String[]{"str1", "str2"});
+        ArrayList<String> arrl = new ArrayList<>();
+        arrl.add("str1");
+        arrl.add("str2");
+
+        Station newStation = new Station( "name", true, arrl);
 
         assertEquals(newStation.getName(), "name");
         assertEquals(newStation.getElevator(), true);
-        assertArrayEquals(newStation.getRoutes(), new String[]{"str1", "str2"});
+        ArrayList<String> arrl2 = new ArrayList<>();
+        arrl2.add("str1");
+        arrl2.add("str2");
+        assertEquals(newStation.getRoutes(), arrl2);
         assertEquals(newStation.getAlerts(), new ArrayList<ElevatorAlert>());
 
         newStation.addAlert(new ElevatorAlert("", "", "",
@@ -44,5 +50,12 @@ public class UnitTest {
         newStation.clearAlerts();
         assertEquals(newStation.getAlerts().size(), 0);
     }
+
+    /*@Test
+    public void testMainActivity(){
+        //test
+
+
+    }*/
 
 }

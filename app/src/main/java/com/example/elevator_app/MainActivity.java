@@ -15,19 +15,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
+import java.util.Scanner;
 
-import org.w3c.dom.*;
-import org.xml.sax.SAXException;
-import javax.xml.parsers.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import android.widget.LinearLayout.LayoutParams;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,12 +56,9 @@ public class MainActivity extends AppCompatActivity {
         //temporary data for testing
         favorites.add(new String[]{"Home", "40780"});
         favorites.add(new String[]{"Work", "41140"});
-        favorites.add(new String[]{"Friend", "1000"});
-        favorites.add(new String[]{"Mom", "1001"});
 
         buildButtonClickable();
-        buildStations();
-        buildAlerts();
+        buildStationsAlerts();
         buildFavorites();
     }
 
@@ -121,124 +117,112 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void buildStations(){
-        //TODO: pull in real stations from URL
-        allStations.put("1000", new Station("State/Lake", false, new String[]{"Brown", "Green", "Orange", "Pink", "Purple"}));
-        //TODO: organize routes to reflect order on CTA site
-        allStations.put("1001", new Station("Lake", true, new String[]{"Red"}));
-        allStations.put("40780", new Station("Central Park", true, new String[]{"Pink"}));
-        allStations.put("41140", new Station("King Drive", true, new String[]{"Green"}));
-    }
 
+    public void buildStationsAlerts(){
+        //TODO: pull in real stations from URL
+        //TODO: organize routes to reflect order on CTA site
+        try{
+            new BuildStationsAlerts().execute("https://data.cityofchicago.org/resource/8pix-ypme.json", "http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+/*
     public void buildAlerts(){
         try{
-            new CurrentElevatorAlerts().execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx").get();
+            new BuildAllStations().execute("https://data.cityofchicago.org/api/views/8pix-ypme/rows.xml?accessType=DOWNLOAD").get();
         } catch (ExecutionException | InterruptedException e){
             e.printStackTrace();
         }
-
     }
-
-    class CurrentElevatorAlerts extends AsyncTask<String, Void, Void> {
+*/
+    class BuildStationsAlerts extends AsyncTask<String, Void, Void>{
 
         protected Void doInBackground(String... urls) {
+            //BUILD STATIONS
             try {
-                //Call API and create document to parse XML using DOM
                 URL url = new URL(urls[0]);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream is = urlConnection.getInputStream();
+                Scanner scan = new Scanner(url.openStream());
+                String str = "";
+                while (scan.hasNext())
+                    str += scan.nextLine();
+                scan.close();
 
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docbuilder = factory.newDocumentBuilder();
-                Document doc = docbuilder.parse(is);
-                doc.getDocumentElement().normalize();
-                is.close();
+                JSONArray arr = new JSONArray(str);
 
-                //Pull out elevator alerts
-                NodeList nList = doc.getElementsByTagName("Alert");
-                for (int i = 0; i < nList.getLength(); i++) {
-                    Element alertElem = (Element) nList.item(i);
-                    if (alertElem.getElementsByTagName("Impact").item(0).getTextContent().equals("Elevator Status")) {
-                        //Create new ElevatorAlert object for each elevator alert
+                for (int i=0; i<arr.length();i++){
+                    JSONObject obj = (JSONObject) arr.get(i);
+                    String mapID = obj.getString("map_id");
+                    if (allStations.keySet().contains(mapID)) continue;
 
-                        String headline = alertElem.getElementsByTagName("Headline").item(0).getTextContent();
-                        String shortDesc = alertElem.getElementsByTagName("ShortDescription").item(0).getTextContent();
-                        String longDesc = alertElem.getElementsByTagName("FullDescription").item(0).getTextContent();
-                        String beginDateTime = convertDateTime(alertElem.getElementsByTagName("EventStart").item(0).getTextContent());
-                        //TODO: convert date time to readable format
+                    String stationName = obj.getString("station_name");
+                    boolean ada = Boolean.parseBoolean(obj.getString("ada"));
+                    boolean[] routes = new boolean[9];
+                    Arrays.fill(routes, Boolean.FALSE);
 
-                        ElevatorAlert currentAlert = new ElevatorAlert(headline, shortDesc, longDesc, beginDateTime);
+                    if(obj.getString("red").equals("true")){ routes[0] = true; }
+                    if(obj.getString("blue").equals("true")){ routes[1] = true; }
+                    if(obj.getString("g").equals("true")){ routes[2] = true; }
+                    if(obj.getString("brn").equals("true")){ routes[3] = true; }
+                    if(obj.getString("p").equals("true")){ routes[4] = true; }
+                    if(obj.getString("pexp").equals("true")){ routes[5] = true; }
+                    if(obj.getString("y").equals("true")){ routes[6] = true; }
+                    if(obj.getString("pnk").equals("true")){ routes[7] = true; }
+                    if(obj.getString("o").equals("true")){ routes[8] = true; }
 
-                        //Add station and line info to ElevatorAlert
-                        NodeList impactedService = alertElem.getElementsByTagName("ImpactedService");
-                        NodeList services = ((Element) impactedService.item(0)).getElementsByTagName("Service");
+                    Station currStation = new Station(stationName, ada, routes);
+                    allStations.put(mapID, currStation);
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
 
-                        for (int j = 0; j < services.getLength(); j++) {
-                            Element elem = (Element) services.item(j);
-                            NodeList serviceType = elem.getElementsByTagName("ServiceType");
-                            NodeList serviceId = elem.getElementsByTagName("ServiceId");
+            //BUILD ALERTS
+            try {
+                URL url = new URL(urls[1]);
+                Scanner scan = new Scanner(url.openStream());
+                String str = "";
+                while (scan.hasNext())
+                    str += scan.nextLine();
+                scan.close();
 
-                            if (serviceType.item(0).getTextContent().equals("T")) {
-                                //TODO: error checking for station existing in allStations
-                                try {
-                                    String currStationID = serviceId.item(0).getTextContent();
-                                    elevatorOutStationIDs.add(currStationID);
-                                    Log.d("IDs", elevatorOutStationIDs.toString());
-                                    //Add alert into associated Station
-                                    if (allStations.containsKey(currStationID)) {
-                                        Station currentStation = allStations.get(currStationID);
-                                        currentStation.addAlert(currentAlert);
-                                    }
-                                } catch (NullPointerException e){
-                                    e.printStackTrace();
-                                }
-                            }
+                JSONObject outer = new JSONObject(str);
+                JSONObject inner = outer.getJSONObject("CTAAlerts");
+                JSONArray arrAlerts = inner.getJSONArray("Alert");
+
+                for (int i=0;i<arrAlerts.length();i++){
+                    JSONObject alert = (JSONObject) arrAlerts.get(i);
+                    String impact = alert.getString("Impact");
+                    if (!impact.equals("Elevator Status")) continue;
+
+                    JSONObject impactedService = alert.getJSONObject("ImpactedService");
+                    JSONArray service = impactedService.getJSONArray("Service");
+                    for (int j=0;j<service.length();j++){
+                        JSONObject serviceInstance = (JSONObject) service.get(j);
+                        if (serviceInstance.getString("ServiceType").equals("T")) {
+                            String id = serviceInstance.getString("ServiceId");
+                            String headline = alert.getString("Headline");
+                            String shortdesc = alert.getString("ShortDescription");
+                            //TODO: Clean up full description
+                            String fulldesc = alert.getString("FullDescription");
+                            //TODO: Clean up date/time conversion
+                            String beginDateTime = convertDateTime(alert.getString("EventStart"));
+                            elevatorOutStationIDs.add(id);
+                            Station s = allStations.get(id);
+                            s.addAlert(new ElevatorAlert(headline, shortdesc, fulldesc, beginDateTime));
+                            break;
                         }
                     }
                 }
-            } catch (IOException | ParserConfigurationException | SAXException e) {
+                Log.d("allIDs", elevatorOutStationIDs.toString());
+                Log.d("size", Integer.toString(allStations.size()));
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-            return null;
+        return null;
         }
 
-        protected void onPostExecute(Void v) {
-            stationsTempOut.setTextColor(Color.BLACK);
-            stationsTempOut.setTextSize(20);
-            stationsTempOut.append("ELEVATORS TEMPORARILY DOWN");
-
-            for (String str : elevatorOutStationIDs) {
-                    //TODO: check to make sure station still exists in allStations
-                    //Create new TextView with the alert
-                    try {
-                        final Station s = allStations.get(str);
-                        TextView textView1 = new TextView(MainActivity.this);
-                        textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-                                LayoutParams.WRAP_CONTENT));
-                        textView1.setTextSize(15);
-                        textView1.append("Station: " + s.getName() + "\n");
-//                        for (ElevatorAlert alert : s.getAlerts()) {
-//                            textView1.append(alert.getShortDesc() + "\n");
-//                        }
-                        textView1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
-                                intent.putExtra("Station", s);
-                                startActivity(intent);
-                            }
-                        });
-                        linearLayout.addView(textView1);
-
-                    } catch (Exception e){
-                        Log.d("Exception", e.toString());
-                    }
-            }
-        }
-
-    }
-
-    public String convertDateTime(String s){
+        public String convertDateTime(String s){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm");
             Date convertedDate = new Date();
             try {
@@ -248,6 +232,37 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return convertedDate.toString();
+        }
+        protected void onPostExecute(Void v) {
+            stationsTempOut.setTextColor(Color.BLACK);
+            stationsTempOut.setTextSize(20);
+            stationsTempOut.append("ELEVATORS TEMPORARILY DOWN");
+
+            for (String str : elevatorOutStationIDs) {
+                //TODO: check to make sure station still exists in allStations
+                //Create new TextView with the alert
+                try {
+                    final Station s = allStations.get(str);
+                    TextView textView1 = new TextView(MainActivity.this);
+                    textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+                            LayoutParams.WRAP_CONTENT));
+                    textView1.setTextSize(15);
+                    textView1.append("Station: " + s.getName() + "\n");
+                    textView1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
+                            intent.putExtra("Station", s);
+                            startActivity(intent);
+                        }
+                    });
+                    linearLayout.addView(textView1);
+
+                } catch (Exception e){
+                    Log.d("Exception", e.toString());
+                }
+            }
+        }
     }
 
     @Override
