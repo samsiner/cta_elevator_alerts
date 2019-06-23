@@ -1,6 +1,8 @@
 package com.example.elevator_app;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
