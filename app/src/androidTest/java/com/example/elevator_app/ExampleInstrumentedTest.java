@@ -1,14 +1,12 @@
 package com.example.elevator_app;
 
-import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,13 +23,6 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 @SmallTest
 public class ExampleInstrumentedTest {
-//    @Test
-//    public void useAppContext() {
-//        // Context of the app under test.
-//        Context appContext = InstrumentationRegistry.getTargetContext();
-//
-//        assertEquals("com.example.elevator_app", appContext.getPackageName());
-//    }
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule(MainActivity.class);
@@ -55,12 +46,15 @@ public class ExampleInstrumentedTest {
         });
     }
 
+    /**
+     * Verifies transition from MainActivity to AddFavoriteActivity
+     */
     @Test
     public void testTransitionToAddFavorite(){
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(AddFavoriteActivity.class.getName(), null, false);
 
         getMainActivity().runOnUiThread(() -> {
-            Button button = (Button) getMainActivity().findViewById(R.id.button_addFavorite);
+            Button button = getMainActivity().findViewById(R.id.button_addFavorite);
             button.performClick();
         });
 
@@ -69,4 +63,20 @@ public class ExampleInstrumentedTest {
         activity.finish();
     }
 
+    /**
+     * Verifies transition from MainActivity to DisplayAlertActivity
+     */
+    @Test
+    public void testTransitionToDisplayAlert(){
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(DisplayAlertActivity.class.getName(), null, false);
+
+        getMainActivity().runOnUiThread(() -> {
+            TextView textView1 = getMainActivity().findViewById(40780);
+            textView1.performClick();
+        });
+
+        DisplayAlertActivity activity = (DisplayAlertActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+        assertNotNull("activity transition success", activity);
+        activity.finish();
+    }
 }

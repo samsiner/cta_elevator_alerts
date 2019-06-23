@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+                textView1.setId(Integer.parseInt(str));
                 linearLayout.addView(textView1);
 
             } catch (Exception e) {
