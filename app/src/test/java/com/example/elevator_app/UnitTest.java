@@ -3,6 +3,7 @@ package com.example.elevator_app;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -29,18 +30,19 @@ public class UnitTest {
 
     @Test
     public void testStationClass(){
-        ArrayList<String> arrl = new ArrayList<>();
-        arrl.add("str1");
-        arrl.add("str2");
+        boolean[] arrl = new boolean[9];
+        Arrays.fill(arrl, false);
+        arrl[1] = true;
 
         Station newStation = new Station( "name", true, arrl);
 
         assertEquals(newStation.getName(), "name");
         assertEquals(newStation.getElevator(), true);
-        ArrayList<String> arrl2 = new ArrayList<>();
-        arrl2.add("str1");
-        arrl2.add("str2");
-        assertEquals(newStation.getRoutes(), arrl2);
+
+        boolean[] arrl2 = new boolean[9];
+        Arrays.fill(arrl2, false);
+        arrl2[1] = true;
+        assertArrayEquals(newStation.getRoutes(), arrl2);
         assertEquals(newStation.getAlerts(), new ArrayList<ElevatorAlert>());
 
         newStation.addAlert(new ElevatorAlert("", "", "",
