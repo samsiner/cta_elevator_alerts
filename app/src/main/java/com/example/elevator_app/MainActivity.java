@@ -1,6 +1,8 @@
 package com.example.elevator_app;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private ArrayList<String[]> favorites;
     private Button addFavorite;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+
     //TODO: check for duplicate key entry from user
     private ArrayList<String> elevatorOutStationIDs;
     final private HashMap<String, Station> allStations = new HashMap<>();
@@ -52,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
         elevatorOutStationIDs = new ArrayList<>();
         favorites = new ArrayList<>();
 
+
+        //Set up SharedPreferences
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
         //TODO: Replace with functionality to add favorites
         //temporary data for testing
         favorites.add(new String[]{"Home", "40780"});
@@ -61,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         buildStationsAlerts();
         buildFavorites();
     }
+
+
 
     @Override
     protected void onResume(){
@@ -127,15 +139,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-/*
-    public void buildAlerts(){
-        try{
-            new BuildAllStations().execute("https://data.cityofchicago.org/api/views/8pix-ypme/rows.xml?accessType=DOWNLOAD").get();
-        } catch (ExecutionException | InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-*/
+
     class BuildStationsAlerts extends AsyncTask<String, Void, Void>{
 
         protected Void doInBackground(String... urls) {
