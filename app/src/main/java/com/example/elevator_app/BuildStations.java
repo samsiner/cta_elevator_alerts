@@ -67,7 +67,6 @@ public class BuildStations extends AsyncTask<String, Void, Void> {
                 Station currStation = new Station(stationName, ada, routes);
                 allStations.put(mapID, currStation);
             }
-            activity.setAllStations(allStations);
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }

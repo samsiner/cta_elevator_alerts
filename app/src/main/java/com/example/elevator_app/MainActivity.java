@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public HashMap<String, Station> getAllStations(){ return allStations; }
-    public void setAllStations(HashMap<String, Station> allStations){ this.allStations = allStations; }
     public ArrayList<String> getElevatorOutStationIDs(){ return elevatorOutStationIDs;}
 
     @Override
