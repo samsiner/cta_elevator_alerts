@@ -52,13 +52,4 @@ public class UnitTest {
         newStation.clearAlerts();
         assertEquals(newStation.getAlerts().size(), 0);
     }
-
-    @Test
-    public void testMainActivity(){
-        MainActivity main = new MainActivity();
-
-
-
-    }
-
 }

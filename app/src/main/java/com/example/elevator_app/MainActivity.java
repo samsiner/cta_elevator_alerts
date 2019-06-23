@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     public HashMap<String, Station> getAllStations(){ return allStations; }
     public ArrayList<String> getElevatorOutStationIDs(){ return elevatorOutStationIDs;}
+    public ArrayList<String[]> getFavorites(){ return favorites; }
 
     @Override
     protected void onResume(){
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         addFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddFavorite.class);
+                Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
                 intent.putExtra("AllStations", allStations);
                 startActivity(intent);
             }

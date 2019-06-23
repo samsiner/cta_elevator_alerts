@@ -2,13 +2,9 @@ package com.example.elevator_app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -17,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
-public class AddFavorite extends AppCompatActivity {
+public class AddFavoriteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +30,7 @@ public class AddFavorite extends AppCompatActivity {
         final HashMap<String, Station> allStations = (HashMap) intent.getSerializableExtra("AllStations");
 
         for (String str : allStations.keySet()){
-            RadioButton r = new RadioButton(AddFavorite.this);
+            RadioButton r = new RadioButton(AddFavoriteActivity.this);
             r.setText(allStations.get(str).getName());
             r.setId(Integer.parseInt(str));
             radiogroup.addView(r);
@@ -51,7 +47,7 @@ public class AddFavorite extends AppCompatActivity {
                 TextView tv = findViewById(R.id.confirm_favorite_textview);
                 tv.append("You have added " + nickname + " as a favorite station!");
 
-                Intent intent = new Intent(AddFavorite.this, MainActivity.class);
+                Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
                 intent.putExtra("Nickname", nickname);
                 intent.putExtra("stationID", stationID);
                 startActivity(intent);
