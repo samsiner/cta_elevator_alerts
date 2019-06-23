@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         elevatorOutStationIDs = new ArrayList<>();
         favorites = new ArrayList<>();
 
-
         //Set up SharedPreferences
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         editor = sharedPref.edit();
@@ -72,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
         buildFavorites();
     }
 
-
-
     @Override
     protected void onResume(){
         super.onResume();
@@ -82,7 +79,11 @@ public class MainActivity extends AppCompatActivity {
             String nickname = intent.getStringExtra("Nickname");
             String stationID = intent.getStringExtra("stationID");
             favorites.add(new String[]{nickname, stationID});
-            buildFavorites();
+            if (nickname != null) {
+                favoriteAlerts.append(nickname + "\n");
+                favoriteAlerts.append(allStations.get(stationID).getName() + "\n");
+                favoriteAlerts.append(elevatorStatus(stationID));
+            }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -105,36 +106,40 @@ public class MainActivity extends AppCompatActivity {
         favoriteAlerts.setTextSize(16);
         favoriteAlerts.append("Favorite Stations - Elevator Status\n\n");
 
-        for (String[] favorite : favorites){
-            favoriteAlerts.append(favorite[0] + "\n");
+        for (String[] favorite : favorites)
+        {
             try{
+                favoriteAlerts.append(favorite[0] + "\n");
                 String favoriteStationID = favorite[1];
                 Station favoriteStation = allStations.get(favoriteStationID);
-                favoriteAlerts.append(favoriteStation.getName() + "\n");
-                boolean hasElevator = favoriteStation.getElevator();
-
-                //Print elevator status
-                if (!hasElevator){
-                    favoriteAlerts.append("Status: No elevator present\n\n");
-                }
-                else if (elevatorOutStationIDs.contains(favoriteStationID)){
-                    favoriteAlerts.append("Status: Elevator temporarily not working\n\n");
-                }
-                else {
-                    favoriteAlerts.append("Status: All elevators working\n\n");
-                }
+                String name = favoriteStation.getName() + "\n";
+                favoriteAlerts.append(name);
+                favoriteAlerts.append(elevatorStatus(favoriteStationID));
             } catch (NullPointerException e){
                 e.printStackTrace();
             }
         }
     }
 
+    public String elevatorStatus(String ID){
+        boolean hasElevator = allStations.get(ID).getElevator();
+
+        if (!hasElevator){
+            return "Status: No elevator present\n\n";
+        }
+        else if (elevatorOutStationIDs.contains(ID)){
+            return "Status: Elevator temporarily not working\n\n";
+        }
+        else {
+            return "Status: All elevators working\n\n";
+        }
+    }
 
     public void buildStationsAlerts(){
-        //TODO: pull in real stations from URL
+        //TODO: build stations into local database
         //TODO: organize routes to reflect order on CTA site
         try{
-            new BuildStationsAlerts().execute("https://data.cityofchicago.org/resource/8pix-ypme.json", "http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+            new BuildStationsAlerts().execute("https://data.cityofchicago.org/resource/8pix-ypme.json", "http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -227,16 +232,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public String convertDateTime(String s){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm");
-            Date convertedDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss");
             try {
-                convertedDate = dateFormat.parse(s);
+                Date convertedDate = dateFormat.parse(s);
+                return convertedDate.toString();
             } catch (ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            return convertedDate.toString();
+            return null;
         }
+
         protected void onPostExecute(Void v) {
             stationsTempOut.setTextColor(Color.BLACK);
             stationsTempOut.setTextSize(20);
