@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,21 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Scanner;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.widget.LinearLayout.LayoutParams;
 
 public class MainActivity extends AppCompatActivity {
     private TextView stationsTempOut, favoriteAlerts;
@@ -41,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: check for duplicate key entry from user
     private ArrayList<String> elevatorOutStationIDs;
-    final private HashMap<String, Station> allStations = new HashMap<>();
+    private HashMap<String, Station> allStations = new HashMap<>();
     //TODO: figure out how to store people's favorites in local memory
 
     @Override
@@ -70,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         buildStationsAlerts();
         buildFavorites();
     }
+
+    public HashMap<String, Station> getAllStations(){ return allStations; }
+    public void setAllStations(HashMap<String, Station> allStations){ this.allStations = allStations; }
+    public ArrayList<String> getElevatorOutStationIDs(){ return elevatorOutStationIDs;}
 
     @Override
     protected void onResume(){
@@ -139,138 +129,46 @@ public class MainActivity extends AppCompatActivity {
         //TODO: build stations into local database
         //TODO: organize routes to reflect order on CTA site
         try{
-            new BuildStationsAlerts().execute("https://data.cityofchicago.org/resource/8pix-ypme.json", "http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
+            BuildStations bs = new BuildStations(this);
+            bs.execute("https://data.cityofchicago.org/resource/8pix-ypme.json").get();
+            bs.cancel(true);
+
+            BuildAlerts ba = new BuildAlerts(this);
+            ba.execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
+            ba.cancel(true);
+            displayAlerts();
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    class BuildStationsAlerts extends AsyncTask<String, Void, Void>{
+    private void displayAlerts() {
+        stationsTempOut.setTextColor(Color.BLACK);
+        stationsTempOut.setTextSize(20);
+        stationsTempOut.append("ELEVATORS TEMPORARILY DOWN");
 
-        protected Void doInBackground(String... urls) {
-            //BUILD STATIONS
+        for (String str : elevatorOutStationIDs) {
+            //TODO: check to make sure station still exists in allStations
+            //Create new TextView with the alert
             try {
-                URL url = new URL(urls[0]);
-                Scanner scan = new Scanner(url.openStream());
-                String str = "";
-                while (scan.hasNext())
-                    str += scan.nextLine();
-                scan.close();
-
-                JSONArray arr = new JSONArray(str);
-
-                for (int i=0; i<arr.length();i++){
-                    JSONObject obj = (JSONObject) arr.get(i);
-                    String mapID = obj.getString("map_id");
-                    if (allStations.keySet().contains(mapID)) continue;
-
-                    String stationName = obj.getString("station_name");
-                    boolean ada = Boolean.parseBoolean(obj.getString("ada"));
-                    boolean[] routes = new boolean[9];
-                    Arrays.fill(routes, Boolean.FALSE);
-
-                    if(obj.getString("red").equals("true")){ routes[0] = true; }
-                    if(obj.getString("blue").equals("true")){ routes[1] = true; }
-                    if(obj.getString("g").equals("true")){ routes[2] = true; }
-                    if(obj.getString("brn").equals("true")){ routes[3] = true; }
-                    if(obj.getString("p").equals("true")){ routes[4] = true; }
-                    if(obj.getString("pexp").equals("true")){ routes[5] = true; }
-                    if(obj.getString("y").equals("true")){ routes[6] = true; }
-                    if(obj.getString("pnk").equals("true")){ routes[7] = true; }
-                    if(obj.getString("o").equals("true")){ routes[8] = true; }
-
-                    Station currStation = new Station(stationName, ada, routes);
-                    allStations.put(mapID, currStation);
-                }
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-
-            //BUILD ALERTS
-            try {
-                URL url = new URL(urls[1]);
-                Scanner scan = new Scanner(url.openStream());
-                String str = "";
-                while (scan.hasNext())
-                    str += scan.nextLine();
-                scan.close();
-
-                JSONObject outer = new JSONObject(str);
-                JSONObject inner = outer.getJSONObject("CTAAlerts");
-                JSONArray arrAlerts = inner.getJSONArray("Alert");
-
-                for (int i=0;i<arrAlerts.length();i++){
-                    JSONObject alert = (JSONObject) arrAlerts.get(i);
-                    String impact = alert.getString("Impact");
-                    if (!impact.equals("Elevator Status")) continue;
-
-                    JSONObject impactedService = alert.getJSONObject("ImpactedService");
-                    JSONArray service = impactedService.getJSONArray("Service");
-                    for (int j=0;j<service.length();j++){
-                        JSONObject serviceInstance = (JSONObject) service.get(j);
-                        if (serviceInstance.getString("ServiceType").equals("T")) {
-                            String id = serviceInstance.getString("ServiceId");
-                            String headline = alert.getString("Headline");
-                            String shortdesc = alert.getString("ShortDescription");
-                            //TODO: Clean up full description
-                            String fulldesc = alert.getString("FullDescription");
-                            //TODO: Clean up date/time conversion
-                            String beginDateTime = convertDateTime(alert.getString("EventStart"));
-                            elevatorOutStationIDs.add(id);
-                            Station s = allStations.get(id);
-                            s.addAlert(new ElevatorAlert(headline, shortdesc, fulldesc, beginDateTime));
-                            break;
-                        }
+                final Station s = allStations.get(str);
+                TextView textView1 = new TextView(this);
+                textView1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                textView1.setTextSize(15);
+                textView1.append("Station: " + s.getName() + "\n");
+                textView1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
+                        intent.putExtra("Station", s);
+                        startActivity(intent);
                     }
-                }
-                Log.d("allIDs", elevatorOutStationIDs.toString());
-                Log.d("size", Integer.toString(allStations.size()));
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-        return null;
-        }
+                });
+                linearLayout.addView(textView1);
 
-        public String convertDateTime(String s){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss");
-            try {
-                Date convertedDate = dateFormat.parse(s);
-                return convertedDate.toString();
-            } catch (ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void v) {
-            stationsTempOut.setTextColor(Color.BLACK);
-            stationsTempOut.setTextSize(20);
-            stationsTempOut.append("ELEVATORS TEMPORARILY DOWN");
-
-            for (String str : elevatorOutStationIDs) {
-                //TODO: check to make sure station still exists in allStations
-                //Create new TextView with the alert
-                try {
-                    final Station s = allStations.get(str);
-                    TextView textView1 = new TextView(MainActivity.this);
-                    textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-                            LayoutParams.WRAP_CONTENT));
-                    textView1.setTextSize(15);
-                    textView1.append("Station: " + s.getName() + "\n");
-                    textView1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
-                            intent.putExtra("Station", s);
-                            startActivity(intent);
-                        }
-                    });
-                    linearLayout.addView(textView1);
-
-                } catch (Exception e){
-                    Log.d("Exception", e.toString());
-                }
+            } catch (Exception e) {
+                Log.d("Exception", e.toString());
             }
         }
     }

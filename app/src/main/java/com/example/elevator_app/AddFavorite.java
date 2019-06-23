@@ -38,6 +38,8 @@ public class AddFavorite extends AppCompatActivity {
             r.setText(allStations.get(str).getName());
             r.setId(Integer.parseInt(str));
             radiogroup.addView(r);
+            //TODO: just for now
+            break;
         }
 
         button.setOnClickListener(new View.OnClickListener() {
