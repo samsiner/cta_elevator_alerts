@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
         favorites.add(new String[]{"Work", "41140"});
 
         buildButtonClickable();
-        buildStationsAlerts();
+        buildStations();
+        buildAlerts();
         buildFavorites();
     }
 
@@ -125,14 +126,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void buildStationsAlerts(){
+    public void buildStations(){
         //TODO: build stations into local database
         //TODO: organize routes to reflect order on CTA site
         try{
             BuildStations bs = new BuildStations(this);
             bs.execute("https://data.cityofchicago.org/resource/8pix-ypme.json").get();
             bs.cancel(true);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
+    public void buildAlerts(){
+        try{
             BuildAlerts ba = new BuildAlerts(this);
             ba.execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
             ba.cancel(true);

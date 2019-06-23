@@ -53,11 +53,12 @@ public class UnitTest {
         assertEquals(newStation.getAlerts().size(), 0);
     }
 
-    /*@Test
+    @Test
     public void testMainActivity(){
-        //test
+        MainActivity main = new MainActivity();
 
 
-    }*/
+
+    }
 
 }
