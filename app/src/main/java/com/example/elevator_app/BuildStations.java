@@ -44,6 +44,9 @@ public class BuildStations extends AsyncTask<String, Void, Void> {
             JSONArray arr = new JSONArray(str);
             HashMap<String, Station> allStations = activity.getAllStations();
 
+            //JSON tags for the lines
+            String[] tagNames = new String[]{"red", "blue", "g", "brn", "p", "pexp", "y", "pnk", "o"};
+
             for (int i=0; i<arr.length();i++){
                 JSONObject obj = (JSONObject) arr.get(i);
                 String mapID = obj.getString("map_id");
@@ -51,18 +54,13 @@ public class BuildStations extends AsyncTask<String, Void, Void> {
 
                 String stationName = obj.getString("station_name");
                 boolean ada = Boolean.parseBoolean(obj.getString("ada"));
-                boolean[] routes = new boolean[9];
-                Arrays.fill(routes, Boolean.FALSE);
 
-                if(obj.getString("red").equals("true")){ routes[0] = true; }
-                if(obj.getString("blue").equals("true")){ routes[1] = true; }
-                if(obj.getString("g").equals("true")){ routes[2] = true; }
-                if(obj.getString("brn").equals("true")){ routes[3] = true; }
-                if(obj.getString("p").equals("true")){ routes[4] = true; }
-                if(obj.getString("pexp").equals("true")){ routes[5] = true; }
-                if(obj.getString("y").equals("true")){ routes[6] = true; }
-                if(obj.getString("pnk").equals("true")){ routes[7] = true; }
-                if(obj.getString("o").equals("true")){ routes[8] = true; }
+                //fill routes array with true or false
+                boolean[] routes = new boolean[tagNames.length];
+                Arrays.fill(routes, Boolean.FALSE);
+                for(int j = 0; j < tagNames.length; j++){
+                    if(obj.getString(tagNames[j]).equals("true")){routes[j] = true; }
+                }
 
                 Station currStation = new Station(stationName, ada, routes);
                 allStations.put(mapID, currStation);
