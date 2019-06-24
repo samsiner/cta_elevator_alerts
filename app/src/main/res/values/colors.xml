@@ -5,6 +5,10 @@
     <color name="colorGray">#757575</color>
     <color name="colorAccent">#D81B60</color>
 
+    <!-- Android colors -->
+    <color name="colorAndroidRed">#D42A2A</color>
+    <color name="colorAndroidGreen">#00C853</color>
+
     <!-- station colors -->
     <color name="colorRedLine">#C6222F</color>
     <color name="colorBlueLine">#34A1DE</color>
