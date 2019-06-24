@@ -40,7 +40,7 @@ public class ExampleInstrumentedTest {
 
         getMainActivity().runOnUiThread(() -> {
             assertNotNull("button exists", getMainActivity().findViewById(R.id.button_addFavorite));
-            assertNotNull("toolbar exists", getMainActivity().findViewById(R.id.toolbar));
+            assertNotNull("toolbar exists", getMainActivity().findViewById(R.id.toolbar_old));
             assertNotNull("stations out exists", getMainActivity().findViewById(R.id.text_elevDownTempList));
             assertNotNull("favorites exists", getMainActivity().findViewById(R.id.text_favoritesList));
         });

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_old);
         setSupportActionBar(toolbar);
         stationsTempOut = findViewById(R.id.text_elevDownTempList);
         favoriteAlerts = findViewById(R.id.text_favoritesList);

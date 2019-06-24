@@ -19,7 +19,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_old);
         final RadioGroup radiogroup = findViewById(R.id.choose_station_radio_group);
         Button button = findViewById(R.id.add_favorite_button);
         final TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
