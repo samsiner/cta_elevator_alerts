@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorGray">#757575</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!-- station colors -->
+    <color name="colorRedLine">#C6222F</color>
+    <color name="colorBlueLine">#34A1DE</color>
+    <color name="colorBrownLine">#62361A</color>
+    <color name="colorGreenLine">#259B3A</color>
+    <color name="colorOrangeLine">#F7451B</color>
+    <color name="colorPinkLine">#E27EA6</color>
+    <color name="colorPurpleLine">#522298</color>
+    <color name="colorYellowLine">#F9E300</color>
+
 </resources>
