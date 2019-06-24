@@ -25,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
 
+    private String[] redLine;
+    private String[] blueLine;
+    private String[] brownLine;
+    private String[] greenLine;
+    private String[] orangeLine;
+    private String[] pinkLine;
+    private String[] purpleLine;
+    private String[] yellowLine;
+
     //TODO: check for duplicate key entry from user
     private ArrayList<String> elevatorOutStationIDs;
     private HashMap<String, Station> allStations = new HashMap<>();
@@ -47,6 +56,16 @@ public class MainActivity extends AppCompatActivity {
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         editor = sharedPref.edit();
 
+        //Build train lines
+        redLine = new String[]{"40900", "40900", "41190", "41300", "40760", "40880", "41380", "40340", "41200", "40770", "40540", "40080", "41420", "41320", "41220", "40650", "40630", "41450", "40330", "41660", "41090", "40560", "41490", "41400", "41000", "40190", "41230", "41170", "40910", "40990", "40240", "41430", "40450"};
+        blueLine = new String[]{"40890", "40820", "40230", "40750", "41280", "41330", "40550", "41240", "40060", "41020", "40570", "40670", "40590", "40320", "41410", "40490", "40380", "40370", "40790", "40070", "41340", "40430", "40350", "40470", "40810", "40220", "40250", "40920", "40970", "40010", "40180", "40980", "40390"};
+        brownLine = new String[]{"41290", "41180", "40870", "41010", "41480", "40090", "41500", "41460", "41440", "41310", "40360", "41320", "41210", "40530", "41220", "40660", "40800", "40710", "40460", "40730", "40040", "40160", "40850", "40680", "41700", "40260", "40380"};
+        greenLine = new String[]{"40020", "41350", "40610", "41260", "40280", "40700", "40480", "40030", "41670", "41070", "41360", "40170", "41510", "41160", "40380", "40260", "41700", "40680", "41400", "41690", "41120", "40300", "41270", "41080", "40130", "40510", "41140", "40720", "40940", "40290"};
+        orangeLine = new String[]{"40930", "40960", "41150", "40310", "40120", "41060", "41130", "41400", "40850", "40160", "40040", "40730", "40380", "40260", "41700", "40680"};
+        pinkLine = new String[]{"40580", "40420", "40600", "40150", "40780", "41040", "40440", "40740", "40210", "40830", "41030", "40170", "41510", "41160", "40380", "40260", "41700", "40680", "40850", "40160", "40040", "40730"};
+        purpleLine = new String[]{"41050", "41250", "40400", "40520", "40050", "40690", "40270", "40840", "40900", "40540", "41320", "41210", "40530", "41220", "40660", "40800", "40710", "40460", "40380", "40260", "41700", "40680", "40850", "40160", "40040", "40730"};
+        yellowLine = new String[]{"40140", "41680", "40900"};
+
         //TODO: Replace with functionality to add favorites
         //temporary data for testing
         favorites.add(new String[]{"Home", "40780"});
@@ -56,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         buildStations();
         buildAlerts();
         buildFavorites();
+        Log.d("tag", getLine("RED")[0]);
     }
 
     public HashMap<String, Station> getAllStations(){ return allStations; }
@@ -178,6 +198,29 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.d("Exception", e.toString());
             }
+        }
+    }
+
+    private String[] getLine(String string){
+        switch(string.toLowerCase()){
+            case "red":
+                return redLine;
+            case "blue":
+                return blueLine;
+            case "brown":
+                return brownLine;
+            case "green":
+                return greenLine;
+            case "orange":
+                return orangeLine;
+            case "pink":
+                return pinkLine;
+            case "purple":
+                return purpleLine;
+            case "yellow":
+                return yellowLine;
+            default:
+                return new String[]{"Incorrect Line"};
         }
     }
 
