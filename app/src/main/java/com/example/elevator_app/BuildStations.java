@@ -24,9 +24,12 @@ import java.util.Scanner;
 public class BuildStations extends AsyncTask<String, Void, Void> {
 
     private WeakReference<Activity> wactivity;
+    private String[] lineTagNames;
 
     public BuildStations(Activity activity){
+
         this.wactivity = new WeakReference<>(activity);
+        this.lineTagNames = new String[]{"red", "blue", "g", "brn", "p", "pexp", "y", "pnk", "o"};
     }
 
     @Override
@@ -44,9 +47,6 @@ public class BuildStations extends AsyncTask<String, Void, Void> {
             JSONArray arr = new JSONArray(str);
             HashMap<String, Station> allStations = activity.getAllStations();
 
-            //JSON tags for the lines
-            String[] tagNames = new String[]{"red", "blue", "g", "brn", "p", "pexp", "y", "pnk", "o"};
-
             for (int i=0; i<arr.length();i++){
                 JSONObject obj = (JSONObject) arr.get(i);
                 String mapID = obj.getString("map_id");
@@ -56,10 +56,10 @@ public class BuildStations extends AsyncTask<String, Void, Void> {
                 boolean ada = Boolean.parseBoolean(obj.getString("ada"));
 
                 //fill routes array with true or false
-                boolean[] routes = new boolean[tagNames.length];
+                boolean[] routes = new boolean[lineTagNames.length];
                 Arrays.fill(routes, Boolean.FALSE);
-                for(int j = 0; j < tagNames.length; j++){
-                    if(obj.getString(tagNames[j]).equals("true")){routes[j] = true; }
+                for(int j = 0; j < lineTagNames.length; j++){
+                    if(obj.getString(lineTagNames[j]).equals("true")){routes[j] = true; }
                 }
 
                 Station currStation = new Station(stationName, ada, routes);
