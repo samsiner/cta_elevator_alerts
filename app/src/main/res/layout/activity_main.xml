@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context=".ScrollingActivity"
     android:background="@drawable/chicago_train"
+    android:orientation="vertical"
     >
 
     <include
@@ -17,4 +18,4 @@
 
     <include layout="@layout/content_scrolling" />
 
-</RelativeLayout>
+</LinearLayout>

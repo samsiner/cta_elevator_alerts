@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">CTA Access</string>
+    <string name="app_name">CTA ACCESS</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_display_alert">DisplayAlertActivity</string>
     <string name="button_add_favorite">Add Favorite</string>
+    <string name="button_all_lines">All Lines</string>
     <string name="title_activity_add_favorite">AddFavorite</string>
 </resources>

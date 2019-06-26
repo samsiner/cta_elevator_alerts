@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -111,11 +113,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buildFavorites(){
-        favoriteAlerts.setText("");
-        favoriteAlerts.setTextColor(Color.BLACK);
-        favoriteAlerts.setTextSize(16);
-        favoriteAlerts.append("Favorite Stations - Elevator Status\n\n");
-
         for (String[] favorite : favorites)
         {
             try{
@@ -169,9 +166,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayAlerts() {
-        stationsTempOut.setTextColor(Color.BLACK);
-        stationsTempOut.setTextSize(20);
-        stationsTempOut.append("ELEVATORS TEMPORARILY DOWN");
 
         for (String str : elevatorOutStationIDs) {
             //TODO: check to make sure station still exists in allStations
@@ -192,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 textView1.setId(Integer.parseInt(str));
-                linearLayout.addView(textView1);
+//                linearLayout.addView(textView1);
+
 
             } catch (Exception e) {
                 Log.d("Exception", e.toString());

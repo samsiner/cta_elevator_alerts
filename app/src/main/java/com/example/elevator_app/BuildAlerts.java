@@ -74,8 +74,6 @@ public class BuildAlerts extends AsyncTask<String, Void, Void> {
                     }
                 }
             }
-            Log.d("allIDs", elevatorOutStationIDs.toString());
-            Log.d("size", Integer.toString(allStations.size()));
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }

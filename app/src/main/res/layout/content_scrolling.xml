@@ -13,13 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="80dp">
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        >
+
+        <TextView
+            android:id="@+id/text_favorites_header"
+            android:text="FAVORITES"
+            style="@style/SubHeaderText"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_favorite_stations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"/>
+
 
         <TextView
             android:id="@+id/text_favoritesList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
             android:background="#ffffff"
             android:text="" />
 
@@ -32,12 +45,24 @@
             android:text="@string/button_add_favorite" />
 
         <TextView
+            android:id="@+id/text_tempDown_header"
+            android:text="ALL ELEVATOR ALERTS"
+            style="@style/SubHeaderText"/>
+
+        <TextView
             android:id="@+id/text_elevDownTempList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
             android:background="#ffffff"
             android:text="" />
+
+        <Button
+            android:id="@+id/button_allLines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/button_all_lines" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
