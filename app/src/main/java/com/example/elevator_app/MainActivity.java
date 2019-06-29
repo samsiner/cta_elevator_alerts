@@ -10,10 +10,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         buildStations();
         buildAlerts();
         buildFavorites();
+
     }
 
     public HashMap<String, Station> getAllStations(){ return allStations; }
@@ -113,15 +116,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buildFavorites(){
+        LinearLayout favoriteLayout = findViewById(R.id.linear_favorite_stations);
+        LayoutInflater inflater = getLayoutInflater();
         for (String[] favorite : favorites)
         {
             try{
-                favoriteAlerts.append(favorite[0] + "\n");
-                String favoriteStationID = favorite[1];
-                Station favoriteStation = allStations.get(favoriteStationID);
-                String name = favoriteStation.getName() + "\n";
-                favoriteAlerts.append(name);
-                favoriteAlerts.append(elevatorStatus(favoriteStationID));
+//                favoriteAlerts.append(favorite[0] + "\n");
+//                String favoriteStationID = favorite[1];
+//                Station favoriteStation = allStations.get(favoriteStationID);
+//                String name = favoriteStation.getName() + "\n";
+//                favoriteAlerts.append(name);
+//                favoriteAlerts.append(elevatorStatus(favoriteStationID));
+
+
+                View myLayout = inflater.inflate(R.layout.favorite_station, favoriteLayout, false);
+                TextView nickname = myLayout.findViewById(R.id.text_favorite_nickname);
+                TextView station = myLayout.findViewById(R.id.text_favorite_station);
+                ImageView status = myLayout.findViewById(R.id.image_elev_status);
+
+                nickname.setText(favorite[0]);
+                station.setText(allStations.get(favorite[1]).getName());
+                status.setImageResource(R.drawable.status_green);
+
+                favoriteLayout.addView(myLayout);
+
             } catch (NullPointerException e){
                 e.printStackTrace();
             }
