@@ -26,12 +26,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView stationsTempOut, favoriteAlerts;
-    private LinearLayout linearLayout;
     private Button addFavorite;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
-    DataFavorites dataFavorites;
 
     private String[] redLine;
     private String[] blueLine;
@@ -53,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar_old);
         setSupportActionBar(toolbar);
-        stationsTempOut = findViewById(R.id.text_elevDownTempList);
-        linearLayout = findViewById(R.id.LinearLayout);
         addFavorite = findViewById(R.id.button_addFavorite);
         elevatorOutStationIDs = new ArrayList<>();
 
@@ -71,11 +66,6 @@ public class MainActivity extends AppCompatActivity {
         pinkLine = new String[]{"40580", "40420", "40600", "40150", "40780", "41040", "40440", "40740", "40210", "40830", "41030", "40170", "41510", "41160", "40380", "40260", "41700", "40680", "40850", "40160", "40040", "40730"};
         purpleLine = new String[]{"41050", "41250", "40400", "40520", "40050", "40690", "40270", "40840", "40900", "40540", "41320", "41210", "40530", "41220", "40660", "40800", "40710", "40460", "40380", "40260", "41700", "40680", "40850", "40160", "40040", "40730"};
         yellowLine = new String[]{"40140", "41680", "40900"};
-
-        //TODO: Replace with functionality to add favorites
-        //temporary data for testing
-//        dataFavorites.addFavorite(new String[]{"Home", "40780"});
-//        dataFavorites.addFavorite(new String[]{"Work", "41140"});
 
         buildButtonClickable();
         buildStations();
@@ -110,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
 
         HashMap<String, String> favorites = (HashMap) sharedPref.getAll();
-        Log.d("keyset", favorites.keySet().toString());
         for (String s : favorites.keySet())
         {
             try{
@@ -193,8 +182,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 textView1.setId(Integer.parseInt(str));
-//                linearLayout.addView(textView1);
-
 
             } catch (Exception e) {
                 Log.d("Exception", e.toString());
