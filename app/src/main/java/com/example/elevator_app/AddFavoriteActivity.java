@@ -11,9 +11,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AddFavoriteActivity extends AppCompatActivity {
+    //TODO: Check if user is requesting an already favorited station or same nickname
+    //TODO: Check if user is requesting a station with no elevator
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +31,16 @@ public class AddFavoriteActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //TODO: What is this unchecked cast warning?
         final HashMap<String, Station> allStations = (HashMap) intent.getSerializableExtra("AllStations");
-
+        int counter = 0;
         for (String str : allStations.keySet()){
             RadioButton r = new RadioButton(AddFavoriteActivity.this);
             r.setText(allStations.get(str).getName());
             r.setId(Integer.parseInt(str));
             radiogroup.addView(r);
+            counter++;
             //TODO: just for now
-            break;
+            if(counter == 5){ break; }
+
         }
 
         button.setOnClickListener(new View.OnClickListener() {

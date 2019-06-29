@@ -1,5 +1,8 @@
 package com.example.elevator_app;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,15 +22,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private TextView stationsTempOut, favoriteAlerts;
     private LinearLayout linearLayout;
-    private ArrayList<String[]> favorites;
     private Button addFavorite;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
+    DataFavorites dataFavorites;
 
     private String[] redLine;
     private String[] blueLine;
@@ -50,14 +54,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_old);
         setSupportActionBar(toolbar);
         stationsTempOut = findViewById(R.id.text_elevDownTempList);
-        favoriteAlerts = findViewById(R.id.text_favoritesList);
         linearLayout = findViewById(R.id.LinearLayout);
         addFavorite = findViewById(R.id.button_addFavorite);
         elevatorOutStationIDs = new ArrayList<>();
-        favorites = new ArrayList<>();
 
         //Set up SharedPreferences
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
         editor = sharedPref.edit();
 
         //Build train lines
@@ -72,37 +74,17 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: Replace with functionality to add favorites
         //temporary data for testing
-        favorites.add(new String[]{"Home", "40780"});
-        favorites.add(new String[]{"Work", "41140"});
+//        dataFavorites.addFavorite(new String[]{"Home", "40780"});
+//        dataFavorites.addFavorite(new String[]{"Work", "41140"});
 
         buildButtonClickable();
         buildStations();
         buildAlerts();
-        buildFavorites();
-
+        updateFavorites();
     }
 
     public HashMap<String, Station> getAllStations(){ return allStations; }
     public ArrayList<String> getElevatorOutStationIDs(){ return elevatorOutStationIDs;}
-    public ArrayList<String[]> getFavorites(){ return favorites; }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        try {
-            Intent intent = getIntent();
-            String nickname = intent.getStringExtra("Nickname");
-            String stationID = intent.getStringExtra("stationID");
-            favorites.add(new String[]{nickname, stationID});
-            if (nickname != null) {
-                favoriteAlerts.append(nickname + "\n");
-                favoriteAlerts.append(allStations.get(stationID).getName() + "\n");
-                favoriteAlerts.append(elevatorStatus(stationID));
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void buildButtonClickable(){
         addFavorite.setOnClickListener(new View.OnClickListener() {
@@ -115,27 +97,30 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void buildFavorites(){
+    public void updateFavorites(){
+        Intent intent = getIntent();
+        String nickname = intent.getStringExtra("Nickname");
+        String stationID = intent.getStringExtra("stationID");
+        if(nickname != null){
+            editor.putString(nickname, stationID);
+            editor.apply();
+        }
         LinearLayout favoriteLayout = findViewById(R.id.linear_favorite_stations);
+        favoriteLayout.removeAllViews();
         LayoutInflater inflater = getLayoutInflater();
-        for (String[] favorite : favorites)
+
+        HashMap<String, String> favorites = (HashMap) sharedPref.getAll();
+        Log.d("keyset", favorites.keySet().toString());
+        for (String s : favorites.keySet())
         {
             try{
-//                favoriteAlerts.append(favorite[0] + "\n");
-//                String favoriteStationID = favorite[1];
-//                Station favoriteStation = allStations.get(favoriteStationID);
-//                String name = favoriteStation.getName() + "\n";
-//                favoriteAlerts.append(name);
-//                favoriteAlerts.append(elevatorStatus(favoriteStationID));
-
-
                 View myLayout = inflater.inflate(R.layout.favorite_station, favoriteLayout, false);
-                TextView nickname = myLayout.findViewById(R.id.text_favorite_nickname);
+                TextView nicknameView = myLayout.findViewById(R.id.text_favorite_nickname);
                 TextView station = myLayout.findViewById(R.id.text_favorite_station);
                 ImageView status = myLayout.findViewById(R.id.image_elev_status);
 
-                nickname.setText(favorite[0]);
-                station.setText(allStations.get(favorite[1]).getName());
+                nicknameView.setText(s);
+                station.setText(allStations.get(favorites.get(s)).getName());
                 status.setImageResource(R.drawable.status_green);
 
                 favoriteLayout.addView(myLayout);
@@ -146,19 +131,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String elevatorStatus(String ID){
-        boolean hasElevator = allStations.get(ID).getElevator();
+//    public void buildFavorites(){
+//
+//    }
 
-        if (!hasElevator){
-            return "Status: No elevator present\n\n";
-        }
-        else if (elevatorOutStationIDs.contains(ID)){
-            return "Status: Elevator temporarily not working\n\n";
-        }
-        else {
-            return "Status: All elevators working\n\n";
-        }
-    }
+//    public String elevatorStatus(String ID){
+//        boolean hasElevator = allStations.get(ID).getElevator();
+//
+//        if (!hasElevator){
+//            return "Status: No elevator present\n\n";
+//        }
+//        else if (elevatorOutStationIDs.contains(ID)){
+//            return "Status: Elevator temporarily not working\n\n";
+//        }
+//        else {
+//            return "Status: All elevators working\n\n";
+//        }
+//    }
 
     public void buildStations(){
         //TODO: build stations into local database
@@ -256,4 +245,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

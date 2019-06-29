@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".ScrollingActivity"
-    android:background="@drawable/chicago_train"
+    android:background="@drawable/chicago_train_dark_50"
     android:orientation="vertical"
     >
 
