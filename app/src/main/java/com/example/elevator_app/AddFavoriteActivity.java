@@ -30,6 +30,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         //TODO: What is this unchecked cast warning?
+        @SuppressWarnings("unchecked")
         final HashMap<String, Station> allStations = (HashMap) intent.getSerializableExtra("AllStations");
         int counter = 0;
         for (String str : allStations.keySet()){
@@ -46,6 +47,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: check for null nickname
                 String nickname = nicknameTextEdit.getText().toString();
                 String stationID = Integer.toString(radiogroup.getCheckedRadioButtonId());
 

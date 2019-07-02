@@ -1,16 +1,9 @@
 package com.example.elevator_app;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,19 +22,9 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
 
-    private String[] redLine;
-    private String[] blueLine;
-    private String[] brownLine;
-    private String[] greenLine;
-    private String[] orangeLine;
-    private String[] pinkLine;
-    private String[] purpleLine;
-    private String[] yellowLine;
-
     //TODO: check for duplicate key entry from user
     private ArrayList<String> elevatorOutStationIDs;
-    private HashMap<String, Station> allStations = new HashMap<>();
-    //TODO: figure out how to store people's favorites in local memory
+    private HashMap<String, Station> allStations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,25 +34,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         addFavorite = findViewById(R.id.button_addFavorite);
         elevatorOutStationIDs = new ArrayList<>();
+        allStations = new HashMap<>();
 
         //Set up SharedPreferences
         sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
-        editor = sharedPref.edit();
-
-        //Build train lines
-        redLine = new String[]{"40900", "41190", "40100", "41300", "40760", "40880", "41380", "40340", "41200", "40770", "40540", "40080", "41420", "41320", "41220", "40650", "40630", "41450", "40330", "41660", "41090", "40560", "41490", "41400", "41000", "40190", "41230", "41170", "40910", "40990", "40240", "41430", "40450"};
-        blueLine = new String[]{"40890", "40820", "40230", "40750", "41280", "41330", "40550", "41240", "40060", "41020", "40570", "40670", "40590", "40320", "41410", "40490", "40380", "40370", "40790", "40070", "41340", "40430", "40350", "40470", "40810", "40220", "40250", "40920", "40970", "40010", "40180", "40980", "40390"};
-        brownLine = new String[]{"41290", "41180", "40870", "41010", "41480", "40090", "41500", "41460", "41440", "41310", "40360", "41320", "41210", "40530", "41220", "40660", "40800", "40710", "40460", "40730", "40040", "40160", "40850", "40680", "41700", "40260", "40380"};
-        greenLine = new String[]{"40020", "41350", "40610", "41260", "40280", "40700", "40480", "40030", "41670", "41070", "41360", "40170", "41510", "41160", "40380", "40260", "41700", "40680", "41400", "41690", "41120", "40300", "41270", "41080", "40130", "40510", "41140", "40720", "40940", "40290"};
-        orangeLine = new String[]{"40930", "40960", "41150", "40310", "40120", "41060", "41130", "41400", "40850", "40160", "40040", "40730", "40380", "40260", "41700", "40680"};
-        pinkLine = new String[]{"40580", "40420", "40600", "40150", "40780", "41040", "40440", "40740", "40210", "40830", "41030", "40170", "41510", "41160", "40380", "40260", "41700", "40680", "40850", "40160", "40040", "40730"};
-        purpleLine = new String[]{"41050", "41250", "40400", "40520", "40050", "40690", "40270", "40840", "40900", "40540", "41320", "41210", "40530", "41220", "40660", "40800", "40710", "40460", "40380", "40260", "41700", "40680", "40850", "40160", "40040", "40730"};
-        yellowLine = new String[]{"40140", "41680", "40900"};
 
         buildButtonClickable();
         buildStations();
-        buildAlerts();
+        buildLines();
         updateFavorites();
+        updateAlerts();
     }
 
     public HashMap<String, Station> getAllStations(){ return allStations; }
@@ -92,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         String nickname = intent.getStringExtra("Nickname");
         String stationID = intent.getStringExtra("stationID");
         if(nickname != null){
+            editor = sharedPref.edit();
             editor.putString(nickname, stationID);
             editor.apply();
         }
@@ -99,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
         favoriteLayout.removeAllViews();
         LayoutInflater inflater = getLayoutInflater();
 
-        HashMap<String, String> favorites = (HashMap) sharedPref.getAll();
+        @SuppressWarnings("unchecked")
+        HashMap<String, ?> favorites = (HashMap) sharedPref.getAll();
         for (String s : favorites.keySet())
         {
             try{
@@ -120,10 +95,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public void buildFavorites(){
-//
-//    }
-
 //    public String elevatorStatus(String ID){
 //        boolean hasElevator = allStations.get(ID).getElevator();
 //
@@ -142,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO: build stations into local database
         //TODO: organize routes to reflect order on CTA site
         try{
-            BuildStations bs = new BuildStations(this);
+            AllStations bs = new AllStations();
             bs.execute("https://data.cityofchicago.org/resource/8pix-ypme.json").get();
             bs.cancel(true);
         } catch (Exception e){
@@ -150,11 +121,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void buildAlerts(){
+    public void buildLines(){
+        AllLines lines = new AllLines();
+    }
+
+    public void updateAlerts(){
         try{
-            BuildAlerts ba = new BuildAlerts(this);
-            ba.execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
-            ba.cancel(true);
+            AllAlerts aa = new AllAlerts(this);
+            aa.execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
+            aa.cancel(true);
             displayAlerts();
         } catch (Exception e){
             e.printStackTrace();
@@ -162,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayAlerts() {
-
         for (String str : elevatorOutStationIDs) {
             //TODO: check to make sure station still exists in allStations
             //Create new TextView with the alert
@@ -186,29 +160,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.d("Exception", e.toString());
             }
-        }
-    }
-
-    private String[] getLine(String string){
-        switch(string.toLowerCase()){
-            case "red":
-                return redLine;
-            case "blue":
-                return blueLine;
-            case "brown":
-                return brownLine;
-            case "green":
-                return greenLine;
-            case "orange":
-                return orangeLine;
-            case "pink":
-                return pinkLine;
-            case "purple":
-                return purpleLine;
-            case "yellow":
-                return yellowLine;
-            default:
-                return new String[]{"Incorrect Line"};
         }
     }
 

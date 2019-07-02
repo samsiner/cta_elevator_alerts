@@ -34,5 +34,4 @@ public class DisplayAlertActivity extends AppCompatActivity {
             display.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
-
 }

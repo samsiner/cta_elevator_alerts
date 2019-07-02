@@ -1,18 +1,10 @@
 package com.example.elevator_app;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
@@ -23,11 +15,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class BuildAlerts extends AsyncTask<String, Void, Void> {
+public class AllAlerts extends AsyncTask<String, Void, Void> {
 
     private WeakReference<Activity> wactivity;
 
-    public BuildAlerts(Activity activity){
+    public AllAlerts(Activity activity){
         this.wactivity = new WeakReference<>(activity);
     }
 

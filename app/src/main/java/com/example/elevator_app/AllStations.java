@@ -1,51 +1,37 @@
 package com.example.elevator_app;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class BuildStations extends AsyncTask<String, Void, Void> {
+public class AllStations extends AsyncTask<String, Void, Void> {
 
-    private WeakReference<Activity> wactivity;
     private String[] lineTagNames;
+    HashMap<String, Station> allStations;
 
-    public BuildStations(Activity activity){
-
-        this.wactivity = new WeakReference<>(activity);
+    public AllStations(){
         this.lineTagNames = new String[]{"red", "blue", "g", "brn", "p", "pexp", "y", "pnk", "o"};
+        allStations = new HashMap<>();
     }
+
+    public HashMap<String, Station> getAllStations(){ return allStations; }
 
     @Override
     protected Void doInBackground(String... urls) {
-        MainActivity activity = ((MainActivity)wactivity.get());
-
         try {
             URL url = new URL(urls[0]);
             Scanner scan = new Scanner(url.openStream());
-            String str = "";
-            while (scan.hasNext())
-                str += scan.nextLine();
+            StringBuilder str = new StringBuilder();
+            while (scan.hasNext()) str.append(scan.nextLine());
             scan.close();
 
-            JSONArray arr = new JSONArray(str);
-            HashMap<String, Station> allStations = activity.getAllStations();
+            JSONArray arr = new JSONArray(str.toString());
 
             for (int i=0; i<arr.length();i++){
                 JSONObject obj = (JSONObject) arr.get(i);
@@ -61,7 +47,6 @@ public class BuildStations extends AsyncTask<String, Void, Void> {
                 for(int j = 0; j < lineTagNames.length; j++){
                     if(obj.getString(lineTagNames[j]).equals("true")){routes[j] = true; }
                 }
-
                 Station currStation = new Station(stationName, ada, routes);
                 allStations.put(mapID, currStation);
             }
