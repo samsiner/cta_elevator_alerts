@@ -12,9 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 public class AllAlerts extends AsyncTask<String, Void, Void> {
 
