@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.widget.TextView;
 
 public class DisplayAlertActivity extends AppCompatActivity {
@@ -21,17 +20,21 @@ public class DisplayAlertActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Station s = (Station) intent.getSerializableExtra("Station");
+        String str = intent.getStringExtra("Text");
 
         TextView display = findViewById(R.id.displayAlert);
         display.setTextSize(15);
         display.setTextColor(Color.BLACK);
         display.append(s.getName() + "\n\n");
-        Log.d("Alerts", Integer.toString(s.getAlerts().size()));
-        for (ElevatorAlert alert : s.getAlerts()){
-            display.append("Starting " + alert.getBeginDateTime() + "\n\n");
-            display.append(alert.getHeadline() + "\n\n");
-                        display.append(Html.fromHtml(alert.getFullDesc() + "\n\n"));
-            display.setMovementMethod(LinkMovementMethod.getInstance());
+
+        if (str != null) display.append(str);
+        else {
+            for (ElevatorAlert alert : s.getAlerts()) {
+                display.append("Starting " + alert.getBeginDateTime() + "\n\n");
+                display.append(alert.getHeadline() + "\n\n");
+                display.append(Html.fromHtml(alert.getFullDesc() + "\n\n"));
+                display.setMovementMethod(LinkMovementMethod.getInstance());
+            }
         }
     }
 }

@@ -1,12 +1,12 @@
 package com.example.elevator_app;
 
-import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,30 +14,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class AllAlerts extends AsyncTask<String, Void, Void> {
 
-    private WeakReference<Activity> wactivity;
+    private ArrayList<String> elevatorOutStationIDs;
 
-    public AllAlerts(Activity activity){
-        this.wactivity = new WeakReference<>(activity);
+    public AllAlerts() {
+        elevatorOutStationIDs = new ArrayList<>();
+    }
+
+    public ArrayList<String> getElevatorOutStationIDs(){
+        return elevatorOutStationIDs;
     }
 
     @Override
     protected Void doInBackground(String... urls) {
-        MainActivity activity = ((MainActivity)wactivity.get());
-        ArrayList<String> elevatorOutStationIDs = activity.getElevatorOutStationIDs();
-        HashMap<String, Station> allStations = activity.getAllStations();
-
         try {
             URL url = new URL(urls[0]);
             Scanner scan = new Scanner(url.openStream());
-            String str = "";
-            while (scan.hasNext())
-                str += scan.nextLine();
+            String sb = "";
+            while (scan.hasNext()) sb += scan.nextLine();
             scan.close();
 
-            JSONObject outer = new JSONObject(str);
+            JSONObject outer = new JSONObject(sb);
             JSONObject inner = outer.getJSONObject("CTAAlerts");
             JSONArray arrAlerts = inner.getJSONArray("Alert");
 
@@ -59,8 +59,11 @@ public class AllAlerts extends AsyncTask<String, Void, Void> {
                         String fulldesc = alert.getString("FullDescription");
                         //TODO: Clean up date/time conversion
                         String beginDateTime = convertDateTime(alert.getString("EventStart"));
+                        Log.d("OutBEFORE", Integer.toString(elevatorOutStationIDs.size()));
                         elevatorOutStationIDs.add(id);
-                        Station s = allStations.get(id);
+                        AllStationsSingleton single = AllStationsSingleton.getInstance();
+                        Log.d("OutAFTER", Integer.toString(elevatorOutStationIDs.size()));
+                        Station s = single.getStation(id);
                         s.addAlert(new ElevatorAlert(headline, shortdesc, fulldesc, beginDateTime));
                         break;
                     }

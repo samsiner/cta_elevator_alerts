@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ScrollingActivity"
+    tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
     <LinearLayout
@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/text_favorites_header"
-            android:text="FAVORITES"
+            android:text="@string/title_favorites"
             style="@style/SubHeaderText"/>
 
         <LinearLayout
@@ -29,26 +29,25 @@
             android:layout_height="wrap_content"
             />
 
-
         <Button
             android:id="@+id/button_addFavorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="toAddFavoriteActivity"
             android:text="@string/button_add_favorite" />
 
         <TextView
             android:id="@+id/text_tempDown_header"
-            android:text="ALL ELEVATOR ALERTS"
+            android:text="@string/title_all_alerts"
             style="@style/SubHeaderText"/>
 
-        <TextView
-            android:id="@+id/text_elevDownTempList"
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/linear_elevDownTempList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:text="" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/button_allLines"
@@ -56,6 +55,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="toAllLinesActivity"
             android:text="@string/button_all_lines" />
 
     </LinearLayout>
