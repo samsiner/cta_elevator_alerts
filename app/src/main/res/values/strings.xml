@@ -7,4 +7,5 @@
     <string name="button_all_lines">All Lines</string>
     <string name="title_all_alerts">All Elevator Alerts</string>
     <string name="title_activity_add_favorite">AddFavorite</string>
+    <string name="title_activity_all_lines">AllLinesActivity</string>
 </resources>

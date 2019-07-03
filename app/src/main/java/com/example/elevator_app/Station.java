@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Station implements Serializable {
-    private String name;
-    private boolean hasElevator;
-    private ArrayList<ElevatorAlert> alerts;
-    private boolean[] routes;
+    private final String name;
+    private final boolean hasElevator;
+    private final ArrayList<ElevatorAlert> alerts;
+    private final boolean[] routes;
 
     public Station(String name, boolean hasElevator, boolean[] routes){
         this.name = name;

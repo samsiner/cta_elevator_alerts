@@ -13,7 +13,8 @@
             android:id="@+id/image_elev_status"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:padding="2dp" />
+            android:padding="2dp"
+            android:contentDescription="Elevator Out Status"/>
 
         <TextView
             android:id="@+id/text_favorite_nickname"

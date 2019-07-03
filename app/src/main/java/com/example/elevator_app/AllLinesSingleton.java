@@ -3,7 +3,7 @@ package com.example.elevator_app;
 public class AllLinesSingleton {
 
     //Build train lines using SINGLETON PATTERN
-    private String[] redLine, blueLine, brownLine, greenLine, orangeLine, pinkLine, purpleLine, yellowLine;
+    private final String[] redLine, blueLine, brownLine, greenLine, orangeLine, pinkLine, purpleLine, yellowLine;
     private static AllLinesSingleton instance = null;
 
     private AllLinesSingleton(){

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ElevatorAlert implements Serializable {
 
-    private String headline, shortDesc, fullDesc, beginDateTime;
+    private final String headline, shortDesc, fullDesc, beginDateTime;
 
     public ElevatorAlert(String headline, String shortDesc, String fullDesc, String beginDateTime){
         this.headline = headline;

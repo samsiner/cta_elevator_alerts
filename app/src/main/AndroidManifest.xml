@@ -13,9 +13,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AllLinesActivity"
+            android:label="@string/title_activity_all_lines"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".AddFavoriteActivity"
             android:label="@string/title_activity_add_favorite"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DisplayAlertActivity"
             android:label="@string/title_activity_display_alert"

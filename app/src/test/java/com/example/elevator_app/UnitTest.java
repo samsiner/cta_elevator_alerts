@@ -1,9 +1,6 @@
 package com.example.elevator_app;
-import static org.mockito.Mockito.*;
 
 import org.junit.Test;
-import org.mockito.Mock;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,7 +36,7 @@ public class UnitTest {
         Station newStation = new Station( "name", true, arrl);
 
         assertEquals(newStation.getName(), "name");
-        assertEquals(newStation.getElevator(), true);
+        assertThrows(newStation.getElevator(), true);
 
         boolean[] arrl2 = new boolean[9];
         Arrays.fill(arrl2, false);

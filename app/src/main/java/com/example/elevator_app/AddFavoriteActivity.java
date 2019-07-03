@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 public class AddFavoriteActivity extends AppCompatActivity {
-    //TODO: Check if user is requesting an already favorited station or same nickname
+    //TODO: Check if user is requesting an already favorite station or same nickname
     //TODO: Check if user is requesting a station with no elevator
 
     @Override
@@ -26,9 +26,6 @@ public class AddFavoriteActivity extends AppCompatActivity {
         final TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
-        //TODO: What is this unchecked cast warning?
-        @SuppressWarnings("unchecked")
         int counter = 0;
         HashMap<String, Station> allStations = AllStationsSingleton.getInstance().getAllStations();
         for (String str : allStations.keySet()){

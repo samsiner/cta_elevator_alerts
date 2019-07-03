@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+@SuppressWarnings("ALL")
 public class AllAlerts extends AsyncTask<String, Void, Void> {
 
     private ArrayList<String> elevatorOutStationIDs;
