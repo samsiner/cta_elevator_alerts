@@ -11,11 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        >
         <activity
             android:name=".AllLinesActivity"
             android:label="@string/title_activity_all_lines"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".AddFavoriteActivity"
             android:label="@string/title_activity_add_favorite"

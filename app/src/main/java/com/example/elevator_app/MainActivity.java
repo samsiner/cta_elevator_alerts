@@ -13,9 +13,9 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
-    AllAlerts allAlerts;
+
+    private SharedPreferences sharedPref;
+    private AllAlerts allAlerts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, AllLinesActivity.class));
     }
 
-    public void updateFavorites(){
+    private void updateFavorites(){
         //TODO: check for duplicate key entry from user
         Intent intent = getIntent();
         String nickname = intent.getStringExtra("Nickname");
         String stationID = intent.getStringExtra("stationID");
         if(nickname != null){
-            editor = sharedPref.edit();
+            SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString(nickname, stationID);
             editor.apply();
         }
@@ -73,21 +73,19 @@ public class MainActivity extends AppCompatActivity {
                 final boolean outElev = allAlerts.getElevatorOutStationIDs().contains(id);
                 if (hasElev && !outElev){
                     status.setImageResource(R.drawable.status_green);
-                } else{
-                    //Add red button
-                    //status.setImageResource(R.drawable.status_red);
                 }
+//                else{
+//                    //Add red button
+//                    status.setImageResource(R.drawable.status_red);
+//                }
 
-                myLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
-                        intent.putExtra("Station", s);
-                        //If there is no elevator or it works, add different text
-                        if (!hasElev) intent.putExtra("Text", "No elevator present at station.");
-                        else if (!outElev) intent.putExtra("Text", "Elevator is present and working at station.");
-                        startActivity(intent);
-                    }
+                myLayout.setOnClickListener(v -> {
+                    Intent intent1 = new Intent(MainActivity.this, DisplayAlertActivity.class);
+                    intent1.putExtra("Station", s);
+                    //If there is no elevator or it works, add different text
+                    if (!hasElev) intent1.putExtra("Text", "No elevator present at station.");
+                    else if (!outElev) intent1.putExtra("Text", "Elevator is present and working at station.");
+                    startActivity(intent1);
                 });
 
                 favoriteLayout.addView(myLayout);
@@ -98,12 +96,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void updateAlerts(){
+    private void updateAlerts(){
         try{
             allAlerts = new AllAlerts();
 
             try{
-                allAlerts.execute("http://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
+                allAlerts.execute("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -117,18 +115,15 @@ public class MainActivity extends AppCompatActivity {
                 try{
                     View myLayout = inflater.inflate(R.layout.alert_station, alertLayout, false);
                     TextView stationView = myLayout.findViewById(R.id.text_favorite_station);
-                    ImageView statusView = myLayout.findViewById(R.id.image_elev_status);
+                    //ImageView statusView = myLayout.findViewById(R.id.image_elev_status);
 
                     final Station s = AllStationsSingleton.getInstance().getStation(str);
                     stationView.setText(s.getName());
                     //statusView.setImageResource(status_red);
-                    myLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
-                            intent.putExtra("Station", s);
-                            startActivity(intent);
-                        }
+                    myLayout.setOnClickListener(v -> {
+                        Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
+                        intent.putExtra("Station", s);
+                        startActivity(intent);
                     });
                     alertLayout.addView(myLayout);
 

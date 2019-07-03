@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:id="@+id/inputNickname_textedit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter station nickname" />
+            android:hint="@string/hint_nickname" />
 
         <RadioGroup
             android:id="@+id/choose_station_radio_group"
@@ -45,4 +45,4 @@
             android:layout_height="wrap_content" />
 
     </android.support.design.widget.TextInputLayout>
-</android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

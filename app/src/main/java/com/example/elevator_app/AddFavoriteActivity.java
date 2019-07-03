@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,30 +29,29 @@ public class AddFavoriteActivity extends AppCompatActivity {
         HashMap<String, Station> allStations = AllStationsSingleton.getInstance().getAllStations();
         for (String str : allStations.keySet()){
             RadioButton r = new RadioButton(AddFavoriteActivity.this);
-            r.setText(allStations.get(str).getName());
-            r.setId(Integer.parseInt(str));
-            radiogroup.addView(r);
+            try{
+                r.setText(allStations.get(str).getName());
+                radiogroup.addView(r);
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
             counter++;
             //TODO: just for now
-            if(counter == 5){ break; }
-
+            if(counter == 20){ break; }
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: check for null nickname
-                String nickname = nicknameTextEdit.getText().toString();
-                String stationID = Integer.toString(radiogroup.getCheckedRadioButtonId());
+        button.setOnClickListener(v -> {
+            //TODO: check for null nickname
+            String nickname = nicknameTextEdit.getText().toString();
+            String stationID = Integer.toString(radiogroup.getCheckedRadioButtonId());
 
-                TextView tv = findViewById(R.id.confirm_favorite_textview);
-                tv.append("You have added " + nickname + " as a favorite station!");
+            TextView tv = findViewById(R.id.confirm_favorite_textview);
+            tv.append("You have added " + nickname + " as a favorite station!");
 
-                Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-                intent.putExtra("Nickname", nickname);
-                intent.putExtra("stationID", stationID);
-                startActivity(intent);
-            }
+            Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
+            intent.putExtra("Nickname", nickname);
+            intent.putExtra("stationID", stationID);
+            startActivity(intent);
         });
 
 

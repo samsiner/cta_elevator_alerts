@@ -4,6 +4,8 @@
     android:layout_height="70dp"
     android:background="@color/colorPrimaryDark"
     android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingEnd="16dp"
     >
 
     <TextView
