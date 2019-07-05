@@ -17,6 +17,8 @@ import com.example.elevator_app.Models.Stations.AllStations;
 import com.example.elevator_app.R;
 import com.example.elevator_app.Models.Stations.Station;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,8 +41,24 @@ public class MainActivity extends AppCompatActivity {
         //Set up SharedPreferences to save favorites locally
         sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
 
-        updateAlerts();
-        updateFavorites();
+        try{
+            URL urlStations = new URL("https://data.cityofchicago.org/resource/8pix-ypme.json");
+            allStations.buildStations(urlStations);
+        } catch (MalformedURLException e){
+            //TODO: Make error catching more specific
+            e.printStackTrace();
+        }
+
+        try{
+            URL urlStations = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+            allAlerts.buildAlerts(urlStations);
+        } catch (MalformedURLException e){
+            //TODO: Make error catching more specific
+            e.printStackTrace();
+        }
+
+        buildAlertViews();
+        buildFavoriteViews();
     }
 
     public void toAddFavoriteActivity(View v){
@@ -54,7 +72,36 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void updateFavorites(){
+    private void buildAlertViews(){
+        LinearLayout alertLayout = findViewById(R.id.linear_elevDownTempList);
+        alertLayout.removeAllViews();
+        LayoutInflater inflater = getLayoutInflater();
+
+        for (String str : allAlerts.getElevatorOutStationIDs())
+        {
+            try{
+                View myLayout = inflater.inflate(R.layout.alert_station, alertLayout, false);
+                TextView stationView = myLayout.findViewById(R.id.text_favorite_station);
+                //ImageView statusView = myLayout.findViewById(R.id.image_elev_status);
+
+                final Station s = allStations.getStation(str);
+                stationView.setText(s.getName());
+                //statusView.setImageResource(status_red);
+
+                myLayout.setOnClickListener(v -> {
+                    Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
+                    intent.putExtra("Station", s);
+                    startActivity(intent);
+                });
+                alertLayout.addView(myLayout);
+
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void buildFavoriteViews(){
         //TODO: check for duplicate key entry from user
         //TODO: consider visitor design pattern for duplicate code (updateFavorites() and updateAlerts())
         Intent intent = getIntent();
@@ -106,38 +153,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 favoriteLayout.addView(myLayout);
-
-            } catch (NullPointerException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void updateAlerts(){
-        allAlerts.updateAlerts();
-
-        LinearLayout alertLayout = findViewById(R.id.linear_elevDownTempList);
-        alertLayout.removeAllViews();
-        LayoutInflater inflater = getLayoutInflater();
-
-        Log.d("IDs", allAlerts.getElevatorOutStationIDs().toString());
-        for (String str : allAlerts.getElevatorOutStationIDs())
-        {
-            try{
-                View myLayout = inflater.inflate(R.layout.alert_station, alertLayout, false);
-                TextView stationView = myLayout.findViewById(R.id.text_favorite_station);
-                //ImageView statusView = myLayout.findViewById(R.id.image_elev_status);
-
-                final Station s = allStations.getStation(str);
-                stationView.setText(s.getName());
-                //statusView.setImageResource(status_red);
-
-                myLayout.setOnClickListener(v -> {
-                    Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
-                    intent.putExtra("Station", s);
-                    startActivity(intent);
-                });
-                alertLayout.addView(myLayout);
 
             } catch (NullPointerException e){
                 e.printStackTrace();

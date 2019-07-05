@@ -31,6 +31,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
 
         int counter = 0;
 
+        @SuppressWarnings("unchecked")
         HashMap<String, Station> allStations = (HashMap<String, Station>) getIntent().getSerializableExtra("All Stations");
 
         for (String str : allStations.keySet()){
