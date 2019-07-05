@@ -15,6 +15,8 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    //TODO: Figure out what an adapter is. Do we need to create one?
+
     private SharedPreferences sharedPref;
     private AllAlerts allAlerts;
     private AllStations allStations;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateFavorites(){
         //TODO: check for duplicate key entry from user
+        //TODO: consider visitor design pattern for duplicate code (updateFavorites() and updateAlerts())
         Intent intent = getIntent();
         String nickname = intent.getStringExtra("Nickname");
         String stationID = intent.getStringExtra("stationID");
@@ -106,14 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateAlerts(){
         allAlerts.updateAlerts();
-
-            /*allAlerts = new AllAlerts(allStations);
-
-            try{
-                allAlerts.execute("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
-            } catch (Exception e){
-                e.printStackTrace();
-            }*/
 
         LinearLayout alertLayout = findViewById(R.id.linear_elevDownTempList);
         alertLayout.removeAllViews();
