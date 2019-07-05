@@ -1,4 +1,4 @@
-package com.example.elevator_app;
+package com.example.elevator_app.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
+
+import com.example.elevator_app.Models.Alerts.ElevatorAlert;
+import com.example.elevator_app.R;
+import com.example.elevator_app.Models.Stations.Station;
 
 public class DisplayAlertActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.elevator_app;
+package com.example.elevator_app.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.HashMap;
+import com.example.elevator_app.Models.Lines.AllLines;
+import com.example.elevator_app.R;
 
 public class AllLinesActivity extends AppCompatActivity {
 

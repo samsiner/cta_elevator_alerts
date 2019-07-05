@@ -1,6 +1,8 @@
 //TODO: Add JavaDoc comments to all classes
 
-package com.example.elevator_app;
+package com.example.elevator_app.Models.Stations;
+
+import com.example.elevator_app.HttpsRequest.CreateStations;
 
 import java.io.Serializable;
 import java.util.HashMap;

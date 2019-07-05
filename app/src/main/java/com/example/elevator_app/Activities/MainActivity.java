@@ -1,4 +1,4 @@
-package com.example.elevator_app;
+package com.example.elevator_app.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +11,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.elevator_app.Models.Alerts.AllAlerts;
+import com.example.elevator_app.Models.Stations.AllStations;
+import com.example.elevator_app.R;
+import com.example.elevator_app.Models.Stations.Station;
+
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {

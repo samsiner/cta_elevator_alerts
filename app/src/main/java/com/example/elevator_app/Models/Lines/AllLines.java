@@ -1,4 +1,4 @@
-package com.example.elevator_app;
+package com.example.elevator_app.Models.Lines;
 
 public class AllLines {
 

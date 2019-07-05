@@ -1,4 +1,4 @@
-package com.example.elevator_app;
+package com.example.elevator_app.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.example.elevator_app.R;
+import com.example.elevator_app.Models.Stations.Station;
+
 import java.util.HashMap;
 
 public class AddFavoriteActivity extends AppCompatActivity {

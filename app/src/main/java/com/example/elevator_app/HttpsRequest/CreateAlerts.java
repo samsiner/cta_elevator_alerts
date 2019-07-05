@@ -1,4 +1,7 @@
-package com.example.elevator_app;
+package com.example.elevator_app.HttpsRequest;
+
+import com.example.elevator_app.Models.Alerts.ElevatorAlert;
+import com.example.elevator_app.Models.Stations.Station;
 
 import org.json.JSONArray;
 import org.json.JSONException;
