@@ -5,10 +5,19 @@
     <string name="title_nickname">Nickname</string>
     <string name="title_station">Station</string>
     <string name="button_add_favorite">Add Favorite</string>
-    <string name="button_all_lines">All Lines</string>
+    <string name="all_lines">All Lines</string>
+    <string name="hint_nickname">Choose a station nickname</string>
     <string name="title_all_alerts">All Elevator Alerts</string>
     <string name="title_activity_add_favorite">Add Favorite Station</string>
     <string name="title_activity_all_lines">All Train Lines</string>
     <string name="image_elevator_out">Elevator Out Status</string>
-    <string name="hint_nickname">Enter station nickname</string>
+    <string name="redline">Red Line</string>
+    <string name="blueline">Blue Line</string>
+    <string name="brownline">Brown Line</string>
+    <string name="greenline">Green Line</string>
+    <string name="orangeline">Orange Line</string>
+    <string name="pinkline">Pink Line</string>
+    <string name="purpleline">Purple Line</string>
+    <string name="yellowline">Yellow Line</string>
+    <string name="title_activity_specific_line">Specific Line</string>
 </resources>

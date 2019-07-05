@@ -56,7 +56,7 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="toAllLinesActivity"
-            android:text="@string/button_all_lines" />
+            android:text="@string/all_lines" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

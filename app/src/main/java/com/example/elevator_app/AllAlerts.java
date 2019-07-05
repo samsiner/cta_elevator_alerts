@@ -1,88 +1,24 @@
 package com.example.elevator_app;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.IOException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.HashMap;
 
-@SuppressWarnings("ALL")
-public class AllAlerts extends AsyncTask<String, Void, Void> {
+public class AllAlerts {
 
+    private CreateAlerts createAlerts;
     private ArrayList<String> elevatorOutStationIDs;
 
-    public AllAlerts() {
+    public AllAlerts(HashMap<String, Station> a) {
         elevatorOutStationIDs = new ArrayList<>();
+        createAlerts = new CreateAlerts(a);
+        updateAlerts();
+    }
+
+    public void updateAlerts(){
+        elevatorOutStationIDs = createAlerts.buildAlerts();
     }
 
     public ArrayList<String> getElevatorOutStationIDs(){
         return elevatorOutStationIDs;
-    }
-
-    @Override
-    protected Void doInBackground(String... urls) {
-        try {
-            URL url = new URL(urls[0]);
-            Scanner scan = new Scanner(url.openStream());
-            String sb = "";
-            while (scan.hasNext()) sb += scan.nextLine();
-            scan.close();
-
-            JSONObject outer = new JSONObject(sb);
-            JSONObject inner = outer.getJSONObject("CTAAlerts");
-            JSONArray arrAlerts = inner.getJSONArray("Alert");
-
-            for (int i=0;i<arrAlerts.length();i++){
-                JSONObject alert = (JSONObject) arrAlerts.get(i);
-                String impact = alert.getString("Impact");
-                if (!impact.equals("Elevator Status")) continue;
-
-                JSONObject impactedService = alert.getJSONObject("ImpactedService");
-                JSONArray service = impactedService.getJSONArray("Service");
-
-                for (int j=0;j<service.length();j++){
-                    JSONObject serviceInstance = (JSONObject) service.get(j);
-                    if (serviceInstance.getString("ServiceType").equals("T")) {
-                        String id = serviceInstance.getString("ServiceId");
-                        String headline = alert.getString("Headline");
-                        String shortdesc = alert.getString("ShortDescription");
-                        //TODO: Clean up full description
-                        String fulldesc = alert.getString("FullDescription");
-                        //TODO: Clean up date/time conversion
-                        String beginDateTime = convertDateTime(alert.getString("EventStart"));
-                        Log.d("OutBEFORE", Integer.toString(elevatorOutStationIDs.size()));
-                        elevatorOutStationIDs.add(id);
-                        AllStationsSingleton single = AllStationsSingleton.getInstance();
-                        Log.d("OutAFTER", Integer.toString(elevatorOutStationIDs.size()));
-                        Station s = single.getStation(id);
-                        s.addAlert(new ElevatorAlert(headline, shortdesc, fulldesc, beginDateTime));
-                        break;
-                    }
-                }
-            }
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String convertDateTime(String s){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss");
-        try {
-            Date convertedDate = dateFormat.parse(s);
-            return convertedDate.toString();
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
     }
 }

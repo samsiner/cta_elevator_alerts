@@ -10,12 +10,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SpecificLineActivity"
+            android:label="@string/title_activity_specific_line"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".AllLinesActivity"
             android:label="@string/title_activity_all_lines"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddFavoriteActivity"
             android:label="@string/title_activity_add_favorite"

@@ -26,7 +26,9 @@ public class AddFavoriteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         int counter = 0;
-        HashMap<String, Station> allStations = AllStationsSingleton.getInstance().getAllStations();
+
+        HashMap<String, Station> allStations = (HashMap<String, Station>) getIntent().getSerializableExtra("All Stations");
+
         for (String str : allStations.keySet()){
             RadioButton r = new RadioButton(AddFavoriteActivity.this);
             try{

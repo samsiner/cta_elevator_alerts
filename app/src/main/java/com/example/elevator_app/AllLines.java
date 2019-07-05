@@ -1,12 +1,10 @@
 package com.example.elevator_app;
 
-public class AllLinesSingleton {
+public class AllLines {
 
-    //Build train lines using SINGLETON PATTERN
     private final String[] redLine, blueLine, brownLine, greenLine, orangeLine, pinkLine, purpleLine, yellowLine;
-    private static AllLinesSingleton instance = null;
 
-    private AllLinesSingleton(){
+    public AllLines(){
         redLine = new String[]{"40900", "41190", "40100", "41300", "40760", "40880", "41380", "40340", "41200", "40770", "40540", "40080", "41420", "41320", "41220", "40650", "40630", "41450", "40330", "41660", "41090", "40560", "41490", "41400", "41000", "40190", "41230", "41170", "40910", "40990", "40240", "41430", "40450"};
         blueLine = new String[]{"40890", "40820", "40230", "40750", "41280", "41330", "40550", "41240", "40060", "41020", "40570", "40670", "40590", "40320", "41410", "40490", "40380", "40370", "40790", "40070", "41340", "40430", "40350", "40470", "40810", "40220", "40250", "40920", "40970", "40010", "40180", "40980", "40390"};
         brownLine = new String[]{"41290", "41180", "40870", "41010", "41480", "40090", "41500", "41460", "41440", "41310", "40360", "41320", "41210", "40530", "41220", "40660", "40800", "40710", "40460", "40730", "40040", "40160", "40850", "40680", "41700", "40260", "40380"};
@@ -17,30 +15,23 @@ public class AllLinesSingleton {
         yellowLine = new String[]{"40140", "41680", "40900"};
     }
 
-    public static AllLinesSingleton getInstance() {
-        if(instance == null) {
-            instance = new AllLinesSingleton();
-        }
-        return instance;
-    }
-
     public String[] getLine(String string){
-        switch(string.toLowerCase()){
-            case "red":
+        switch(string){
+            case "Red Line":
                 return redLine;
-            case "blue":
+            case "Blue Line":
                 return blueLine;
-            case "brown":
+            case "Brown Line":
                 return brownLine;
-            case "green":
+            case "Green Line":
                 return greenLine;
-            case "orange":
+            case "Orange Line":
                 return orangeLine;
-            case "pink":
+            case "Pink Line":
                 return pinkLine;
-            case "purple":
+            case "Purple Line":
                 return purpleLine;
-            case "yellow":
+            case "Yellow Line":
                 return yellowLine;
             default:
                 return new String[]{"Incorrect Line"};

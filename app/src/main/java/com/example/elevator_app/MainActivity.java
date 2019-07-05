@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPref;
     private AllAlerts allAlerts;
+    private AllStations allStations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar_old);
         setSupportActionBar(toolbar);
+        allStations = new AllStations();
+        allAlerts = new AllAlerts(allStations.getAllStations());
 
         //Set up SharedPreferences to save favorites locally
         sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
@@ -32,11 +36,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toAddFavoriteActivity(View v){
-        startActivity(new Intent(MainActivity.this, AddFavoriteActivity.class));
+        Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
+        intent.putExtra("All Stations", allStations.getAllStations());
+        startActivity(intent);
     }
 
     public void toAllLinesActivity(View v){
-        startActivity(new Intent(MainActivity.this, AllLinesActivity.class));
+        Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
+        startActivity(intent);
     }
 
     private void updateFavorites(){
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
                 nicknameView.setText(str);
                 String id = favorites.get(str);
-                final Station s = AllStationsSingleton.getInstance().getStation(id);
+                final Station s = allStations.getStation(id);
                 station.setText(s.getName());
 
                 //Check if elevator is out or doesn't exist
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 //                    //Add red button
 //                    status.setImageResource(R.drawable.status_red);
 //                }
+
 
                 myLayout.setOnClickListener(v -> {
                     Intent intent1 = new Intent(MainActivity.this, DisplayAlertActivity.class);
@@ -97,43 +105,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateAlerts(){
-        try{
-            allAlerts = new AllAlerts();
+        allAlerts.updateAlerts();
+
+            /*allAlerts = new AllAlerts(allStations);
 
             try{
                 allAlerts.execute("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON").get();
             } catch (Exception e){
                 e.printStackTrace();
+            }*/
+
+        LinearLayout alertLayout = findViewById(R.id.linear_elevDownTempList);
+        alertLayout.removeAllViews();
+        LayoutInflater inflater = getLayoutInflater();
+
+        Log.d("IDs", allAlerts.getElevatorOutStationIDs().toString());
+        for (String str : allAlerts.getElevatorOutStationIDs())
+        {
+            try{
+                View myLayout = inflater.inflate(R.layout.alert_station, alertLayout, false);
+                TextView stationView = myLayout.findViewById(R.id.text_favorite_station);
+                //ImageView statusView = myLayout.findViewById(R.id.image_elev_status);
+
+                final Station s = allStations.getStation(str);
+                stationView.setText(s.getName());
+                //statusView.setImageResource(status_red);
+
+                myLayout.setOnClickListener(v -> {
+                    Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
+                    intent.putExtra("Station", s);
+                    startActivity(intent);
+                });
+                alertLayout.addView(myLayout);
+
+            } catch (NullPointerException e){
+                e.printStackTrace();
             }
-
-            LinearLayout alertLayout = findViewById(R.id.linear_elevDownTempList);
-            alertLayout.removeAllViews();
-            LayoutInflater inflater = getLayoutInflater();
-
-            for (String str : allAlerts.getElevatorOutStationIDs())
-            {
-                try{
-                    View myLayout = inflater.inflate(R.layout.alert_station, alertLayout, false);
-                    TextView stationView = myLayout.findViewById(R.id.text_favorite_station);
-                    //ImageView statusView = myLayout.findViewById(R.id.image_elev_status);
-
-                    final Station s = AllStationsSingleton.getInstance().getStation(str);
-                    stationView.setText(s.getName());
-                    //statusView.setImageResource(status_red);
-                    myLayout.setOnClickListener(v -> {
-                        Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
-                        intent.putExtra("Station", s);
-                        startActivity(intent);
-                    });
-                    alertLayout.addView(myLayout);
-
-                } catch (NullPointerException e){
-                    e.printStackTrace();
-                }
-            }
-
-        } catch (Exception e){
-            e.printStackTrace();
         }
     }
 }
