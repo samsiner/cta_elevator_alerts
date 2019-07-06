@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 @SmallTest
-public class ExampleInstrumentedTest {
+public class FunctionalTests {
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule(MainActivity.class);
