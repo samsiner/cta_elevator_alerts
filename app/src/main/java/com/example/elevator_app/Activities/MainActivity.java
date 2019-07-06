@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try{
-            URL urlStations = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-            allAlerts.buildAlerts(urlStations);
+            URL urlAlerts = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+            allAlerts.buildAlerts(urlAlerts);
         } catch (MalformedURLException e){
             //TODO: Make error catching more specific
             e.printStackTrace();

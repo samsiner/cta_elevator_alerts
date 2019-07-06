@@ -23,13 +23,10 @@ public class AllStations implements Serializable {
 
     public void buildStations(URL url) {
         String JSONString = HTTPSRequest.pullJSONFromHTTPSRequest(url);
-        buildStations(JSONString);
-    }
 
-    //Created for unit testing
-    public void buildStations(String JSONString){
         try {
             JSONArray arr = new JSONArray(JSONString);
+
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = (JSONObject) arr.get(i);
                 String mapID = obj.getString("map_id");
@@ -46,12 +43,16 @@ public class AllStations implements Serializable {
                         routes[j] = true;
                     }
                 }
-                Station currStation = new Station(stationName, ada, routes);
-                allStations.put(mapID, currStation);
+                addStation(mapID, stationName, ada, routes);
             }
         } catch (JSONException e){
             e.printStackTrace();
         }
+    }
+
+    public void addStation(String mapID, String name, boolean ada, boolean[] routes){
+        Station s = new Station(name, ada, routes);
+        allStations.put(mapID, s);
     }
 
     public Station getStation(String s){

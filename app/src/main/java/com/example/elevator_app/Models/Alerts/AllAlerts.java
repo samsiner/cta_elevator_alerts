@@ -7,14 +7,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class AllAlerts {
 
@@ -28,11 +27,7 @@ public class AllAlerts {
 
     public void buildAlerts(URL url) {
         String JSONString = HTTPSRequest.pullJSONFromHTTPSRequest(url);
-        buildAlerts(JSONString);
-    }
 
-    //Created for unit testing
-    public void buildAlerts(String JSONString){
         try {
             JSONObject outer = new JSONObject(JSONString);
             JSONObject inner = outer.getJSONObject("CTAAlerts");
@@ -56,13 +51,12 @@ public class AllAlerts {
                         if (headline.contains("Back in Service")) continue;
 
                         String shortdesc = alert.getString("ShortDescription");
-                        //TODO: Clean up full description
-                        String fulldesc = alert.getString("FullDescription");
-                        //TODO: Clean up date/time conversion
+
+                        JSONObject fulldescObj = alert.getJSONObject("FullDescription");
+                        String fulldesc = fulldescObj.getString("#cdata-section");
+
                         String beginDateTime = convertDateTime(alert.getString("EventStart"));
-                        elevatorOutStationIDs.add(id);
-                        Station s = allStations.get(id);
-                        s.addAlert(new ElevatorAlert(headline, shortdesc, fulldesc, beginDateTime));
+                        addAlert(id, headline, shortdesc, fulldesc, beginDateTime);
                         break;
                     }
                 }
@@ -72,15 +66,26 @@ public class AllAlerts {
         }
     }
 
+    public void addAlert(String id, String headline, String shortdesc, String fulldesc, String beginDateTime){
+        elevatorOutStationIDs.add(id);
+        Station s = allStations.get(id);
+        try{
+            s.addAlert(new ElevatorAlert(headline, shortdesc, fulldesc, beginDateTime));
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<String> getElevatorOutStationIDs(){
         return elevatorOutStationIDs;
     }
 
-    public String convertDateTime(String s){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss");
+    private String convertDateTime(String s){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss", Locale.US);
         try {
-            Date convertedDate = dateFormat.parse(s);
-            return convertedDate.toString();
+            Date originalDate = dateFormat.parse(s);
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
+            return dateFormat2.format(originalDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -1,13 +1,15 @@
 package com.example.elevator_app;
 
+import android.util.Log;
+
+import com.example.elevator_app.Models.Alerts.AllAlerts;
 import com.example.elevator_app.Models.Alerts.ElevatorAlert;
+import com.example.elevator_app.Models.Lines.AllLines;
 import com.example.elevator_app.Models.Stations.AllStations;
 import com.example.elevator_app.Models.Stations.Station;
 
 import org.junit.Test;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -60,9 +62,25 @@ public class UnitTest {
     }
 
     @Test
-    public void testAllStationsClass(){
+    public void testAllAlertsAllStationsClasses() {
         AllStations allStations = new AllStations();
-        allStations.buildStations("{\\”CTAAlerts\\”:{\\”TimeStamp\\”:\\”2019-07-05T14:40:01\\”,\\”ErrorCode\\”:\\”0\\”,\\”ErrorMessage\\”:null,\\”Alert\\”:[{\\”AlertId\\”:\\”59806\\”,\\”Headline\\”:\\”Elevator at Central Park Temporarily Out-of-Service\\”,\\”ShortDescription\\”:\\”The elevator at Central Park (Pink Line) is temporarily out-of-service.\\”,\\”FullDescription\\”:{\\”#cdata-section\\”:\\”<p>The elevator at Central Park (Pink Line) is temporarily out-of-service.</p>\\r\\n\\r\\n<p>Our crews are working to assess the repair time for this elevator&mdash;this alert will be updated with additional information if/when we can estimate its return to service.</p>\\r\\n\\r\\n<p>Crews are working to return this elevator to service as quickly as possible. <a href=\\\\”http://www.transitchicago.com/elevatorescalatorupgrades/\\\\”>Learn more about the work we do to maintain, repair and upgrade elevators.</a></p>\\r\\n\\r\\n<p>&nbsp;</p>\\r\\n\\”},\\”SeverityScore\\”:\\”5\\”,\\”SeverityColor\\”:\\”000000\\”,\\”SeverityCSS\\”:\\”special-note\\”,\\”Impact\\”:\\”Elevator Status\\”,\\”EventStart\\”:\\”2019-06-07T19:05:00\\”,\\”EventEnd\\”:null,\\”TBD\\”:\\”1\\”,\\”MajorAlert\\”:\\”0\\”,\\”AlertURL\\”:{\\”#cdata-section\\”:\\”http://www.transitchicago.com/travel_information/alert_detail.aspx?AlertId=59806\\”},\\”ImpactedService\\”:{\\”Service\\”:[{\\”ServiceType\\”:\\”T\\”,\\”ServiceTypeDescription\\”:\\”Train Station\\”,\\”ServiceName\\”:\\”Central Park\\”,\\”ServiceId\\”:\\”40780\\”,\\”ServiceBackColor\\”:\\”e27ea6\\”,\\”ServiceTextColor\\”:\\”ffffff\\”,\\”ServiceURL\\”:{\\”#cdata-section\\”:\\”http://www.transitchicago.com/travel_information/station.aspx?StopId=32\\”}},{\\”ServiceType\\”:\\”R\\”,\\”ServiceTypeDescription\\”:\\”Train Route\\”,\\”ServiceName\\”:\\”Pink Line\\”,\\”ServiceId\\”:\\”Pink\\”,\\”ServiceBackColor\\”:\\”e27ea6\\”,\\”ServiceTextColor\\”:\\”ffffff\\”,\\”ServiceURL\\”:{\\”#cdata-section\\”:\\”http://www.transitchicago.com/pinkline/\\”}}]},\\”ttim\\”:\\”0\\”,\\”GUID\\”:\\”f034c751-a2b1-414b-84d2-0c94d5f9f171\\”}]}}");
+        allStations.addStation("40780", "Central Park", true, new boolean[]{false, false, false, false, false, false, false, true, false});
         assertEquals(allStations.getAllStations().size(), 1);
+        assertTrue(allStations.getAllStations().containsKey("40780"));
+        assertEquals(allStations.getStation("40780").getName(), "Central Park");
+
+        AllAlerts allAlerts = new AllAlerts(allStations.getAllStations());
+        allAlerts.addAlert("40780", "Elevator at Central Park Temporarily Out-of-Service", "The elevator at Central Park (Pink Line) is temporarily out-of-service.", "{\"FullDescription\":{\"#cdata-section\":\"<p>The elevator at Central Park (Pink Line) is temporarily out-of-service.</p>\r\n\r\n<p>Our crews are working to assess the repair time for this elevator&mdash;this alert will be updated with additional information if/when we can estimate its return to service.</p>\r\n\r\n<p>" +
+                        "Crews are working to return this elevator to service as quickly as possible. <a href=\"http://www.transitchicago.com/elevatorescalatorupgrades/\">Learn more about the work we do to maintain, repair and upgrade elevators.</a></p>\r\n\r\n<p>&nbsp;</p>\r\n\"}", "2019-06-07T19:05:00");
+        assertEquals(allAlerts.getElevatorOutStationIDs().size(), 1);
+        assertTrue(allAlerts.getElevatorOutStationIDs().contains("40780"));
+        assertEquals(allStations.getStation("40780").getAlerts().size(),1);
+        assertEquals(allStations.getStation("40780").getAlerts().get(0).getHeadline(), "Elevator at Central Park Temporarily Out-of-Service");
+    }
+
+    @Test
+    public void testAllLinesClass(){
+        AllLines allLines = new AllLines();
+        assertArrayEquals(allLines.getLine("Yellow Line"), new String[]{"40140", "41680", "40900"});
     }
 }
