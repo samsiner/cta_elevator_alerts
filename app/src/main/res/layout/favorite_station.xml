@@ -7,7 +7,8 @@
         android:id="@+id/relative_layout_favorites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="4dp">
+        android:padding="4dp"
+        android:background="@color/colorTransparent">
 
         <ImageView
             android:id="@+id/image_elev_status"

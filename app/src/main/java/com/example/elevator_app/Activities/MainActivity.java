@@ -19,11 +19,17 @@ import com.example.elevator_app.Models.Stations.Station;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     //TODO: Figure out what an adapter is. Do we need to create one?
+    //TODO: Fragments?
+    //TODO: Proguard?
+    //TODO: Instabug?
+    //TODO: Refresh?
+    //TODO: Lines Activity
 
     private SharedPreferences sharedPref;
     private AllAlerts allAlerts;
@@ -35,27 +41,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar_old);
         setSupportActionBar(toolbar);
-        allStations = new AllStations();
-        allAlerts = new AllAlerts(allStations.getAllStations());
+
+        try{
+            AllStations tempAllStations = (AllStations) savedInstanceState.getSerializable("allStations");
+            AllAlerts tempAllAlerts = (AllAlerts) savedInstanceState.getSerializable("allAlerts");
+            allStations = tempAllStations;
+            allAlerts = tempAllAlerts;
+        } catch(NullPointerException e){
+            allStations = new AllStations();
+            try{
+                URL urlStations = new URL("https://data.cityofchicago.org/resource/8pix-ypme.json");
+                allStations.buildStations(urlStations);
+                Log.d("Howard lines", Arrays.toString(allStations.getStation("40900").getRoutes()));
+
+                allAlerts = new AllAlerts(allStations.getAllStations());
+                URL urlAlerts = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+                allAlerts.buildAlerts(urlAlerts);
+
+            } catch (MalformedURLException e2){
+                //TODO: Make error catching more specific
+                e2.printStackTrace();
+            }
+        }
+
+        Log.d("station numbers", Integer.toString(allStations.getAllStations().size()));
 
         //Set up SharedPreferences to save favorites locally
         sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
 
-        try{
-            URL urlStations = new URL("https://data.cityofchicago.org/resource/8pix-ypme.json");
-            allStations.buildStations(urlStations);
-        } catch (MalformedURLException e){
-            //TODO: Make error catching more specific
-            e.printStackTrace();
-        }
-
-        try{
-            URL urlAlerts = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-            allAlerts.buildAlerts(urlAlerts);
-        } catch (MalformedURLException e){
-            //TODO: Make error catching more specific
-            e.printStackTrace();
-        }
+        Log.d("alert numbers:", Integer.toString(allAlerts.getElevatorOutStationIDs().size()));
 
         buildAlertViews();
         buildFavoriteViews();
@@ -69,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
+        intent.putExtra("allStations", allStations);
         startActivity(intent);
     }
 
@@ -137,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 if (hasElev && !outElev){
                     status.setImageResource(R.drawable.status_green);
                 }
+                //TODO: add red button
 //                else{
 //                    //Add red button
 //                    status.setImageResource(R.drawable.status_red);
@@ -158,5 +174,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("allStations", allStations);
+        savedInstanceState.putSerializable("allAlerts", allAlerts);
     }
 }

@@ -27,6 +27,7 @@
             android:id="@+id/linear_favorite_stations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#60CA0D0D"
             />
 
         <Button

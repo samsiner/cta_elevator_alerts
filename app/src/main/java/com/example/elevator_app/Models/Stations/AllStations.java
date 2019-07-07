@@ -30,20 +30,29 @@ public class AllStations implements Serializable {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = (JSONObject) arr.get(i);
                 String mapID = obj.getString("map_id");
-                if (allStations.keySet().contains(mapID)) continue;
 
                 String stationName = obj.getString("station_name");
                 boolean ada = Boolean.parseBoolean(obj.getString("ada"));
 
-                //fill routes array with true or false
-                boolean[] routes = new boolean[lineTagNames.length];
-                Arrays.fill(routes, Boolean.FALSE);
-                for (int j = 0; j < lineTagNames.length; j++) {
-                    if (obj.getString(lineTagNames[j]).equals("true")) {
-                        routes[j] = true;
+                if (allStations.keySet().contains(mapID)){
+                    boolean[] routes = allStations.get(mapID).getRoutes();
+                    for(int j = 0; j < lineTagNames.length; j++){
+                        if(obj.getString(lineTagNames[j]).equals("true") && !routes[j]){
+                            routes[j] = true;
+                        }
                     }
+                } else{
+                    //fill routes array with true or false
+                    boolean[] routes = new boolean[lineTagNames.length];
+                    Arrays.fill(routes, Boolean.FALSE);
+                    for (int j = 0; j < lineTagNames.length; j++) {
+                        if (obj.getString(lineTagNames[j]).equals("true")) {
+                            routes[j] = true;
+                        }
+                    }
+                    addStation(mapID, stationName, ada, routes);
                 }
-                addStation(mapID, stationName, ada, routes);
+
             }
         } catch (JSONException e){
             e.printStackTrace();

@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class AllAlerts {
+public class AllAlerts implements Serializable {
 
     private ArrayList<String> elevatorOutStationIDs;
     private HashMap<String, Station> allStations;
@@ -26,6 +27,7 @@ public class AllAlerts {
     }
 
     public void buildAlerts(URL url) {
+        elevatorOutStationIDs.clear();
         String JSONString = HTTPSRequest.pullJSONFromHTTPSRequest(url);
 
         try {
@@ -50,13 +52,10 @@ public class AllAlerts {
                         //Eliminates "back in service" alerts
                         if (headline.contains("Back in Service")) continue;
 
-                        String shortdesc = alert.getString("ShortDescription");
-
-                        JSONObject fulldescObj = alert.getJSONObject("FullDescription");
-                        String fulldesc = fulldescObj.getString("#cdata-section");
+                        String shortDesc = alert.getString("ShortDescription");
 
                         String beginDateTime = convertDateTime(alert.getString("EventStart"));
-                        addAlert(id, headline, shortdesc, fulldesc, beginDateTime);
+                        addAlert(id, headline, shortDesc, beginDateTime);
                         break;
                     }
                 }
@@ -66,11 +65,11 @@ public class AllAlerts {
         }
     }
 
-    public void addAlert(String id, String headline, String shortdesc, String fulldesc, String beginDateTime){
+    public void addAlert(String id, String headline, String shortdesc, String beginDateTime){
         elevatorOutStationIDs.add(id);
         Station s = allStations.get(id);
         try{
-            s.addAlert(new ElevatorAlert(headline, shortdesc, fulldesc, beginDateTime));
+            s.addAlert(new ElevatorAlert(headline, shortdesc, beginDateTime));
         } catch (NullPointerException e){
             e.printStackTrace();
         }
@@ -84,7 +83,7 @@ public class AllAlerts {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss", Locale.US);
         try {
             Date originalDate = dateFormat.parse(s);
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
             return dateFormat2.format(originalDate);
         } catch (ParseException e) {
             e.printStackTrace();

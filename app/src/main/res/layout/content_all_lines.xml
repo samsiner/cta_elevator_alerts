@@ -19,6 +19,7 @@
         <TextView
             android:id="@+id/text_favorites_header"
             android:text="@string/all_lines"
+            android:textColor="#000000"
             style="@style/SubHeaderText"/>
 
         <LinearLayout

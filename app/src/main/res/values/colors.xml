@@ -19,4 +19,7 @@
     <color name="colorPurpleLine">#522298</color>
     <color name="colorYellowLine">#F9E300</color>
 
+    <!-- transparency -->
+    <color name="colorTransparent">#50ffffff</color>
+
 </resources>
