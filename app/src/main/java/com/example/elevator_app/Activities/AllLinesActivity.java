@@ -45,6 +45,7 @@ public class AllLinesActivity extends AppCompatActivity {
                     intent1.putExtra("CurrentLine", str);
                     intent1.putExtra("LineStations", allLines.getLine(str));
                     intent1.putExtra("allStations", getIntent().getSerializableExtra("allStations"));
+                    intent1.putExtra("fromFavorites", getIntent().getBooleanExtra("fromFavorites", false));
                     startActivity(intent1);
                 });
 

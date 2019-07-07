@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.elevator_app.Models.Stations.AllStations;
 import com.example.elevator_app.R;
 import com.example.elevator_app.Models.Stations.Station;
 
@@ -22,33 +23,29 @@ import java.util.HashMap;
 public class AddFavoriteActivity extends AppCompatActivity {
     //TODO: Check if user is requesting an already favorite station or same nickname
     //TODO: Check if user is requesting a station with no elevator
+    String stationID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
         Toolbar toolbar = findViewById(R.id.toolbar_old);
-        Button button = findViewById(R.id.add_favorite_button);
         setSupportActionBar(toolbar);
+        stationID = getIntent().getStringExtra("stationID");
 
 
-//        @SuppressWarnings("unchecked")
-//        HashMap<String, Station> allStations = (HashMap<String, Station>) getIntent().getSerializableExtra("allStations");
-
-//        button.setOnClickListener(v -> {
-//            //TODO: check for null nickname
-//            String nickname = nicknameTextEdit.getText().toString();
-//
-//            Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-//            intent.putExtra("Nickname", nickname);
-//            intent.putExtra("stationID", stationID);
-//            startActivity(intent);
-//        });
+        if(stationID != null){
+            TextView stationName = findViewById(R.id.text_add_favorite_station);
+            AllStations allStations = (AllStations) getIntent().getSerializableExtra("allStations");
+            Log.d("allStations size", Integer.toString(allStations.getAllStations().size()));
+            stationName.setText(allStations.getStation(stationID).getName());
+        }
     }
 
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(AddFavoriteActivity.this, AllLinesActivity.class);
         intent.putExtra("allStations", getIntent().getSerializableExtra("allStations"));
+        intent.putExtra("fromFavorites", true);
         startActivity(intent);
     }
 
@@ -57,7 +54,6 @@ public class AddFavoriteActivity extends AppCompatActivity {
         TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
 
         String nickname = nicknameTextEdit.getText().toString();
-        Log.d("nickname", nickname);
         String stationID = getIntent().getStringExtra("stationID");
 
         if(stationID == null){
@@ -66,7 +62,6 @@ public class AddFavoriteActivity extends AppCompatActivity {
             alert.setMessage("Please enter a nickname and select a station");
             alert.setPositiveButton("OK", null);
             alert.show();
-            Log.d("error message", "error message failed");
         } else{
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
             intent.putExtra("Nickname", nickname);

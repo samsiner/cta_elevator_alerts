@@ -30,6 +30,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/text_add_favorite_station"
             android:text="@string/title_station"
             style="@style/FavoriteNickname"
             android:onClick="toAllLinesActivity"

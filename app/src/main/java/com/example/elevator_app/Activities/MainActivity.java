@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             try{
                 URL urlStations = new URL("https://data.cityofchicago.org/resource/8pix-ypme.json");
                 allStations.buildStations(urlStations);
-                Log.d("Howard lines", Arrays.toString(allStations.getStation("40900").getRoutes()));
 
                 allAlerts = new AllAlerts(allStations.getAllStations());
                 URL urlAlerts = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
@@ -64,12 +63,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Log.d("station numbers", Integer.toString(allStations.getAllStations().size()));
-
         //Set up SharedPreferences to save favorites locally
         sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
-
-        Log.d("alert numbers:", Integer.toString(allAlerts.getElevatorOutStationIDs().size()));
 
         buildAlertViews();
         buildFavoriteViews();
@@ -77,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toAddFavoriteActivity(View v){
         Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
-        intent.putExtra("allStations", allStations.getAllStations());
+        intent.putExtra("allStations", allStations);
         startActivity(intent);
     }
 

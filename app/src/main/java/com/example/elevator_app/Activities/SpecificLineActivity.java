@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -40,27 +41,32 @@ public class SpecificLineActivity extends AppCompatActivity {
         String[] currLineStations = getIntent().getStringArrayExtra("LineStations");
 
         AllStations allStations = (AllStations) getIntent().getSerializableExtra("allStations");
-        for (String str : currLineStations)
+        for (String stationID : currLineStations)
         {
             try{
                 View myLayout = inflater.inflate(R.layout.specific_line_station, stationLayout, false);
                 TextView stationView = myLayout.findViewById(R.id.text_line_station);
                 //ImageView statusView = myLayout.findViewById(R.id.image_elev_status);
 
-                final Station s = allStations.getStation(str);
-                final boolean hasElev = s.getElevator();
-                final boolean elevWorking = s.getAlerts().isEmpty();
+                final Station s = allStations.getStation(stationID);
 
                 stationView.setText(s.getName());
                 //statusView.setImageResource(status_red);
 
                 myLayout.setOnClickListener(v -> {
-                    Intent intent1 = new Intent(SpecificLineActivity.this, DisplayAlertActivity.class);
-                    intent1.putExtra("Station", s);
-                    //If there is no elevator or it works, add different text
-                    if (!hasElev) intent1.putExtra("Text", "No elevator present at station.");
-                    else if (elevWorking) intent1.putExtra("Text", "Elevator is present and working at station.");
-                    startActivity(intent1);
+                    Intent intent;
+                    if(getIntent().getBooleanExtra("fromFavorites", false)){
+                        intent = new Intent(SpecificLineActivity.this, AddFavoriteActivity.class);
+                        intent.putExtra("stationID", stationID);
+                        intent.putExtra("allStations", allStations);
+                    } else{
+                        intent = new Intent(SpecificLineActivity.this, DisplayAlertActivity.class);
+                        intent.putExtra("Station", s);
+                        //If there is no elevator or it works, add different text
+                        if (!s.getElevator()) intent.putExtra("Text", "No elevator present at station.");
+                        else if (s.getAlerts().isEmpty()) intent.putExtra("Text", "Elevator is present and working at station.");
+                    }
+                    startActivity(intent);
                 });
                 stationLayout.addView(myLayout);
 
