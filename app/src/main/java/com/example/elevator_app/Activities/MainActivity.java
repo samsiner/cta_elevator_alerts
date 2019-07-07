@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toAddFavoriteActivity(View v){
         Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
-        intent.putExtra("All Stations", allStations.getAllStations());
+        intent.putExtra("allStations", allStations.getAllStations());
         startActivity(intent);
     }
 

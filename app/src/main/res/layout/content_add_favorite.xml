@@ -24,25 +24,24 @@
             android:id="@+id/inputNickname_textedit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_nickname" />
+            android:hint="@string/hint_nickname"
+            />
 
-        <RadioGroup
-            android:id="@+id/choose_station_radio_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </RadioGroup>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_station"
+            style="@style/FavoriteNickname"
+            android:onClick="toAllLinesActivity"
+        />
 
         <Button
             android:id="@+id/add_favorite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/confirm_favorite_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_weight="1"
+            android:onClick="toMainActivity"
+            />
 
     </android.support.design.widget.TextInputLayout>
 </android.support.v4.widget.NestedScrollView>

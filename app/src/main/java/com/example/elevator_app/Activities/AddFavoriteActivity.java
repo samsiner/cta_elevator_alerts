@@ -1,10 +1,14 @@
 package com.example.elevator_app.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -24,45 +28,50 @@ public class AddFavoriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
         Toolbar toolbar = findViewById(R.id.toolbar_old);
-        final RadioGroup radiogroup = findViewById(R.id.choose_station_radio_group);
         Button button = findViewById(R.id.add_favorite_button);
-        final TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
         setSupportActionBar(toolbar);
 
-        int counter = 0;
 
-        @SuppressWarnings("unchecked")
-        HashMap<String, Station> allStations = (HashMap<String, Station>) getIntent().getSerializableExtra("All Stations");
+//        @SuppressWarnings("unchecked")
+//        HashMap<String, Station> allStations = (HashMap<String, Station>) getIntent().getSerializableExtra("allStations");
 
-        for (String str : allStations.keySet()){
-            RadioButton r = new RadioButton(AddFavoriteActivity.this);
-            try{
-                r.setText(allStations.get(str).getName());
-                radiogroup.addView(r);
-            } catch (NullPointerException e){
-                e.printStackTrace();
-            }
-            counter++;
-            //TODO: just for now
-            if(counter == 20){ break; }
-        }
+//        button.setOnClickListener(v -> {
+//            //TODO: check for null nickname
+//            String nickname = nicknameTextEdit.getText().toString();
+//
+//            Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
+//            intent.putExtra("Nickname", nickname);
+//            intent.putExtra("stationID", stationID);
+//            startActivity(intent);
+//        });
+    }
 
-        button.setOnClickListener(v -> {
-            //TODO: check for null nickname
-            String nickname = nicknameTextEdit.getText().toString();
-            String stationID = Integer.toString(radiogroup.getCheckedRadioButtonId());
+    public void toAllLinesActivity(View v){
+        Intent intent = new Intent(AddFavoriteActivity.this, AllLinesActivity.class);
+        intent.putExtra("allStations", getIntent().getSerializableExtra("allStations"));
+        startActivity(intent);
+    }
 
-            TextView tv = findViewById(R.id.confirm_favorite_textview);
-            tv.append("You have added " + nickname + " as a favorite station!");
+    public void toMainActivity(View v){
+        //TODO: check for null nickname
+        TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
 
+        String nickname = nicknameTextEdit.getText().toString();
+        Log.d("nickname", nickname);
+        String stationID = getIntent().getStringExtra("stationID");
+
+        if(stationID == null){
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Error");
+            alert.setMessage("Please enter a nickname and select a station");
+            alert.setPositiveButton("OK", null);
+            alert.show();
+            Log.d("error message", "error message failed");
+        } else{
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
             intent.putExtra("Nickname", nickname);
             intent.putExtra("stationID", stationID);
             startActivity(intent);
-        });
-
-
-
-
+        }
     }
 }
