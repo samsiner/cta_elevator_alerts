@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Instabug?
     //TODO: Refresh?
     //TODO: Lines Activity
-    //TODO: Make error catching more specific
+    //TODO: Make error catching more specific - or throw instead of catch?
 
     private SharedPreferences sharedPref;
     private AllAlerts allAlerts;
@@ -181,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 favoriteLayout.addView(myLayout);
-
             } catch (NullPointerException e){
                 dialogPositiveButton("Favorites Error", "Favorites not loading correctly! Please refresh to try again.");
             }

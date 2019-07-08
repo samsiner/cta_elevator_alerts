@@ -23,14 +23,12 @@ public class UnitTests {
 
     @Test
     public void testElevatorAlertClass() {
-
         ElevatorAlert newAlert = new ElevatorAlert("headline",
-                "short description", "full description",
+                "short description",
                 "begin date time");
 
         assertEquals(newAlert.getHeadline(), "headline");
         assertEquals(newAlert.getShortDesc(), "short description");
-        assertEquals(newAlert.getFullDesc(), "full description");
         assertEquals(newAlert.getBeginDateTime(), "begin date time");
     }
 
@@ -51,8 +49,7 @@ public class UnitTests {
         assertArrayEquals(newStation.getRoutes(), arrl2);
         assertEquals(newStation.getAlerts(), new ArrayList<ElevatorAlert>());
 
-        newStation.addAlert(new ElevatorAlert("Test Alert", "", "",
-                ""));
+        newStation.addAlert(new ElevatorAlert("Test Alert", "", ""));
         assertEquals(newStation.getAlerts().size(), 1);
         assertEquals(newStation.getAlerts().get(0).getHeadline(), "Test Alert");
         newStation.clearAlerts();
@@ -68,8 +65,7 @@ public class UnitTests {
         assertEquals(allStations.getStation("40780").getName(), "Central Park");
 
         AllAlerts allAlerts = new AllAlerts(allStations.getAllStations());
-        allAlerts.addAlert("40780", "Elevator at Central Park Temporarily Out-of-Service", "The elevator at Central Park (Pink Line) is temporarily out-of-service.", "{\"FullDescription\":{\"#cdata-section\":\"<p>The elevator at Central Park (Pink Line) is temporarily out-of-service.</p>\r\n\r\n<p>Our crews are working to assess the repair time for this elevator&mdash;this alert will be updated with additional information if/when we can estimate its return to service.</p>\r\n\r\n<p>" +
-                        "Crews are working to return this elevator to service as quickly as possible. <a href=\"http://www.transitchicago.com/elevatorescalatorupgrades/\">Learn more about the work we do to maintain, repair and upgrade elevators.</a></p>\r\n\r\n<p>&nbsp;</p>\r\n\"}", "2019-06-07T19:05:00");
+        allAlerts.addAlert("40780", "Elevator at Central Park Temporarily Out-of-Service", "The elevator at Central Park (Pink Line) is temporarily out-of-service.", "2019-06-07T19:05:00");
         assertEquals(allAlerts.getElevatorOutStationIDs().size(), 1);
         assertTrue(allAlerts.getElevatorOutStationIDs().contains("40780"));
         assertEquals(allStations.getStation("40780").getAlerts().size(),1);

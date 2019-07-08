@@ -13,6 +13,6 @@ public class ElevatorAlert implements Serializable {
     }
 
     public String getHeadline(){ return headline; }
-    public String getFullDesc(){ return shortDesc; }
+    public String getShortDesc(){ return shortDesc; }
     public String getBeginDateTime(){ return beginDateTime; }
 }
