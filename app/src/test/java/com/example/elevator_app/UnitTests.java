@@ -1,12 +1,10 @@
 package com.example.elevator_app;
 
-import android.util.Log;
-
-import com.example.elevator_app.Models.Alerts.AllAlerts;
-import com.example.elevator_app.Models.Alerts.ElevatorAlert;
-import com.example.elevator_app.Models.Lines.AllLines;
-import com.example.elevator_app.Models.Stations.AllStations;
-import com.example.elevator_app.Models.Stations.Station;
+import com.example.elevator_app.models.alerts.AllAlerts;
+import com.example.elevator_app.models.alerts.ElevatorAlert;
+import com.example.elevator_app.models.lines.AllLines;
+import com.example.elevator_app.models.stations.AllStations;
+import com.example.elevator_app.models.stations.Station;
 
 import org.junit.Test;
 

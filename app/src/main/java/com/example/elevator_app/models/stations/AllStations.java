@@ -1,6 +1,6 @@
 //TODO: Add JavaDoc comments to all classes
 
-package com.example.elevator_app.Models.Stations;
+package com.example.elevator_app.models.stations;
 
 import org.json.JSONArray;
 import org.json.JSONException;

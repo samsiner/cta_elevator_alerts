@@ -8,9 +8,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.elevator_app.Activities.AddFavoriteActivity;
-import com.example.elevator_app.Activities.DisplayAlertActivity;
-import com.example.elevator_app.Activities.MainActivity;
+import com.example.elevator_app.activities.AddFavoriteActivity;
+import com.example.elevator_app.activities.DisplayAlertActivity;
+import com.example.elevator_app.activities.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

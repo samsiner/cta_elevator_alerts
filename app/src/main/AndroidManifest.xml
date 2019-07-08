@@ -12,23 +12,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.SpecificLineActivity"
+            android:name=".activities.SpecificLineActivity"
             android:label="@string/title_activity_specific_line"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".Activities.AllLinesActivity"
+            android:name=".activities.AllLinesActivity"
             android:label="@string/title_activity_all_lines"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.AddFavoriteActivity"
+            android:name=".activities.AddFavoriteActivity"
             android:label="@string/title_activity_add_favorite"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.DisplayAlertActivity"
+            android:name=".activities.DisplayAlertActivity"
             android:label="@string/title_activity_display_alert"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="CTA Elevator Alerts"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.example.elevator_app.Activities;
+package com.example.elevator_app.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,11 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.elevator_app.HttpsRequest.HTTPSRequest;
-import com.example.elevator_app.Models.Alerts.AllAlerts;
-import com.example.elevator_app.Models.Stations.AllStations;
+import com.example.elevator_app.httpsrequest.HTTPSRequest;
+import com.example.elevator_app.models.alerts.AllAlerts;
+import com.example.elevator_app.models.stations.AllStations;
 import com.example.elevator_app.R;
-import com.example.elevator_app.Models.Stations.Station;
+import com.example.elevator_app.models.stations.Station;
 
 import java.util.HashMap;
 

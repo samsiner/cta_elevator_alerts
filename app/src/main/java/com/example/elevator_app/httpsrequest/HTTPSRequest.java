@@ -1,4 +1,4 @@
-package com.example.elevator_app.HttpsRequest;
+package com.example.elevator_app.httpsrequest;
 
 import android.util.Log;
 

@@ -1,6 +1,6 @@
-package com.example.elevator_app.Models.Stations;
+package com.example.elevator_app.models.stations;
 
-import com.example.elevator_app.Models.Alerts.ElevatorAlert;
+import com.example.elevator_app.models.alerts.ElevatorAlert;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package com.example.elevator_app.Models.Alerts;
+package com.example.elevator_app.models.alerts;
 
-import com.example.elevator_app.Models.Stations.Station;
+import com.example.elevator_app.models.stations.Station;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.example.elevator_app.Models.Alerts;
+package com.example.elevator_app.models.alerts;
 
 import java.io.Serializable;
 
