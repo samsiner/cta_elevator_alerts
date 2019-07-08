@@ -3,23 +3,21 @@ package com.example.elevator_app.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.elevator_app.HttpsRequest.HTTPSRequest;
 import com.example.elevator_app.Models.Alerts.AllAlerts;
 import com.example.elevator_app.Models.Stations.AllStations;
 import com.example.elevator_app.R;
 import com.example.elevator_app.Models.Stations.Station;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Instabug?
     //TODO: Refresh?
     //TODO: Lines Activity
+    //TODO: Make error catching more specific
 
     private SharedPreferences sharedPref;
     private AllAlerts allAlerts;
@@ -42,32 +41,51 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_old);
         setSupportActionBar(toolbar);
 
+        boolean buildSuccessful = false;
         try{
+            //Pull in savedInstanceState containing stations and alerts
             AllStations tempAllStations = (AllStations) savedInstanceState.getSerializable("allStations");
             AllAlerts tempAllAlerts = (AllAlerts) savedInstanceState.getSerializable("allAlerts");
             allStations = tempAllStations;
             allAlerts = tempAllAlerts;
-        } catch(NullPointerException e){
-            allStations = new AllStations();
-            try{
-                URL urlStations = new URL("https://data.cityofchicago.org/resource/8pix-ypme.json");
-                allStations.buildStations(urlStations);
-
-                allAlerts = new AllAlerts(allStations.getAllStations());
-                URL urlAlerts = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-                allAlerts.buildAlerts(urlAlerts);
-
-            } catch (MalformedURLException e2){
-                //TODO: Make error catching more specific
-                e2.printStackTrace();
-            }
+        } catch (NullPointerException e){
+            buildSuccessful = buildStationsAlerts();
         }
 
-        //Set up SharedPreferences to save favorites locally
-        sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
+        if (buildSuccessful) {
+            //Set up SharedPreferences to save favorites locally
+            sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
+            buildFavoriteViews();
+        }
+    }
 
-        buildAlertViews();
-        buildFavoriteViews();
+    private boolean buildStationsAlerts(){
+        //Try to build stations; if connection error, show dialog.
+        allStations = new AllStations();
+        String stationsJSON = HTTPSRequest.pullJSONFromHTTPSRequest("https://data.cityofchicago.org/resource/8pix-ypme.json");
+        boolean stationBuildWorked = allStations.buildStations(stationsJSON);
+
+        if (stationBuildWorked){
+            //Try to build alerts; if connection error, show dialog.
+            allAlerts = new AllAlerts(allStations.getAllStations());
+            String alertsJSON = HTTPSRequest.pullJSONFromHTTPSRequest("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+            boolean alertBuildWorked = allAlerts.buildAlerts(alertsJSON);
+
+            if (alertBuildWorked){
+                buildAlertViews();
+                return true;
+            }
+        }
+        dialogPositiveButton("Error", "Connection did not work. Please refresh to try again.");
+        return false;
+    }
+
+    private void dialogPositiveButton(String title, String message){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(title);
+        alert.setMessage(message);
+        alert.setPositiveButton("OK", null);
+        alert.show();
     }
 
     public void toAddFavoriteActivity(View v){
@@ -87,14 +105,14 @@ public class MainActivity extends AppCompatActivity {
         alertLayout.removeAllViews();
         LayoutInflater inflater = getLayoutInflater();
 
-        for (String str : allAlerts.getElevatorOutStationIDs())
+        for (String stationID : allAlerts.getElevatorOutStationIDs())
         {
             try{
                 View myLayout = inflater.inflate(R.layout.alert_station, alertLayout, false);
                 TextView stationView = myLayout.findViewById(R.id.text_favorite_station);
                 //ImageView statusView = myLayout.findViewById(R.id.image_elev_status);
 
-                final Station s = allStations.getStation(str);
+                final Station s = allStations.getStation(stationID);
                 stationView.setText(s.getName());
                 //statusView.setImageResource(status_red);
 
@@ -104,9 +122,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 });
                 alertLayout.addView(myLayout);
-
             } catch (NullPointerException e){
-                e.printStackTrace();
+                dialogPositiveButton("Alerts Error", "Alerts not loading correctly! Please refresh to try again.");
             }
         }
     }
@@ -166,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 favoriteLayout.addView(myLayout);
 
             } catch (NullPointerException e){
-                e.printStackTrace();
+                dialogPositiveButton("Favorites Error", "Favorites not loading correctly! Please refresh to try again.");
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.example.elevator_app.Models.Alerts;
 
-import com.example.elevator_app.HttpsRequest.HTTPSRequest;
 import com.example.elevator_app.Models.Stations.Station;
 
 import org.json.JSONArray;
@@ -8,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,17 +16,16 @@ import java.util.Locale;
 
 public class AllAlerts implements Serializable {
 
-    private ArrayList<String> elevatorOutStationIDs;
-    private HashMap<String, Station> allStations;
+    private final ArrayList<String> elevatorOutStationIDs;
+    private final HashMap<String, Station> allStations;
 
     public AllAlerts(HashMap<String, Station> a) {
         elevatorOutStationIDs = new ArrayList<>();
         allStations = a;
     }
 
-    public void buildAlerts(URL url) {
+    public boolean buildAlerts(String JSONString) {
         elevatorOutStationIDs.clear();
-        String JSONString = HTTPSRequest.pullJSONFromHTTPSRequest(url);
 
         try {
             JSONObject outer = new JSONObject(JSONString);
@@ -60,8 +57,9 @@ public class AllAlerts implements Serializable {
                     }
                 }
             }
+            return true;
         } catch (JSONException | NullPointerException e) {
-            e.printStackTrace();
+            return false;
         }
     }
 

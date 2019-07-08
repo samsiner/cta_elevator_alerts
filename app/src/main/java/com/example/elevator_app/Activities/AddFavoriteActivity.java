@@ -1,6 +1,5 @@
 package com.example.elevator_app.Activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -9,21 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.elevator_app.Models.Stations.AllStations;
 import com.example.elevator_app.R;
-import com.example.elevator_app.Models.Stations.Station;
-
-import java.util.HashMap;
 
 public class AddFavoriteActivity extends AppCompatActivity {
     //TODO: Check if user is requesting an already favorite station or same nickname
     //TODO: Check if user is requesting a station with no elevator
-    String stationID;
+    //TODO: Keep nickname in textview after station is selected
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +24,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_favorite);
         Toolbar toolbar = findViewById(R.id.toolbar_old);
         setSupportActionBar(toolbar);
-        stationID = getIntent().getStringExtra("stationID");
-
+        String stationID = getIntent().getStringExtra("stationID");
 
         if(stationID != null){
             TextView stationName = findViewById(R.id.text_add_favorite_station);
@@ -49,7 +41,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void toMainActivity(View v){
+    public void toMainActivity(View v) {
         //TODO: check for null nickname
         TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
 

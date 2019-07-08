@@ -2,18 +2,16 @@
 
 package com.example.elevator_app.Models.Stations;
 
-import com.example.elevator_app.HttpsRequest.HTTPSRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class AllStations implements Serializable {
 
-    private HashMap<String, Station> allStations;
+    private final HashMap<String, Station> allStations;
     private static String[] lineTagNames;
 
     public AllStations(){
@@ -21,9 +19,7 @@ public class AllStations implements Serializable {
         lineTagNames = new String[]{"red", "blue", "g", "brn", "p", "pexp", "y", "pnk", "o"};
     }
 
-    public void buildStations(URL url) {
-        String JSONString = HTTPSRequest.pullJSONFromHTTPSRequest(url);
-
+    public boolean buildStations(String JSONString) {
         try {
             JSONArray arr = new JSONArray(JSONString);
 
@@ -52,10 +48,10 @@ public class AllStations implements Serializable {
                     }
                     addStation(mapID, stationName, ada, routes);
                 }
-
             }
+            return true;
         } catch (JSONException e){
-            e.printStackTrace();
+            return false;
         }
     }
 
