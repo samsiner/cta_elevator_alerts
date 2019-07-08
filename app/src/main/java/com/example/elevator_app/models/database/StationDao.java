@@ -7,8 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.elevator_app.models.database.Station;
-
 import java.util.List;
 
 @Dao

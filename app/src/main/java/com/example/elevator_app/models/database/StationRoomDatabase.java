@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 @Database(entities = {Station.class}, version = 1)
 public abstract class StationRoomDatabase extends RoomDatabase {
-    public abstract StationDao wordDao();
+    public abstract StationDao stationDao();
 
     private static volatile StationRoomDatabase INSTANCE;
 
