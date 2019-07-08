@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -43,6 +44,16 @@
             android:layout_toEndOf="@id/image_elev_status"
             android:layout_toRightOf="@id/image_elev_status"
             android:text="@string/title_station" />
+
+        <ImageButton
+            android:id="@+id/imageButton_edit_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/edit_btn"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="6dp"
+            android:background="#00ffffff"/>
 
     </RelativeLayout>
 

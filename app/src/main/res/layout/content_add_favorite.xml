@@ -38,10 +38,11 @@
 
         <Button
             android:id="@+id/add_favorite_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/button_outline"
             android:onClick="toMainActivity"
+            android:text="@string/button_add_favorite"
             />
 
     </android.support.design.widget.TextInputLayout>
