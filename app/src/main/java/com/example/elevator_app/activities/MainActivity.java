@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
             boolean alertBuildWorked = allAlerts.buildAlerts(alertsJSON);
 
             if (alertBuildWorked){
-
                 buildAlertViews();
                 return true;
             }
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     private void buildFavoriteViews(){
         //TODO: check for duplicate key entry from user
         //TODO: consider visitor design pattern for duplicate code (updateFavorites() and updateAlerts())
+        //TODO: What if there are no favorites added?
         Intent intent = getIntent();
         String nickname = intent.getStringExtra("Nickname");
         String stationID = intent.getStringExtra("stationID");
@@ -144,12 +145,15 @@ public class MainActivity extends AppCompatActivity {
             editor.putString(nickname, stationID);
             editor.apply();
         }
+
         LinearLayout favoriteLayout = findViewById(R.id.linear_favorite_stations);
         favoriteLayout.removeAllViews();
+
         LayoutInflater inflater = getLayoutInflater();
 
         @SuppressWarnings("unchecked")
         HashMap<String, String> favorites = (HashMap) sharedPref.getAll();
+
         for (String str : favorites.keySet())
         {
             try{

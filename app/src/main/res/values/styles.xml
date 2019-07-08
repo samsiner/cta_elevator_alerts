@@ -26,7 +26,7 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
-    <style name="SubHeaderText" parent="@style/TitleText">
+    <style name="SubHeaderText" parent="TitleText">
         <item name="android:textSize">18sp</item>
         <item name="android:paddingTop">20dp</item>
         <item name="android:paddingBottom">20dp</item>
