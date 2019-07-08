@@ -3,10 +3,10 @@ package com.example.elevator_app.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,10 +19,7 @@ import com.example.elevator_app.models.stations.AllStations;
 import com.example.elevator_app.R;
 import com.example.elevator_app.models.stations.Station;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 

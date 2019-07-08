@@ -1,10 +1,10 @@
 package com.example.elevator_app;
 
 import android.app.Instrumentation;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.runner.AndroidJUnit4;
 
-import android.support.test.filters.SmallTest;
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.filters.SmallTest;
+import androidx.test.rule.ActivityTestRule;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,7 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.*;
 
 /**
