@@ -1,8 +1,17 @@
 package com.example.elevator_app.models.alerts;
 
-import java.io.Serializable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class ElevatorAlert implements Serializable {
+@Entity(tableName = "elevator_alert_table")
+public class ElevatorAlert {
+
+    @PrimaryKey
+    @ColumnInfo(name = "headline")
+    private String stationID;
+
+
 
     private final String headline, shortDesc, beginDateTime;
 

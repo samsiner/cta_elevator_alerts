@@ -17,7 +17,7 @@ import com.example.elevator_app.httpsrequest.HTTPSRequest;
 import com.example.elevator_app.models.alerts.AllAlerts;
 import com.example.elevator_app.models.stations.AllStations;
 import com.example.elevator_app.R;
-import com.example.elevator_app.models.stations.Station;
+import com.example.elevator_app.models.database.Station;
 
 import java.util.HashMap;
 

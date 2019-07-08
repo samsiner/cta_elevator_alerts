@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.elevator_app.models.alerts.ElevatorAlert;
 import com.example.elevator_app.R;
-import com.example.elevator_app.models.stations.Station;
+import com.example.elevator_app.models.database.Station;
 
 public class DisplayAlertActivity extends AppCompatActivity {
 

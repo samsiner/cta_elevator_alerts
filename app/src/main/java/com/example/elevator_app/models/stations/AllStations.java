@@ -2,6 +2,8 @@
 
 package com.example.elevator_app.models.stations;
 
+import com.example.elevator_app.models.database.Station;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

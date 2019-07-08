@@ -4,7 +4,7 @@ import com.example.elevator_app.models.alerts.AllAlerts;
 import com.example.elevator_app.models.alerts.ElevatorAlert;
 import com.example.elevator_app.models.lines.AllLines;
 import com.example.elevator_app.models.stations.AllStations;
-import com.example.elevator_app.models.stations.Station;
+import com.example.elevator_app.models.database.Station;
 
 import org.junit.Test;
 
