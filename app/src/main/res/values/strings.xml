@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CTA ACCESS</string>
+    <string name="app_name">CTA ELEVATOR ALERTS</string>
     <string name="title_activity_display_alert">Alert Details</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_nickname">Nickname</string>

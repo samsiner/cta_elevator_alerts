@@ -36,8 +36,7 @@ public class DisplayAlertActivity extends AppCompatActivity {
             for (ElevatorAlert alert : s.getAlerts()) {
                 display.append("Starting " + alert.getBeginDateTime() + "\n\n");
                 display.append(alert.getHeadline() + "\n\n");
-                display.append(Html.fromHtml(alert.getShortDesc() + "\n\n"));
-                display.setMovementMethod(LinkMovementMethod.getInstance());
+                display.append(alert.getShortDesc() + "\n\n");
             }
         }
     }
