@@ -35,7 +35,7 @@ public class HTTPSRequest {
 
         thread.start();
         try {
-            thread.join(5000);
+            thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

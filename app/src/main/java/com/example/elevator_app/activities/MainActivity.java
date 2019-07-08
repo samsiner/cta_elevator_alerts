@@ -18,7 +18,10 @@ import com.example.elevator_app.models.stations.AllStations;
 import com.example.elevator_app.R;
 import com.example.elevator_app.models.stations.Station;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Proguard?
     //TODO: Instabug?
     //TODO: Refresh?
-    //TODO: Lines Activity
     //TODO: Make error catching more specific - or throw instead of catch?
+    //TODO: Persist alertsout within SharedPrefs (in case of no internet)
+    //TODO: Database for stations
 
     private SharedPreferences sharedPref;
     private AllAlerts allAlerts;
@@ -72,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             boolean alertBuildWorked = allAlerts.buildAlerts(alertsJSON);
 
             if (alertBuildWorked){
+
                 buildAlertViews();
                 return true;
             }
@@ -169,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
 //                    //Add red button
 //                    status.setImageResource(R.drawable.status_red);
 //                }
-
 
                 myLayout.setOnClickListener(v -> {
                     Intent intent1 = new Intent(MainActivity.this, DisplayAlertActivity.class);
