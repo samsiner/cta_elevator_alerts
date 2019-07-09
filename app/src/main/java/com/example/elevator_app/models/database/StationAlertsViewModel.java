@@ -10,15 +10,16 @@ import java.util.List;
 public class StationAlertsViewModel extends AndroidViewModel {
 
     private StationRepository mRepository;
-    private LiveData<List<Station>> mAllStationAlerts;
+    private LiveData<List<Station>> mAllStations;
+    private LiveData<List<Station>> mAllAlertStations;
 
     public StationAlertsViewModel(Application application){
         super(application);
         mRepository = new StationRepository(application);
-        mAllStationAlerts = mRepository.getAllStationAlerts();
+        mAllAlertStations = mRepository.mGetAllAlertStations();
     }
 
-    public LiveData<List<Station>> getmAllStationAlerts() { return mAllStationAlerts;}
+    public LiveData<List<Station>> getmAllAlertStations() { return mAllAlertStations;}
 
     public void insert(Station station){ mRepository.insert(station);}
 }

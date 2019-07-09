@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Persist alertsout within SharedPrefs (in case of no internet)
     //TODO: Database for stations
 
-//    private SharedPreferences sharedPref;
+    //private SharedPreferences sharedPref;
 //    private AllAlerts allAlerts;
 //    private AllStations allStations;
     private StationAlertsViewModel mStationAlertsViewModel;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
 
         //Add observer
-        mStationAlertsViewModel.getmAllStationAlerts().observe(this, stations -> alertsAdapter.setStations(stations));
+        mStationAlertsViewModel.getmAllAlertStations().observe(this, stations -> alertsAdapter.setStations(stations));
         Log.d("Stationsize-MainAct", Integer.toString(alertsAdapter.getItemCount()));
 
 //        boolean buildSuccessful = false;
@@ -79,13 +79,11 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //
 //        if (buildSuccessful) {
-//            //Set up SharedPreferences to save favorites locally
-//            sharedPref = this.getSharedPreferences("name", MODE_PRIVATE);
-//            buildFavoriteViews();
+        //Set up SharedPreferences to save favorites locally
 //        }
     }
 
-//    private boolean buildStationsAlerts(){
+    //    private boolean buildStationsAlerts(){
 //        //Try to build stations; if connection error, show dialog.
 //        allStations = new AllStations();
 //        String stationsJSON = HTTPSRequest.pullJSONFromHTTPSRequest("https://data.cityofchicago.org/resource/8pix-ypme.json");
@@ -189,9 +187,10 @@ public class MainActivity extends AppCompatActivity {
 ////    }
 //
 //    @Override
-//    public void onSaveInstanceState(Bundle savedInstanceState){
-//        super.onSaveInstanceState(savedInstanceState);
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
 //        savedInstanceState.putSerializable("allStations", allStations);
 //        savedInstanceState.putSerializable("allAlerts", allAlerts);
 //    }
+    }
 }

@@ -21,7 +21,10 @@ public interface StationDao {
         @Update
         void update(Station station);
 
-        @Query("SELECT * from station_table")
+        @Query("SELECT * FROM station_table")
         LiveData<List<Station>> getAllStations();
+
+        @Query("SELECT * FROM station_table WHERE hasElevatorAlert=1")
+        LiveData<List<Station>> getAllAlertStation();
 }
 
