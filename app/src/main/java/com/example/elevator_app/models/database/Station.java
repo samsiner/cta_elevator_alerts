@@ -14,30 +14,31 @@ public class Station {
 
     @PrimaryKey
     @NonNull
-    private String stationID;
-    private boolean hasElevator, hasElevatorAlert;
-    private boolean[] routes;
-    private String name, headline, shortDescription, beginDateTime;
+    public String stationID;
+    public boolean hasElevator, hasElevatorAlert;
+    public boolean red, blue, brown, green, orange, pink, purple, yellow;
+    public String name, headline, shortDescription, beginDateTime;
 
-    public Station(String stationID, String name, boolean hasElevator, boolean[] routes){
+    public Station(String stationID, String name, boolean hasElevator){
         this.stationID = stationID;
         this.name = name;
         this.hasElevator = hasElevator;
-        this.routes = routes;
         hasElevatorAlert = false;
         headline = "";
         shortDescription = "";
         beginDateTime = "";
     }
 
-    public String getStationID(){ return stationID; }
-    public String getName(){ return name; }
-    public String getHeadline(){ return headline; }
-    public String getShortDescription(){ return shortDescription; }
-    public String getBeginDateTime(){ return beginDateTime; }
-    public boolean isHasElevator(){ return hasElevator; }
-    public boolean isHasElevatorAlert(){ return hasElevatorAlert; }
-    public boolean[] getRoutes(){ return routes; }
+    public void setRoutes(boolean red, boolean blue, boolean brown, boolean green,boolean orange, boolean pink, boolean purple, boolean yellow){
+        this.red = red;
+        this.blue = blue;
+        this.brown = brown;
+        this.green = green;
+        this.orange = orange;
+        this.pink = pink;
+        this.purple = purple;
+        this.yellow = yellow;
+    }
 
     public void addAlert(String headline, String shortDescription, String beginDateTime){
         this.headline = headline;

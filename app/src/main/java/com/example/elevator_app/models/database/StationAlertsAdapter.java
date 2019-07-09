@@ -1,6 +1,7 @@
 package com.example.elevator_app.models.database;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     private final LayoutInflater mInflater;
     private List<Station> mStations;
 
-    StationAlertsAdapter(Context context){ mInflater = LayoutInflater.from(context);}
+    public StationAlertsAdapter(Context context){ mInflater = LayoutInflater.from(context);}
 
     @Override
     public StationAlertViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -42,7 +43,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         if (mStations != null){
             Station current = mStations.get(position);
             holder.stationAlertImageView.setImageResource(R.drawable.status_green);
-            holder.stationAlertTextView.setText(current.getName());
+            holder.stationAlertTextView.setText(current.name);
 
 //            holder.st.setOnClickListener(v -> {
 //                Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
@@ -52,9 +53,10 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         }
     }
 
-    void setStations(List<Station> stations){
+    public void setStations(List<Station> stations){
         mStations = stations;
         notifyDataSetChanged();
+        Log.d("Station size-Adapter", Integer.toString(getItemCount()));
     }
 
     @Override

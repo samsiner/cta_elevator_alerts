@@ -16,9 +16,7 @@ public class StationRepository {
         mAllStations = mStationDao.getAllStations();
     }
 
-
-
-    LiveData<List<Station>> getAllStations() {
+    LiveData<List<Station>> getAllStationAlerts() {
         return mAllStations;
     }
 

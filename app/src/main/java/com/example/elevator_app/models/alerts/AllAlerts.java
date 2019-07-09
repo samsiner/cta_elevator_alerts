@@ -67,7 +67,7 @@ public class AllAlerts implements Serializable {
         elevatorOutStationIDs.add(id);
         Station s = allStations.get(id);
         try{
-            s.addAlert(new ElevatorAlert(headline, shortdesc, beginDateTime));
+            //s.addAlert(new ElevatorAlert(headline, shortdesc, beginDateTime));
         } catch (NullPointerException e){
             e.printStackTrace();
         }

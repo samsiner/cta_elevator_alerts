@@ -28,15 +28,15 @@ public class DisplayAlertActivity extends AppCompatActivity {
         TextView display = findViewById(R.id.displayAlert);
         display.setTextSize(15);
         display.setTextColor(Color.BLACK);
-        display.append(s.getName() + "\n\n");
+        //display.append(s.getName() + "\n\n");
 
-        if (str != null) display.append(str);
-        else {
-            for (ElevatorAlert alert : s.getAlerts()) {
-                display.append("Starting " + alert.getBeginDateTime() + "\n\n");
-                display.append(alert.getHeadline() + "\n\n");
-                display.append(alert.getShortDesc() + "\n\n");
-            }
-        }
+//        if (str != null) display.append(str);
+//        else {
+//            for (ElevatorAlert alert : s.getAlerts()) {
+//                display.append("Starting " + alert.getBeginDateTime() + "\n\n");
+//                display.append(alert.getHeadline() + "\n\n");
+//                display.append(alert.getShortDesc() + "\n\n");
+//            }
+//        }
     }
 }

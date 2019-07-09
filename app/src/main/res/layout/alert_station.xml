@@ -24,8 +24,8 @@
             android:layout_marginStart="11dp"
             android:layout_marginLeft="11dp"
             android:layout_marginTop="20dp"
-            android:layout_toEndOf="@id/image_elev_status"
-            android:layout_toRightOf="@id/image_elev_status" />
+            android:layout_toEndOf="@id/img_alert_station"
+            android:layout_toRightOf="@id/img_alert_station" />
 
     </RelativeLayout>
 

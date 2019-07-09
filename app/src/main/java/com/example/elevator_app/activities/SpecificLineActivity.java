@@ -46,7 +46,7 @@ public class SpecificLineActivity extends AppCompatActivity {
 
                 final Station s = allStations.getStation(stationID);
 
-                stationView.setText(s.getName());
+                //stationView.setText(s.getName());
                 //statusView.setImageResource(status_red);
 
                 myLayout.setOnClickListener(v -> {
@@ -57,10 +57,10 @@ public class SpecificLineActivity extends AppCompatActivity {
                         intent.putExtra("allStations", allStations);
                     } else{
                         intent = new Intent(SpecificLineActivity.this, DisplayAlertActivity.class);
-                        intent.putExtra("Station", s);
+                        //intent.putExtra("Station", s);
                         //If there is no elevator or it works, add different text
-                        if (!s.getElevator()) intent.putExtra("Text", "No elevator present at station.");
-                        else if (s.getAlerts().isEmpty()) intent.putExtra("Text", "Elevator is present and working at station.");
+                        //if (!s.getElevator()) intent.putExtra("Text", "No elevator present at station.");
+                        //else if (s.getAlerts().isEmpty()) intent.putExtra("Text", "Elevator is present and working at station.");
                     }
                     startActivity(intent);
                 });

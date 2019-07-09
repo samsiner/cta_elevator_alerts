@@ -32,24 +32,24 @@ public class AllStations implements Serializable {
                 String stationName = obj.getString("station_name");
                 boolean ada = Boolean.parseBoolean(obj.getString("ada"));
 
-                if (allStations.keySet().contains(mapID)){
-                    boolean[] routes = allStations.get(mapID).getRoutes();
-                    for(int j = 0; j < lineTagNames.length; j++){
-                        if(obj.getString(lineTagNames[j]).equals("true") && !routes[j]){
-                            routes[j] = true;
-                        }
-                    }
-                } else{
-                    //fill routes array with true or false
-                    boolean[] routes = new boolean[lineTagNames.length];
-                    Arrays.fill(routes, Boolean.FALSE);
-                    for (int j = 0; j < lineTagNames.length; j++) {
-                        if (obj.getString(lineTagNames[j]).equals("true")) {
-                            routes[j] = true;
-                        }
-                    }
-                    addStation(mapID, stationName, ada, routes);
-                }
+//                if (allStations.keySet().contains(mapID)){
+////                    boolean[] routes = allStations.get(mapID).getRoutes();
+////                    for(int j = 0; j < lineTagNames.length; j++){
+////                        if(obj.getString(lineTagNames[j]).equals("true") && !routes[j]){
+////                            routes[j] = true;
+////                        }
+////                    }
+//                } else{
+//                    //fill routes array with true or false
+//                    boolean[] routes = new boolean[lineTagNames.length];
+//                    Arrays.fill(routes, Boolean.FALSE);
+//                    for (int j = 0; j < lineTagNames.length; j++) {
+//                        if (obj.getString(lineTagNames[j]).equals("true")) {
+//                            routes[j] = true;
+//                        }
+//                    }
+//                    addStation(mapID, stationName, ada, routes);
+//                }
             }
             return true;
         } catch (JSONException e){
@@ -58,8 +58,8 @@ public class AllStations implements Serializable {
     }
 
     public void addStation(String mapID, String name, boolean ada, boolean[] routes){
-        Station s = new Station(name, ada, routes);
-        allStations.put(mapID, s);
+//        Station s = new Station(name, ada, routes);
+//        allStations.put(mapID, s);
     }
 
     public Station getStation(String s){
