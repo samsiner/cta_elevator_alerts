@@ -37,7 +37,6 @@ public class AddFavoriteActivity extends AppCompatActivity {
         if(stationID != null){
             TextView stationName = findViewById(R.id.text_add_favorite_station);
             AllStations allStations = (AllStations) getIntent().getSerializableExtra("allStations");
-            Log.d("allStations size", Integer.toString(allStations.getAllStations().size()));
             stationName.setText(allStations.getStation(stationID).getName());
         }
     }

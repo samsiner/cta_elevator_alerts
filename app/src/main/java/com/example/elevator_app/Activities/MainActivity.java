@@ -8,8 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.elevator_app.Models.Alerts.AllAlerts;
@@ -117,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String nickname = intent.getStringExtra("Nickname");
         String stationID = intent.getStringExtra("stationID");
+        SharedPreferences.Editor editor = sharedPref.edit();
         if(nickname != null){
-            SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString(nickname, stationID);
             editor.apply();
         }
@@ -135,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView nicknameView = myLayout.findViewById(R.id.text_favorite_nickname);
                 TextView station = myLayout.findViewById(R.id.text_favorite_station);
                 ImageView status = myLayout.findViewById(R.id.image_elev_status);
+                ImageButton editFavorite = myLayout.findViewById(R.id.imageButton_edit_favorite);
 
                 nicknameView.setText(str);
                 String id = favorites.get(str);
@@ -153,6 +158,16 @@ public class MainActivity extends AppCompatActivity {
 //                    status.setImageResource(R.drawable.status_red);
 //                }
 
+                editFavorite.setOnClickListener(v -> {
+                    String currNickname = nicknameView.getText().toString();
+                    favoriteLayout.removeView(myLayout);
+                    Log.d("favorites", favorites.toString());
+                    favorites.remove(currNickname);
+                    Log.d("favorites", favorites.toString());
+                    editor.remove(currNickname);
+                    editor.commit();
+                });
+
 
                 myLayout.setOnClickListener(v -> {
                     Intent intent1 = new Intent(MainActivity.this, DisplayAlertActivity.class);
@@ -169,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+
+
     }
 
     @Override

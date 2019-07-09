@@ -20,4 +20,6 @@
     <string name="purpleline">Purple Line</string>
     <string name="yellowline">Yellow Line</string>
     <string name="title_activity_specific_line">Specific Line</string>
+    <string name="remove_favorite">DELETE</string>
+    <string name="edit_favorite">EDIT</string>
 </resources>

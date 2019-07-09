@@ -51,6 +51,9 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/edit_btn"
             android:layout_alignParentRight="true"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="6dp"
             android:background="#00ffffff"/>
