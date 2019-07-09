@@ -4,20 +4,19 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/relative_layout_alerts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="4dp">
 
         <ImageView
-            android:id="@+id/image_elev_status"
+            android:id="@+id/img_alert_station"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:padding="2dp"
             android:contentDescription="@string/image_elevator_out"/>
 
         <TextView
-            android:id="@+id/text_favorite_station"
+            android:id="@+id/txt_alert_station"
             style="@style/StationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

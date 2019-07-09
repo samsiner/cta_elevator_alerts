@@ -22,7 +22,7 @@
             android:text="@string/title_favorites"
             style="@style/SubHeaderText"/>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:orientation="vertical"
             android:id="@+id/linear_favorite_stations"
             android:layout_width="match_parent"
@@ -44,9 +44,9 @@
             android:text="@string/title_all_alerts"
             style="@style/SubHeaderText"/>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:orientation="vertical"
-            android:id="@+id/linear_elevDownTempList"
+            android:id="@+id/linear_elevDownList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
