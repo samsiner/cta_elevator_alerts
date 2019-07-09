@@ -21,8 +21,10 @@ public class StationRepository {
     StationRepository(Application application) {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
-        mAllAlertStations = mStationDao.getAllAlertStation();
         //buildStations();
+        mAllAlertStations = mStationDao.getAllAlertStation();
+        //LiveData<List<Station>> allStations = mStationDao.getAllStations();
+        //Log.d("SIZESIZE",Integer.toString(allStations.getValue().size()));
     }
 
     LiveData<List<Station>> mGetAllAlertStations() {
@@ -79,6 +81,7 @@ public class StationRepository {
                     Log.d("JSON", sb.toString());
                     scan.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
                     sb.append("");
                 }
             }
@@ -87,7 +90,9 @@ public class StationRepository {
         thread.start();
         try{
             thread.join();
-        } catch (InterruptedException e){ e.printStackTrace();}
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
 
         return sb.toString();
     }
