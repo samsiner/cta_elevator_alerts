@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
@@ -23,7 +22,7 @@ public class StationRepository {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
         mAllAlertStations = mStationDao.getAllAlertStation();
-        buildStations();
+        //buildStations();
     }
 
     LiveData<List<Station>> mGetAllAlertStations() {
