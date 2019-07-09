@@ -64,8 +64,12 @@ public class MainActivity extends AppCompatActivity {
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
 
         //Add observer
-        mStationAlertsViewModel.getmAllAlertStations().observe(this, stations -> alertsAdapter.setStations(stations));
-        Log.d("Stationsize-MainAct", Integer.toString(alertsAdapter.getItemCount()));
+        mStationAlertsViewModel.getmAllAlertStations().observe(this, new Observer<List<Station>>() {
+            @Override
+            public void onChanged(List<Station> stations) {
+                alertsAdapter.setStations(stations);
+            }
+        });
 
 //        boolean buildSuccessful = false;
 //        try{

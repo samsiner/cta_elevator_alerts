@@ -39,15 +39,15 @@ public abstract class StationRoomDatabase extends RoomDatabase {
                     StationDao stationDao = INSTANCE.stationDao();
                     stationDao.deleteAll();
 
-                    //Add sample station with alert
-                    Station station = new Station("40780", "Central Park", true);
-                    station.setRoutes(false, false, false, false, false, true, false, false);
-                    station.addAlert("Elevator at Central Park Temporarily Out-of-Service", "The elevator at Central Park (Pink Line) is temporarily out-of-service.", "2019-06-07T19:05:00");
-                    stationDao.insert(station);
-
-                    //Add sample station without alert
-                    Station station2 = new Station("40340", "Berwyn", false);
-                    stationDao.insert(station2);
+//                    //Add sample station with alert
+//                    Station station = new Station("41140", "King Drive", true);
+//                    station.setRoutes(false, false, false, true, false, false, false, false);
+//                    station.addAlert("Elevator at King Drive Temporarily Out-of-Service", "The elevator at Central Park (Pink Line) is temporarily out-of-service.", "2019-06-07T19:05:00");
+//                    stationDao.insert(station);
+//
+//                    //Add sample station without alert
+//                    Station station2 = new Station("40340", "Berwyn", false);
+//                    stationDao.insert(station2);
                 }
             };
             thread.start();

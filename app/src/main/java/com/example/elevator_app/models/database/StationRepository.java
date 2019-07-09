@@ -17,19 +17,24 @@ import java.util.Scanner;
 public class StationRepository {
     private StationDao mStationDao;
     private LiveData<List<Station>> mAllAlertStations;
+    private LiveData<List<Station>> mAllStations;
 
-    StationRepository(Application application) {
+    public StationRepository(Application application) {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
-        //buildStations();
+        buildStations();
+        buildAlerts();
         mAllAlertStations = mStationDao.getAllAlertStation();
-        //LiveData<List<Station>> allStations = mStationDao.getAllStations();
-        //Log.d("SIZESIZE",Integer.toString(allStations.getValue().size()));
+        mAllStations = mStationDao.getAllStations();
     }
 
     LiveData<List<Station>> mGetAllAlertStations() {
         return mAllAlertStations;
     }
+    LiveData<List<Station>> mGetAllStations() {
+        return mAllStations;
+    }
+
 
     public void insert(Station station) {
         Thread thread = new Thread() {
@@ -38,6 +43,12 @@ public class StationRepository {
             }
         };
         thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
     }
 
     public void addAlert(Station station, String headline, String shortDesc, String beginDateTime){
@@ -48,10 +59,15 @@ public class StationRepository {
             }
         };
         thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
     private void buildStations(){
-        String JSONString = pullStations();
+        String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
         try {
             JSONArray arr = new JSONArray(JSONString);
 
@@ -68,17 +84,61 @@ public class StationRepository {
         }
     }
 
-    private String pullStations(){
+    private void buildAlerts(){
+        String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+
+        try {
+            JSONObject outer = new JSONObject(JSONString);
+            JSONObject inner = outer.getJSONObject("CTAAlerts");
+            JSONArray arrAlerts = inner.getJSONArray("Alert");
+
+            for (int i=0;i<arrAlerts.length();i++){
+                JSONObject alert = (JSONObject) arrAlerts.get(i);
+                String impact = alert.getString("Impact");
+                if (!impact.equals("Elevator Status")) continue;
+
+                JSONObject impactedService = alert.getJSONObject("ImpactedService");
+                JSONArray service = impactedService.getJSONArray("Service");
+
+                for (int j=0;j<service.length();j++){
+                    JSONObject serviceInstance = (JSONObject) service.get(j);
+                    if (serviceInstance.getString("ServiceType").equals("T")) {
+                        String id = serviceInstance.getString("ServiceId");
+                        String headline = alert.getString("Headline");
+
+                        //Eliminates "back in service" alerts
+                        if (headline.contains("Back in Service")) continue;
+
+                        String shortDesc = alert.getString("ShortDescription");
+
+                        String beginDateTime = alert.getString("EventStart");
+
+                        Thread thread = new Thread() {
+                            public void run() {
+                                   Station station = mStationDao.getStation(id);
+                                   if (station == null) Log.d("NULL", "NULL");
+                                   else addAlert(station, headline, shortDesc, beginDateTime);
+                            }
+                        };
+                        thread.start();
+                        break;
+                    }
+                }
+            }
+        } catch (JSONException | NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String pullJSONFromWebService(String url){
         final StringBuilder sb = new StringBuilder();
 
         Thread thread = new Thread() {
             public void run() {
                 try {
-                    URL urlStations = new URL("https://data.cityofchicago.org/resource/8pix-ypme.json");
+                    URL urlStations = new URL(url);
                     Scanner scan = new Scanner(urlStations.openStream());
-                    Log.d("1", "1");
                     while (scan.hasNext()) sb.append(scan.nextLine());
-                    Log.d("JSON", sb.toString());
                     scan.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -93,7 +153,6 @@ public class StationRepository {
         } catch (InterruptedException e){
             e.printStackTrace();
         }
-
         return sb.toString();
     }
 }

@@ -17,9 +17,12 @@ public class StationAlertsViewModel extends AndroidViewModel {
         super(application);
         mRepository = new StationRepository(application);
         mAllAlertStations = mRepository.mGetAllAlertStations();
+        mAllStations = mRepository.mGetAllStations();
     }
 
     public LiveData<List<Station>> getmAllAlertStations() { return mAllAlertStations;}
+
+    public LiveData<List<Station>> getmAllStations() { return mAllStations;}
 
     public void insert(Station station){ mRepository.insert(station);}
 }

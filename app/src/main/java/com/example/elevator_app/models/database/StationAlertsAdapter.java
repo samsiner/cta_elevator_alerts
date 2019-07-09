@@ -62,7 +62,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     @Override
     public int getItemCount(){
         if (mStations != null) return mStations.size();
-        else return 0;
+        else return -1;
     }
 }
 
