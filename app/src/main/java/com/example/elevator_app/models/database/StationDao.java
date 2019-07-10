@@ -8,7 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
-
+//TODO: Write migration class, change version numbers
 @Dao
 public interface StationDao {
 
@@ -21,6 +21,9 @@ public interface StationDao {
         @Update
         void update(Station station);
 
+        @Query("UPDATE station_table SET isFavorite = 1, nickname = :nickname WHERE stationID = :id")
+        void addFavorite(String id, String nickname);
+
         @Query("SELECT * FROM station_table")
         LiveData<List<Station>> getAllStations();
 
@@ -29,4 +32,7 @@ public interface StationDao {
 
         @Query("SELECT * FROM station_table WHERE stationID = :stationID")
         Station getStation(String stationID);
+
+        @Query("SELECT * FROM station_table WHERE isFavorite=1")
+        LiveData<List<Station>> getAllFavorites();
 }

@@ -4,25 +4,28 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
 import java.util.List;
 
 public class StationAlertsViewModel extends AndroidViewModel {
 
-    private StationRepository mRepository;
-    private LiveData<List<Station>> mAllStations;
     private LiveData<List<Station>> mAllAlertStations;
+    private LiveData<List<Station>> mAllFavorites;
+    private MediatorLiveData<List<Station>> liveDataMerger = new MediatorLiveData<>();
 
     public StationAlertsViewModel(Application application){
         super(application);
-        mRepository = new StationRepository(application);
+        StationRepository mRepository = new StationRepository(application);
         mAllAlertStations = mRepository.mGetAllAlertStations();
-        mAllStations = mRepository.mGetAllStations();
+        mAllFavorites = mRepository.mGetAllFavorites();
+        liveDataMerger.addSource(mAllAlertStations, value -> liveDataMerger.setValue(value));
+        liveDataMerger.addSource(mAllFavorites, value -> liveDataMerger.setValue(value));
     }
 
-    public LiveData<List<Station>> getmAllAlertStations() { return mAllAlertStations;}
+    public LiveData<List<Station>> getFavoritesAndAlerts() { return liveDataMerger;}
+    public LiveData<List<Station>> getAlerts() { return mAllAlertStations;}
+    public LiveData<List<Station>> getFavorites() { return mAllFavorites;}
 
-    public LiveData<List<Station>> getmAllStations() { return mAllStations;}
 
-    public void insert(Station station){ mRepository.insert(station);}
 }

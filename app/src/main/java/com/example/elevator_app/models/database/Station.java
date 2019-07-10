@@ -15,18 +15,28 @@ public class Station {
     @PrimaryKey
     @NonNull
     public String stationID;
-    public boolean hasElevator, hasElevatorAlert;
+    public boolean hasElevator, hasElevatorAlert, isFavorite;
     public boolean red, blue, brown, green, orange, pink, purple, yellow;
-    public String name, headline, shortDescription, beginDateTime;
+    public String name, headline, shortDescription, beginDateTime, nickname;
 
-    public Station(String stationID, String name, boolean hasElevator){
+    public Station(@NonNull String stationID){
         this.stationID = stationID;
-        this.name = name;
-        this.hasElevator = hasElevator;
+        name = "";
+        hasElevator = false;
         hasElevatorAlert = false;
+        isFavorite = false;
         headline = "";
         shortDescription = "";
         beginDateTime = "";
+        nickname = "";
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setHasElevator(Boolean bool){
+        this.hasElevator = bool;
     }
 
     public void setRoutes(boolean red, boolean blue, boolean brown, boolean green,boolean orange, boolean pink, boolean purple, boolean yellow){
@@ -52,6 +62,16 @@ public class Station {
         this.shortDescription = "";
         this.beginDateTime = "";
         hasElevatorAlert = false;
+    }
+
+    public void addFavorite(String nickname){
+        this.isFavorite = true;
+        this.nickname = nickname;
+    }
+
+    public void removeFavorite(){
+        this.isFavorite = false;
+        nickname = "";
     }
 
     private String convertDateTime(String s){

@@ -35,7 +35,7 @@ public class AllLinesActivity extends AppCompatActivity {
         {
             try{
                 View myLayout = inflater.inflate(R.layout.alert_station, lineLayout, false);
-                TextView lineView = myLayout.findViewById(R.id.text_favorite_station);
+                TextView lineView = myLayout.findViewById(R.id.txt_name_favorite_station);
                 //Add line image
                 //ImageView status = myLayout.findViewById(R.id.image_elev_status);
                 lineView.setText(str);

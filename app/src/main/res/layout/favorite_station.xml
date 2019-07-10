@@ -11,14 +11,14 @@
         android:background="@color/colorTransparent">
 
         <ImageView
-            android:id="@+id/image_elev_status"
+            android:id="@+id/img_favorite_station"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:padding="2dp"
             android:contentDescription="@string/image_elevator_out"/>
 
         <TextView
-            android:id="@+id/text_favorite_nickname"
+            android:id="@+id/txt_nickname_favorite_station"
             style="@style/FavoriteNickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,22 +26,22 @@
             android:layout_marginStart="11dp"
             android:layout_marginLeft="11dp"
             android:layout_marginTop="6dp"
-            android:layout_toEndOf="@id/image_elev_status"
-            android:layout_toRightOf="@id/image_elev_status"
+            android:layout_toEndOf="@id/img_favorite_station"
+            android:layout_toRightOf="@id/img_favorite_station"
             android:text="@string/title_nickname" />
 
         <TextView
-            android:id="@+id/text_favorite_station"
+            android:id="@+id/txt_name_favorite_station"
             style="@style/StationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_favorite_nickname"
+            android:layout_below="@+id/txt_nickname_favorite_station"
             android:layout_alignParentTop="true"
             android:layout_marginStart="7dp"
             android:layout_marginLeft="7dp"
             android:layout_marginTop="38dp"
-            android:layout_toEndOf="@id/image_elev_status"
-            android:layout_toRightOf="@id/image_elev_status"
+            android:layout_toEndOf="@id/img_favorite_station"
+            android:layout_toRightOf="@id/img_favorite_station"
             android:text="@string/title_station" />
 
     </RelativeLayout>

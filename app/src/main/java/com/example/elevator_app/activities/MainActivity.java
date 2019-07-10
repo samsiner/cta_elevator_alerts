@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.elevator_app.httpsrequest.HTTPSRequest;
 import com.example.elevator_app.models.alerts.AllAlerts;
+import com.example.elevator_app.models.database.FavoritesAdapter;
 import com.example.elevator_app.models.database.StationAlertsAdapter;
 import com.example.elevator_app.models.database.StationAlertsViewModel;
 import com.example.elevator_app.models.stations.AllStations;
@@ -60,14 +61,20 @@ public class MainActivity extends AppCompatActivity {
         alertsRecyclerView.setAdapter(alertsAdapter);
         alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        RecyclerView favoritesRecyclerView = findViewById(R.id.recycler_favorite_stations);
+        final FavoritesAdapter favoritesAdapter = new FavoritesAdapter(this);
+        favoritesRecyclerView.setAdapter(favoritesAdapter);
+        favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         //Get ViewModel
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
 
         //Add observer
-        mStationAlertsViewModel.getmAllAlertStations().observe(this, new Observer<List<Station>>() {
+        mStationAlertsViewModel.getFavorites().observe(this, new Observer<List<Station>>() {
             @Override
             public void onChanged(List<Station> stations) {
                 alertsAdapter.setStations(stations);
+                favoritesAdapter.setFavorites(stations);
             }
         });
 

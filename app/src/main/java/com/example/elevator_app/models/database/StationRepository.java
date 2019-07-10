@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class StationRepository {
     private StationDao mStationDao;
     private LiveData<List<Station>> mAllAlertStations;
-    private LiveData<List<Station>> mAllStations;
+    private LiveData<List<Station>> mAllFavorites;
 
     public StationRepository(Application application) {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
@@ -25,16 +25,15 @@ public class StationRepository {
         buildStations();
         buildAlerts();
         mAllAlertStations = mStationDao.getAllAlertStation();
-        mAllStations = mStationDao.getAllStations();
+        mAllFavorites = mStationDao.getAllFavorites();
     }
 
     LiveData<List<Station>> mGetAllAlertStations() {
         return mAllAlertStations;
     }
-    LiveData<List<Station>> mGetAllStations() {
-        return mAllStations;
+    LiveData<List<Station>> mGetAllFavorites() {
+        return mAllFavorites;
     }
-
 
     public void insert(Station station) {
         Thread thread = new Thread() {
@@ -48,7 +47,6 @@ public class StationRepository {
         } catch (InterruptedException e){
             e.printStackTrace();
         }
-
     }
 
     public void addAlert(Station station, String headline, String shortDesc, String beginDateTime){
@@ -66,6 +64,36 @@ public class StationRepository {
         }
     }
 
+    public void addFavorite(String stationID, String nickname){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.addFavorite(stationID, nickname);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void removeFavorite(Station station){
+        Thread thread = new Thread() {
+            public void run() {
+                station.removeFavorite();
+                mStationDao.update(station);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+
     private void buildStations(){
         String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
         try {
@@ -76,7 +104,9 @@ public class StationRepository {
                 String mapID = obj.getString("map_id");
                 String stationName = obj.getString("station_name");
                 boolean ada = Boolean.parseBoolean(obj.getString("ada"));
-                Station newStation = new Station(mapID, stationName, ada);
+                Station newStation = new Station(mapID);
+                newStation.setName(stationName);
+                newStation.setHasElevator(ada);
                 insert(newStation);
             }
         } catch (JSONException e){

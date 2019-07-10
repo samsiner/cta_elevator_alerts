@@ -14,16 +14,16 @@ import com.example.elevator_app.R;
 
 import java.util.List;
 
-public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdapter.StationAlertViewHolder> {
+public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdapter.StationAlertsViewHolder> {
 
-    class StationAlertViewHolder extends RecyclerView.ViewHolder {
-        private final TextView stationAlertTextView;
+    class StationAlertsViewHolder extends RecyclerView.ViewHolder {
         private final ImageView stationAlertImageView;
+        private final TextView stationAlertTextView;
 
-        private StationAlertViewHolder(View itemView) {
+        private StationAlertsViewHolder(View itemView) {
             super(itemView);
-            stationAlertTextView = itemView.findViewById(R.id.txt_alert_station);
             stationAlertImageView = itemView.findViewById(R.id.img_alert_station);
+            stationAlertTextView = itemView.findViewById(R.id.txt_alert_station);
         }
     }
 
@@ -33,13 +33,13 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     public StationAlertsAdapter(Context context){ mInflater = LayoutInflater.from(context);}
 
     @Override
-    public StationAlertViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public StationAlertsViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.alert_station, parent, false);
-        return new StationAlertViewHolder(itemView);
+        return new StationAlertsViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(StationAlertViewHolder holder, int position){
+    public void onBindViewHolder(StationAlertsViewHolder holder, int position){
         if (mStations != null){
             Station current = mStations.get(position);
             holder.stationAlertImageView.setImageResource(R.drawable.status_green);
@@ -56,13 +56,12 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     public void setStations(List<Station> stations){
         mStations = stations;
         notifyDataSetChanged();
-        Log.d("Station size-Adapter", Integer.toString(getItemCount()));
     }
 
     @Override
     public int getItemCount(){
         if (mStations != null) return mStations.size();
-        else return -1;
+        else return 0;
     }
 }
 

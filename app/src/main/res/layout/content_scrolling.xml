@@ -24,7 +24,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:orientation="vertical"
-            android:id="@+id/linear_favorite_stations"
+            android:id="@+id/recycler_favorite_stations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#60CA0D0D"
