@@ -1,9 +1,11 @@
 package com.example.elevator_app.models.database;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Room;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,12 +21,25 @@ public class StationRepository {
     private LiveData<List<Station>> mAllAlertStations;
     private LiveData<List<Station>> mAllFavorites;
 
-    public StationRepository(Application application) {
+    private static volatile StationRepository INSTANCE;
+
+    static StationRepository getInstance(Application application) {
+        if (INSTANCE == null) {
+            synchronized (StationRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new StationRepository(application);
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    private StationRepository(Application application) {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
         buildStations();
         buildAlerts();
-        mAllAlertStations = mStationDao.getAllAlertStation();
+        mAllAlertStations = mStationDao.getAllAlertStations();
         mAllFavorites = mStationDao.getAllFavorites();
     }
 
@@ -39,6 +54,21 @@ public class StationRepository {
         Thread thread = new Thread() {
             public void run() {
                 mStationDao.insert(station);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    private int count = 0;
+    public void getFavoritesCount() {
+        Thread thread = new Thread() {
+            public void run() {
+                count = mStationDao.getFavoritesCount();
             }
         };
         thread.start();
@@ -78,11 +108,10 @@ public class StationRepository {
         }
     }
 
-    public void removeFavorite(Station station){
+    public void removeFavorite(String stationID){
         Thread thread = new Thread() {
             public void run() {
-                station.removeFavorite();
-                mStationDao.update(station);
+                mStationDao.removeFavorite(stationID);
             }
         };
         thread.start();
@@ -155,6 +184,9 @@ public class StationRepository {
                     }
                 }
             }
+            addFavorite("41140","Sam");
+            getFavoritesCount();
+            Log.d("Favorites count", Integer.toString(count));
         } catch (JSONException | NullPointerException e) {
             e.printStackTrace();
         }

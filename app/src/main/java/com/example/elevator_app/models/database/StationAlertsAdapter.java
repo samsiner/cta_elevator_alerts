@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
@@ -33,13 +34,14 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     public StationAlertsAdapter(Context context){ mInflater = LayoutInflater.from(context);}
 
     @Override
-    public StationAlertsViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    @NonNull
+    public StationAlertsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.alert_station, parent, false);
         return new StationAlertsViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(StationAlertsViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull StationAlertsViewHolder holder, int position){
         if (mStations != null){
             Station current = mStations.get(position);
             holder.stationAlertImageView.setImageResource(R.drawable.status_green);

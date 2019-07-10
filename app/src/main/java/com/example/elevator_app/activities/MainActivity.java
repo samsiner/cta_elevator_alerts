@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.elevator_app.httpsrequest.HTTPSRequest;
 import com.example.elevator_app.models.alerts.AllAlerts;
 import com.example.elevator_app.models.database.FavoritesAdapter;
+import com.example.elevator_app.models.database.FavoritesViewModel;
 import com.example.elevator_app.models.database.StationAlertsAdapter;
 import com.example.elevator_app.models.database.StationAlertsViewModel;
 import com.example.elevator_app.models.stations.AllStations;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 //    private AllAlerts allAlerts;
 //    private AllStations allStations;
     private StationAlertsViewModel mStationAlertsViewModel;
+    private FavoritesViewModel mFavoritesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +72,33 @@ public class MainActivity extends AppCompatActivity {
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
 
         //Add observer
-        mStationAlertsViewModel.getFavorites().observe(this, new Observer<List<Station>>() {
+        mStationAlertsViewModel.getStationAlerts().observe(this, new Observer<List<Station>>() {
             @Override
             public void onChanged(List<Station> stations) {
                 alertsAdapter.setStations(stations);
+            }
+        });
+
+        //Get ViewModel
+        mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
+
+        //Add observer
+        mStationAlertsViewModel.getStationAlerts().observe(this, new Observer<List<Station>>() {
+            @Override
+            public void onChanged(List<Station> stations) {
+                alertsAdapter.setStations(stations);
+            }
+        });
+
+        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        mFavoritesViewModel.getFavorites().observe(this, new Observer<List<Station>>() {
+            @Override
+            public void onChanged(List<Station> stations) {
                 favoritesAdapter.setFavorites(stations);
             }
         });
+
+
 
 //        boolean buildSuccessful = false;
 //        try{
