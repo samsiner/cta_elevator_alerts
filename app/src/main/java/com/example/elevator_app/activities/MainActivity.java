@@ -1,11 +1,7 @@
 package com.example.elevator_app.activities;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -13,24 +9,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.example.elevator_app.httpsrequest.HTTPSRequest;
-import com.example.elevator_app.models.alerts.AllAlerts;
 import com.example.elevator_app.models.database.FavoritesAdapter;
 import com.example.elevator_app.models.database.FavoritesViewModel;
 import com.example.elevator_app.models.database.StationAlertsAdapter;
 import com.example.elevator_app.models.database.StationAlertsViewModel;
-import com.example.elevator_app.models.stations.AllStations;
 import com.example.elevator_app.R;
 import com.example.elevator_app.models.database.Station;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -70,19 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Get ViewModel
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
-
-        //Add observer
-        mStationAlertsViewModel.getStationAlerts().observe(this, new Observer<List<Station>>() {
-            @Override
-            public void onChanged(List<Station> stations) {
-                alertsAdapter.setStations(stations);
-            }
-        });
-
-        //Get ViewModel
-        mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
-
-        //Add observer
         mStationAlertsViewModel.getStationAlerts().observe(this, new Observer<List<Station>>() {
             @Override
             public void onChanged(List<Station> stations) {
@@ -99,43 +71,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-//        boolean buildSuccessful = false;
-//        try{
-//            //Pull in savedInstanceState containing stations and alerts
-//            AllStations tempAllStations = (AllStations) savedInstanceState.getSerializable("allStations");
-//            AllAlerts tempAllAlerts = (AllAlerts) savedInstanceState.getSerializable("allAlerts");
-//            allStations = tempAllStations;
-//            allAlerts = tempAllAlerts;
-//        } catch (NullPointerException e){
-//            buildSuccessful = buildStationsAlerts();
-//        }
-//
-//        if (buildSuccessful) {
-        //Set up SharedPreferences to save favorites locally
-//        }
-    }
-
-    //    private boolean buildStationsAlerts(){
-//        //Try to build stations; if connection error, show dialog.
-//        allStations = new AllStations();
-//        String stationsJSON = HTTPSRequest.pullJSONFromHTTPSRequest("https://data.cityofchicago.org/resource/8pix-ypme.json");
-//        boolean stationBuildWorked = allStations.buildStations(stationsJSON);
-//
-//        if (stationBuildWorked){
-//            //Try to build alerts; if connection error, show dialog.
-//            allAlerts = new AllAlerts(allStations.getAllStations());
-//            String alertsJSON = HTTPSRequest.pullJSONFromHTTPSRequest("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-//            boolean alertBuildWorked = allAlerts.buildAlerts(alertsJSON);
-//
-//            if (alertBuildWorked){
-//                buildAlertViews();
-//                return true;
-//            }
-//        }
-//        dialogPositiveButton("Error", "Connection did not work. Please refresh to try again.");
-//        return false;
-//    }
 //
 //    private void dialogPositiveButton(String title, String message){
 //        AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -157,73 +92,12 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(intent);
 //    }
 //
-////    private void buildFavoriteViews(){
-////        //TODO: check for duplicate key entry from user
-////        //TODO: consider visitor design pattern for duplicate code (updateFavorites() and updateAlerts())
-////        //TODO: What if there are no favorites added?
-////        Intent intent = getIntent();
-////        String nickname = intent.getStringExtra("Nickname");
-////        String stationID = intent.getStringExtra("stationID");
-////        if(nickname != null){
-////            SharedPreferences.Editor editor = sharedPref.edit();
-////            editor.putString(nickname, stationID);
-////            editor.apply();
-////        }
-////
-////        LinearLayout favoriteLayout = findViewById(R.id.linear_favorite_stations);
-////        favoriteLayout.removeAllViews();
-////
-////        LayoutInflater inflater = getLayoutInflater();
-////
-////        @SuppressWarnings("unchecked")
-////        HashMap<String, String> favorites = (HashMap) sharedPref.getAll();
-////
-////        for (String str : favorites.keySet())
-////        {
-////            try{
-////                View myLayout = inflater.inflate(R.layout.favorite_station, favoriteLayout, false);
-////                TextView nicknameView = myLayout.findViewById(R.id.text_favorite_nickname);
-////                TextView station = myLayout.findViewById(R.id.text_favorite_station);
-////                ImageView status = myLayout.findViewById(R.id.image_elev_status);
-////
-////                nicknameView.setText(str);
-////                String id = favorites.get(str);
-////                final Station s = allStations.getStation(id);
-////                station.setText(s.getName());
-////
-////                //Check if elevator is out or doesn't exist
-////                final boolean hasElev = s.getElevator();
-////                final boolean outElev = allAlerts.getElevatorOutStationIDs().contains(id);
-////                if (hasElev && !outElev){
-////                    status.setImageResource(R.drawable.status_green);
-////                }
-////                //TODO: add red button
-//////                else{
-//////                    //Add red button
-//////                    status.setImageResource(R.drawable.status_red);
-//////                }
-////
-////                myLayout.setOnClickListener(v -> {
-////                    Intent intent1 = new Intent(MainActivity.this, DisplayAlertActivity.class);
-////                    intent1.putExtra("Station", s);
-////                    //If there is no elevator or it works, add different text
-////                    if (!hasElev) intent1.putExtra("Text", "No elevator present at station.");
-////                    else if (!outElev) intent1.putExtra("Text", "Elevator is present and working at station.");
-////                    startActivity(intent1);
-////                });
-////
-////                favoriteLayout.addView(myLayout);
-////            } catch (NullPointerException e){
-////                dialogPositiveButton("Favorites Error", "Favorites not loading correctly! Please refresh to try again.");
-////            }
-////        }
+////    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        super.onSaveInstanceState(savedInstanceState);
+////        savedInstanceState.putSerializable("allStations", allStations);
+////        savedInstanceState.putSerializable("allAlerts", allAlerts);
 ////    }
-//
-//    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-//        savedInstanceState.putSerializable("allStations", allStations);
-//        savedInstanceState.putSerializable("allAlerts", allAlerts);
 //    }
-    }
+}
 }

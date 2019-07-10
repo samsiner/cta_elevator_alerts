@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.elevator_app.models.stations.AllStations;
 import com.example.elevator_app.R;
 
 public class AddFavoriteActivity extends AppCompatActivity {
@@ -26,12 +25,12 @@ public class AddFavoriteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         String stationID = getIntent().getStringExtra("stationID");
 
-        if(stationID != null){
-            TextView stationName = findViewById(R.id.text_add_favorite_station);
-            AllStations allStations = (AllStations) getIntent().getSerializableExtra("allStations");
-            Log.d("allStations size", Integer.toString(allStations.getAllStations().size()));
-            //stationName.setText(allStations.getStation(stationID).getName());
-        }
+//        if(stationID != null){
+//            TextView stationName = findViewById(R.id.text_add_favorite_station);
+//            AllStations allStations = (AllStations) getIntent().getSerializableExtra("allStations");
+//            Log.d("allStations size", Integer.toString(allStations.getAllStations().size()));
+//            //stationName.setText(allStations.getStation(stationID).getName());
+//        }
     }
 
     public void toAllLinesActivity(View v){
