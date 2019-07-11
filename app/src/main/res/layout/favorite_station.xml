@@ -12,9 +12,8 @@
 
         <ImageView
             android:id="@+id/img_favorite_station"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:padding="2dp"
+            style="@style/StatusImage"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/image_elevator_out"/>
 
         <TextView

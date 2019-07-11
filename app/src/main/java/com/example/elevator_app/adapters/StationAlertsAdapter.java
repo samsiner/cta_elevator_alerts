@@ -19,12 +19,10 @@ import java.util.List;
 public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdapter.StationAlertsViewHolder> {
 
     class StationAlertsViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView stationAlertImageView;
         private final TextView stationAlertTextView;
 
         private StationAlertsViewHolder(View itemView) {
             super(itemView);
-            stationAlertImageView = itemView.findViewById(R.id.img_alert_station);
             stationAlertTextView = itemView.findViewById(R.id.txt_alert_station);
         }
     }
@@ -48,7 +46,6 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     public void onBindViewHolder(StationAlertsViewHolder holder, int position){
         Station current = mStations.get(position);
         if (mStations != null){
-            holder.stationAlertImageView.setImageResource(R.drawable.status_green);
             holder.stationAlertTextView.setText(current.name);
         }
 

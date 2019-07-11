@@ -10,9 +10,9 @@
 
         <ImageView
             android:id="@+id/img_alert_station"
-            android:layout_width="20dp"
-            android:layout_height="40dp"
-            android:padding="2dp"
+            style="@style/StatusImage"
+            android:layout_centerVertical="true"
+            android:background="@drawable/status_red"
             android:contentDescription="@string/image_elevator_out"/>
 
         <TextView
@@ -24,7 +24,8 @@
             android:layout_marginStart="11dp"
             android:layout_marginLeft="11dp"
             android:layout_toEndOf="@id/img_alert_station"
-            android:layout_toRightOf="@id/img_alert_station" />
+            android:layout_toRightOf="@id/img_alert_station"
+            android:gravity="center_vertical"/>
 
     </RelativeLayout>
 
