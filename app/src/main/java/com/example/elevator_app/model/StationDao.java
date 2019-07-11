@@ -53,4 +53,7 @@ public interface StationDao {
 
         @Query("SELECT beginDateTime FROM station_table where stationID = :stationID")
         String getBeginDateTime(String stationID);
+
+        @Query("SELECT hasElevator FROM station_table WHERE stationID = :stationID")
+        boolean getHasElevator(String stationID);
 }

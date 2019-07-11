@@ -99,6 +99,22 @@ public class StationRepository {
         }
     }
 
+    private boolean hasElevator = false;
+    public boolean getHasElevator(String stationID) {
+        Thread thread = new Thread() {
+            public void run() {
+                hasElevator = mStationDao.getHasElevator(stationID);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return hasElevator;
+    }
+
     public void addAlert(Station station, String headline, String shortDesc, String beginDateTime){
         Thread thread = new Thread() {
             public void run() {

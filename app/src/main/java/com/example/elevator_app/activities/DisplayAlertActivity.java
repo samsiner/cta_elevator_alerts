@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.elevator_app.R;
@@ -34,8 +35,20 @@ public class DisplayAlertActivity extends AppCompatActivity {
         display.setTextSize(15);
         display.setTextColor(Color.BLACK);
         display.append(stationName + "\n\n");
-        display.append("Starting " + beginDateTime + "\n\n");
-        display.append(headline + "\n\n");
-        display.append(shortDesc + "\n\n");
+        if (!beginDateTime.equals("")){
+            display.append("Starting ");
+            display.append(beginDateTime + "\n\n");
+            display.append(headline + "\n\n");
+            display.append(shortDesc + "\n\n");
+        } else{
+            boolean hasElevator = mDisplayAlertViewModel.getHasElevator();
+            Log.d("BOOL", Boolean.toString(hasElevator));
+            if (hasElevator) {
+                display.append("Elevator is present at this station and working properly.");
+            } else{
+                display.append("No elevator is present at this station.");
+            }
+        }
+
     }
 }
