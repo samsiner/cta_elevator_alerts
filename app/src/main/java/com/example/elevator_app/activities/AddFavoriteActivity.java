@@ -22,7 +22,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_old);
         setSupportActionBar(toolbar);
         String stationID = getIntent().getStringExtra("stationID");
-
+///T
 //        if(stationID != null){
 //            TextView stationName = findViewById(R.id.text_add_favorite_station);
 //            AllStations allStations = (AllStations) getIntent().getSerializableExtra("allStations");
@@ -30,6 +30,8 @@ public class AddFavoriteActivity extends AppCompatActivity {
 //            //stationName.setText(allStations.getStation(stationID).getName());
 //        }
     }
+
+    //TODO: Display station
 
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(AddFavoriteActivity.this, AllLinesActivity.class);

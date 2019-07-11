@@ -48,10 +48,26 @@ public class StationRepository {
     }
 
     public LiveData<List<Station>> mGetAllAlertStations() {
-        return mAllAlertStations;
+        return mStationDao.getAllAlertStations();
     }
     public LiveData<List<Station>> mGetAllFavorites() {
-        return mAllFavorites;
+        return mStationDao.getAllFavorites();
+    }
+
+    private String s;
+    public String mGetStationName(String stationID){
+        Thread thread = new Thread() {
+            public void run() {
+                s = mStationDao.getName(stationID);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return s;
     }
 
     public void insert(Station station) {

@@ -47,7 +47,7 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
         ((View)holder.allLinesTextView.getParent()).setOnClickListener(v -> {
             Intent intent = new Intent(context, SpecificLineActivity.class);
             intent.putExtra("line", current);
-            intent.putExtra("fromFavorites", (((Activity)context)).getIntent().getBooleanExtra("fromFavorites", true));
+            intent.putExtra("fromFavorites", (((Activity)context)).getIntent().getBooleanExtra("fromFavorites", false));
             context.startActivity(intent);
         });
     }

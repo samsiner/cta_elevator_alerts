@@ -4,12 +4,17 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
+import com.example.elevator_app.adapters.SpecificLineAdapter;
+import com.example.elevator_app.viewmodelfactories.SpecificLineViewModelFactory;
 import com.example.elevator_app.viewmodels.SpecificLineViewModel;
-import com.example.elevator_app.viewmodels.StationAlertsViewModel;
 
 public class SpecificLineActivity extends AppCompatActivity {
+
+    SpecificLineViewModel mSpecificLineViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,11 +22,19 @@ public class SpecificLineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_specific_line);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        SpecificLineViewModel mSpecificLineViewModel = ViewModelProviders.of(this).get(SpecificLineViewModel.class);
+        mSpecificLineViewModel = ViewModelProviders.of(this, new SpecificLineViewModelFactory(this.getApplication(), getIntent().getStringExtra("line"))).get(SpecificLineViewModel.class);
 
+        RecyclerView specificLineRecyclerView = findViewById(R.id.recycler_specific_line);
+        final SpecificLineAdapter specificLineAdapter = new SpecificLineAdapter(this, mSpecificLineViewModel.getLine());
+        specificLineRecyclerView.setAdapter(specificLineAdapter);
+        specificLineRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //buildStationViews();
 
+    }
+
+    public String getStationName(String stationID){
+        return mSpecificLineViewModel.getStationName(stationID);
     }
 //
 //    private void buildStationViews(){

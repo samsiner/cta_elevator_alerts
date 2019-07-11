@@ -21,11 +21,12 @@
             android:textColor="#000000"
             style="@style/SubHeaderText"/>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_specific_line"
             android:orientation="vertical"
-            android:id="@+id/linear_line_stations"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            style="@style/SubHeaderText"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

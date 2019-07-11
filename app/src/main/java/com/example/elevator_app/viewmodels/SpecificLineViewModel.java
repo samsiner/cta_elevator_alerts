@@ -9,14 +9,17 @@ import com.example.elevator_app.model.StationRepository;
 
 public class SpecificLineViewModel extends AndroidViewModel {
 
-    public SpecificLineViewModel(@NonNull Application application) {
-        super(application);
-        StationRepository mRepository = StationRepository.getInstance(application);
+    String mLine;
+    StationRepository mRepository;
 
+    public SpecificLineViewModel(@NonNull Application application, String line) {
+        super(application);
+        mRepository = StationRepository.getInstance(application);
+        mLine = line;
     }
 
-    private String[] getLine(String string){
-        switch(string){
+    public String[] getLine(){
+        switch(mLine){
             case "Red Line":
                 return new String[] {"40900", "41190", "40100", "41300", "40760", "40880", "41380", "40340", "41200", "40770", "40540", "40080", "41420", "41320", "41220", "40650", "40630", "41450", "40330", "41660", "41090", "40560", "41490", "41400", "41000", "40190", "41230", "41170", "40910", "40990", "40240", "41430", "40450"};
             case "Blue Line":
@@ -38,4 +41,7 @@ public class SpecificLineViewModel extends AndroidViewModel {
         }
     }
 
+    public String getStationName(String stationID){
+        return mRepository.mGetStationName(stationID);
+    }
 }
