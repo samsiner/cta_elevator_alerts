@@ -4,17 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.elevator_app.models.database.AllLinesAdapter;
+import com.example.elevator_app.models.database.StationAlertsAdapter;
 import com.example.elevator_app.models.lines.AllLines;
 import com.example.elevator_app.R;
 
 public class AllLinesActivity extends AppCompatActivity {
 
-    private AllLines allLines;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,36 +27,9 @@ public class AllLinesActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        allLines = new AllLines();
-
-        LinearLayout lineLayout = findViewById(R.id.linear_display_lines);
-        lineLayout.removeAllViews();
-        LayoutInflater inflater = getLayoutInflater();
-
-        String[] allLineNames = new String[]{"Red Line", "Blue Line", "Brown Line", "Green Line", "Orange Line", "Pink Line", "Purple Line", "Yellow Line"};
-
-        for (String str : allLineNames)
-        {
-            try{
-                View myLayout = inflater.inflate(R.layout.alert_station, lineLayout, false);
-                TextView lineView = myLayout.findViewById(R.id.txt_name_favorite_station);
-                //Add line image
-                //ImageView status = myLayout.findViewById(R.id.image_elev_status);
-                lineView.setText(str);
-
-                myLayout.setOnClickListener(v -> {
-                    Intent intent1 = new Intent(AllLinesActivity.this, SpecificLineActivity.class);
-                    intent1.putExtra("CurrentLine", str);
-                    intent1.putExtra("LineStations", allLines.getLine(str));
-                    intent1.putExtra("allStations", getIntent().getSerializableExtra("allStations"));
-                    intent1.putExtra("fromFavorites", getIntent().getBooleanExtra("fromFavorites", false));
-                    startActivity(intent1);
-                });
-
-                lineLayout.addView(myLayout);
-            } catch (NullPointerException e){
-                e.printStackTrace();
-            }
-        }
+        RecyclerView linesRecyclerView = findViewById(R.id.recycler_all_lines);
+        final AllLinesAdapter linesAdapter = new AllLinesAdapter(this);
+        linesRecyclerView.setAdapter(linesAdapter);
+        linesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

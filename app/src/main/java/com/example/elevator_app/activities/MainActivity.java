@@ -1,7 +1,9 @@
 package com.example.elevator_app.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -69,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//
+    }
+
 //    private void dialogPositiveButton(String title, String message){
 //        AlertDialog.Builder alert = new AlertDialog.Builder(this);
 //        alert.setTitle(title);
@@ -78,16 +81,16 @@ public class MainActivity extends AppCompatActivity {
 //        alert.show();
 //    }
 
-//    public void toAddFavoriteActivity(View v){
-//        Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
-//        startActivity(intent);
-//    }
+    public void toAddFavoriteActivity(View v){
+        Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
+        startActivity(intent);
+    }
 
-//    public void toAllLinesActivity(View v){
-//        Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
-//        intent.putExtra("allStations", allStations);
-//        startActivity(intent);
-//    }
+    public void toAllLinesActivity(View v){
+        Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
+        startActivity(intent);
+        intent.putExtra("fromFavorites", false);
+    }
 //
 ////    @Override
 //    public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -96,5 +99,5 @@ public class MainActivity extends AppCompatActivity {
 ////        savedInstanceState.putSerializable("allAlerts", allAlerts);
 ////    }
 //    }
-}
+
 }

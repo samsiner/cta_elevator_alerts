@@ -40,6 +40,11 @@ public class StationRepository {
         mStationDao = db.stationDao();
         buildStations();
         buildAlerts();
+
+        addFavorite("41140","Sam");
+        getFavoritesCount();
+        Log.d("Favorites count", Integer.toString(count));
+
         mAllAlertStations = mStationDao.getAllAlertStations();
         mAllFavorites = mStationDao.getAllFavorites();
     }
@@ -201,13 +206,15 @@ public class StationRepository {
                             }
                         };
                         thread.start();
+                        try{
+                            thread.join();
+                        } catch (InterruptedException e){
+                            e.printStackTrace();
+                        }
                         break;
                     }
                 }
             }
-            addFavorite("41140","Sam");
-            getFavoritesCount();
-            Log.d("Favorites count", Integer.toString(count));
         } catch (JSONException | NullPointerException e) {
             e.printStackTrace();
         }

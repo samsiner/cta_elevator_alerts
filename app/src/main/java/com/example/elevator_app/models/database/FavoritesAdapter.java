@@ -47,14 +47,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         if (mFavoriteStations != null){
             Station current = mFavoriteStations.get(position);
             holder.favoritesImageView.setImageResource(R.drawable.status_green);
-            holder.favoritesNicknameTextView.setText(current.name);
+            holder.favoritesNicknameTextView.setText(current.nickname);
             holder.favoritesStationNameTextView.setText(current.name);
-
-//            holder.st.setOnClickListener(v -> {
-//                Intent intent = new Intent(MainActivity.this, DisplayAlertActivity.class);
-//                intent.putExtra("Station", s);
-//                startActivity(intent);
-//            });
         }
     }
 
