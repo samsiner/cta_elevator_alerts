@@ -1,5 +1,6 @@
 package com.example.elevator_app.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Persist alertsout within SharedPrefs (in case of no internet)
     //TODO: Database for stations
 
-    //private SharedPreferences sharedPref;
-//    private AllAlerts allAlerts;
-//    private AllStations allStations;
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
 
@@ -79,13 +77,12 @@ public class MainActivity extends AppCompatActivity {
 //        alert.setPositiveButton("OK", null);
 //        alert.show();
 //    }
-//
+
 //    public void toAddFavoriteActivity(View v){
 //        Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
-//        intent.putExtra("allStations", allStations);
 //        startActivity(intent);
 //    }
-//
+
 //    public void toAllLinesActivity(View v){
 //        Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
 //        intent.putExtra("allStations", allStations);

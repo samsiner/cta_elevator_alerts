@@ -6,9 +6,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.elevator_app.R;
 

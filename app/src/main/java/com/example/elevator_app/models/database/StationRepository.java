@@ -1,18 +1,19 @@
 package com.example.elevator_app.models.database;
 
 import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Room;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -92,6 +93,26 @@ public class StationRepository {
         } catch (InterruptedException e){
             e.printStackTrace();
         }
+    }
+
+    public List<String> getAlertDetails(String stationID){
+        final List<String> list2 = new ArrayList<>();
+
+        Thread thread = new Thread() {
+            public void run() {
+                list2.add(0, mStationDao.getName(stationID));
+                list2.add(1, mStationDao.getHeadline(stationID));
+                list2.add(2, mStationDao.getShortDescription(stationID));
+                list2.add(3, mStationDao.getBeginDateTime(stationID));
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return list2;
     }
 
     public void addFavorite(String stationID, String nickname){
