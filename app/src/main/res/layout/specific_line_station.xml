@@ -11,7 +11,7 @@
         android:background="@color/colorTransparent">
 
         <TextView
-            android:id="@+id/text_line_station"
+            android:id="@+id/txt_line_station"
             style="@style/StationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

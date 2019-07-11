@@ -3,8 +3,11 @@ package com.example.elevator_app.activities;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.elevator_app.R;
+import com.example.elevator_app.viewmodels.SpecificLineViewModel;
+import com.example.elevator_app.viewmodels.StationAlertsViewModel;
 
 public class SpecificLineActivity extends AppCompatActivity {
 
@@ -14,6 +17,8 @@ public class SpecificLineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_specific_line);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SpecificLineViewModel mSpecificLineViewModel = ViewModelProviders.of(this).get(SpecificLineViewModel.class);
+
 
         //buildStationViews();
 
