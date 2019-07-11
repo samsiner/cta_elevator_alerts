@@ -1,4 +1,4 @@
-package com.example.elevator_app.models.database;
+package com.example.elevator_app.model;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,10 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,7 +22,7 @@ public class StationRepository {
 
     private static volatile StationRepository INSTANCE;
 
-    static StationRepository getInstance(Application application) {
+    public static StationRepository getInstance(Application application) {
         if (INSTANCE == null) {
             synchronized (StationRepository.class) {
                 if (INSTANCE == null) {
@@ -49,10 +47,10 @@ public class StationRepository {
         mAllFavorites = mStationDao.getAllFavorites();
     }
 
-    LiveData<List<Station>> mGetAllAlertStations() {
+    public LiveData<List<Station>> mGetAllAlertStations() {
         return mAllAlertStations;
     }
-    LiveData<List<Station>> mGetAllFavorites() {
+    public LiveData<List<Station>> mGetAllFavorites() {
         return mAllFavorites;
     }
 

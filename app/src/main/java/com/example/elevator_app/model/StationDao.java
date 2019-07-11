@@ -1,4 +1,4 @@
-package com.example.elevator_app.models.database;
+package com.example.elevator_app.model;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import java.util.ArrayList;
 import java.util.List;
 //TODO: Write migration class, change version numbers
 @Dao

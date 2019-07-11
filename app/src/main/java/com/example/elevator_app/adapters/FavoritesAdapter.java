@@ -1,7 +1,6 @@
-package com.example.elevator_app.models.database;
+package com.example.elevator_app.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
+import com.example.elevator_app.model.Station;
 
 import java.util.List;
 

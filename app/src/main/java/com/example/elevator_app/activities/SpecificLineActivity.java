@@ -1,15 +1,9 @@
 package com.example.elevator_app.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.example.elevator_app.models.database.Station;
 import com.example.elevator_app.R;
 
 public class SpecificLineActivity extends AppCompatActivity {

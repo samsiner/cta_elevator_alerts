@@ -1,6 +1,5 @@
 package com.example.elevator_app.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,12 +11,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.elevator_app.models.database.FavoritesAdapter;
-import com.example.elevator_app.models.database.FavoritesViewModel;
-import com.example.elevator_app.models.database.StationAlertsAdapter;
-import com.example.elevator_app.models.database.StationAlertsViewModel;
+import com.example.elevator_app.adapters.FavoritesAdapter;
+import com.example.elevator_app.viewmodels.FavoritesViewModel;
+import com.example.elevator_app.adapters.StationAlertsAdapter;
+import com.example.elevator_app.viewmodels.StationAlertsViewModel;
 import com.example.elevator_app.R;
-import com.example.elevator_app.models.database.Station;
+import com.example.elevator_app.model.Station;
 
 import java.util.List;
 

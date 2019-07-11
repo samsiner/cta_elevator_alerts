@@ -1,8 +1,10 @@
-package com.example.elevator_app.models.database;
+package com.example.elevator_app.viewmodels;
 
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+
+import com.example.elevator_app.model.StationRepository;
 
 import java.util.List;
 

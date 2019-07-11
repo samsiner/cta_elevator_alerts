@@ -1,9 +1,11 @@
-package com.example.elevator_app.models.database;
+package com.example.elevator_app.viewmodelfactories;
 
 import android.app.Application;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.elevator_app.viewmodels.DisplayAlertViewModel;
 
 public class DisplayAlertViewModelFactory implements ViewModelProvider.Factory {
 

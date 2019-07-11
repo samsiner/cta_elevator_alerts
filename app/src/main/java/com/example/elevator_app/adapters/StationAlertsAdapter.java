@@ -1,8 +1,7 @@
-package com.example.elevator_app.models.database;
+package com.example.elevator_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
 import com.example.elevator_app.activities.DisplayAlertActivity;
+import com.example.elevator_app.model.Station;
 
 import java.util.List;
 

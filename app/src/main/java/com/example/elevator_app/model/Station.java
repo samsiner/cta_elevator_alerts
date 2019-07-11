@@ -1,4 +1,4 @@
-package com.example.elevator_app.models.database;
+package com.example.elevator_app.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
