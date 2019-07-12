@@ -27,7 +27,7 @@
             android:id="@+id/recycler_favorite_stations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#60CA0D0D"
+            android:background="@drawable/main_activity_containers"
             />
 
         <Button
@@ -48,7 +48,8 @@
             android:id="@+id/recycler_station_alerts"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_activity_containers"/>
 
         <Button
             android:id="@+id/button_allLines"

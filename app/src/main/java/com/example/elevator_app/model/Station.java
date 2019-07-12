@@ -84,4 +84,6 @@ public class Station {
             return s;
         }
     }
+
+    public boolean hasElevatorAlert(){return hasElevatorAlert; }
 }

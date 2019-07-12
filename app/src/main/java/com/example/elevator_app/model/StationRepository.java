@@ -40,6 +40,7 @@ public class StationRepository {
         buildAlerts();
 
         addFavorite("41140","Sam");
+        addFavorite("41320","Tyler");
         getFavoritesCount();
         Log.d("Favorites count", Integer.toString(count));
 

@@ -5,8 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="4dp">
+        android:layout_height="60dp">
 
         <ImageView
             android:id="@+id/img_alert_station"
@@ -19,13 +18,10 @@
             android:id="@+id/txt_alert_station"
             style="@style/StationName"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="11dp"
-            android:layout_marginLeft="11dp"
+            android:layout_height="wrap_content"
             android:layout_toEndOf="@id/img_alert_station"
             android:layout_toRightOf="@id/img_alert_station"
-            android:gravity="center_vertical"/>
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 

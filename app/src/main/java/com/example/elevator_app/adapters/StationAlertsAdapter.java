@@ -2,6 +2,7 @@ package com.example.elevator_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,15 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
 
     class StationAlertsViewHolder extends RecyclerView.ViewHolder {
         private final TextView stationAlertTextView;
+        private final View itemView;
 
         private StationAlertsViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             stationAlertTextView = itemView.findViewById(R.id.txt_alert_station);
         }
+
+        public View getView(){ return itemView; }
     }
 
     private final LayoutInflater mInflater;
@@ -54,6 +59,9 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
             intent.putExtra("stationID", current.stationID);
             context.startActivity(intent);
         });
+
+        //TODO: change to minSDK of 16 instead of 15?
+        holder.getView().setBackground(Drawable.createFromPath("drawable/main_activity_containers.xml"));
     }
 
     public void setStations(List<Station> stations){
