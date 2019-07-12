@@ -1,6 +1,7 @@
 package com.example.elevator_app.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
+import com.example.elevator_app.activities.DisplayAlertActivity;
 import com.example.elevator_app.model.Station;
 
 import java.util.List;
@@ -37,8 +39,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
     private final LayoutInflater mInflater;
     private List<Station> mFavoriteStations;
+    private Context context;
 
-    public FavoritesAdapter(Context context){ mInflater = LayoutInflater.from(context);}
+    public FavoritesAdapter(Context context){
+        mInflater = LayoutInflater.from(context);
+        this.context = context;
+    }
 
     @Override
     @NonNull
@@ -53,6 +59,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             Station current = mFavoriteStations.get(position);
             holder.favoritesNicknameTextView.setText(current.nickname);
             holder.favoritesStationNameTextView.setText(current.name);
+            holder.getView().setBackground(Drawable.createFromPath("drawable/main_activity_containers.xml"));
 
             if(current.hasElevatorAlert()){
                 holder.favoritesImageView.setImageResource(R.drawable.status_red);
@@ -60,7 +67,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                 holder.favoritesImageView.setImageResource(R.drawable.status_green);
             }
 
-            holder.getView().setBackground(Drawable.createFromPath("drawable/main_activity_containers.xml"));
+            ((View)holder.favoritesNicknameTextView.getParent()).setOnClickListener(v -> {
+                Intent intent = new Intent(context, DisplayAlertActivity.class);
+                intent.putExtra("stationID", current.stationID);
+                context.startActivity(intent);
+            });
         }
     }
 
