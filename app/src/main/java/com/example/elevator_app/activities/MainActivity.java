@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
-import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
@@ -35,14 +34,12 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: Figure out what an adapter is. Do we need to create one?
-    //TODO: Fragments?
     //TODO: Proguard?
     //TODO: Instabug?
     //TODO: Refresh?
     //TODO: Make error catching more specific - or throw instead of catch?
-    //TODO: Persist alertsout within SharedPrefs (in case of no internet)
-    //TODO: Database for stations
+    //TODO: Test for no network availability
+    //TODO: Notifications?
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
