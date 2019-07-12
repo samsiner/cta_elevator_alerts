@@ -2,6 +2,7 @@ package com.example.elevator_app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,15 +11,27 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import com.example.elevator_app.adapters.FavoritesAdapter;
+import com.example.elevator_app.model.APIWorker;
 import com.example.elevator_app.viewmodels.FavoritesViewModel;
 import com.example.elevator_app.adapters.StationAlertsAdapter;
 import com.example.elevator_app.viewmodels.StationAlertsViewModel;
 import com.example.elevator_app.R;
 import com.example.elevator_app.model.Station;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,7 +82,48 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Build Alerts API work request
+        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(new Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build())
+                .build();
 
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
+                .observe(this, info -> {
+                    if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
+                        Log.d("B", "Building Alerts");
+                        buildAlerts();
+                    }
+                });
+    }
+    public void buildAlerts(){
+        Log.d("Building Alerts Finally", "Building Alerts Finally");
+        final StringBuilder sb = new StringBuilder();
+
+        Thread thread = new Thread() {
+            public void run() {
+                try {
+                    URL url = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+                    Scanner scan = new Scanner(url.openStream());
+                    while (scan.hasNext()) sb.append(scan.nextLine());
+                    scan.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    sb.append("");
+                }
+            }
+        };
+
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        mStationAlertsViewModel.putAlertsIntoDatabase(sb.toString());
     }
 
 //    private void dialogPositiveButton(String title, String message){

@@ -4,6 +4,9 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,9 +14,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class StationRepository {
     private StationDao mStationDao;
@@ -37,7 +42,7 @@ public class StationRepository {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
         buildStations();
-        buildAlerts();
+        //buildAlerts();
 
         addFavorite("41140","Sam");
         getFavoritesCount();
@@ -178,7 +183,6 @@ public class StationRepository {
         }
     }
 
-
     private void buildStations(){
         String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
         try {
@@ -199,8 +203,8 @@ public class StationRepository {
         }
     }
 
-    private void buildAlerts(){
-        String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+    public void buildAlerts(String JSONString){
+        //String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
 
         try {
             JSONObject outer = new JSONObject(JSONString);
@@ -275,4 +279,6 @@ public class StationRepository {
         }
         return sb.toString();
     }
+
+
 }
