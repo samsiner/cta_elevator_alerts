@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
     class FavoritesAdapterViewHolder extends RecyclerView.ViewHolder {
         private final View itemView;
+        private final RelativeLayout favoritesLayout;
         private final ImageView favoritesImageView;
         private final TextView favoritesNicknameTextView;
         private final TextView favoritesStationNameTextView;
@@ -29,6 +31,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         private FavoritesAdapterViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
+            favoritesLayout = itemView.findViewById(R.id.relative_layout_favorites);
             favoritesImageView = itemView.findViewById(R.id.img_favorite_station);
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
             favoritesStationNameTextView = itemView.findViewById(R.id.txt_name_favorite_station);
@@ -65,6 +68,10 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                 holder.favoritesImageView.setImageResource(R.drawable.status_red);
             } else {
                 holder.favoritesImageView.setImageResource(R.drawable.status_green);
+            }
+
+            if(position == mFavoriteStations.size()-1){
+                holder.favoritesLayout.setBackgroundResource(0);
             }
 
             ((View)holder.favoritesNicknameTextView.getParent()).setOnClickListener(v -> {
