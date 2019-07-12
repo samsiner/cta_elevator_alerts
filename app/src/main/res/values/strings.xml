@@ -4,7 +4,7 @@
     <string name="title_favorites">Favorites</string>
     <string name="title_nickname">Nickname</string>
     <string name="title_station">Station</string>
-    <string name="button_add_favorite">Add Favorite</string>
+    <string name="button_add_favorite">+</string>
     <string name="all_lines">All Lines</string>
     <string name="hint_nickname">Choose a station nickname</string>
     <string name="title_all_alerts">All Elevator Alerts</string>

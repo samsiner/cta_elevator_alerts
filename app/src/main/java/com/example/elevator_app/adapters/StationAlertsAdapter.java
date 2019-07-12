@@ -2,6 +2,7 @@ package com.example.elevator_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,16 @@ import java.util.List;
 public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdapter.StationAlertsViewHolder> {
 
     class StationAlertsViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView stationAlertImageView;
         private final TextView stationAlertTextView;
+        private final View itemView;
 
         private StationAlertsViewHolder(View itemView) {
             super(itemView);
-            stationAlertImageView = itemView.findViewById(R.id.img_alert_station);
+            this.itemView = itemView;
             stationAlertTextView = itemView.findViewById(R.id.txt_alert_station);
         }
+
+        public View getView(){ return itemView; }
     }
 
     private final LayoutInflater mInflater;
@@ -48,7 +51,6 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     public void onBindViewHolder(StationAlertsViewHolder holder, int position){
         Station current = mStations.get(position);
         if (mStations != null){
-            holder.stationAlertImageView.setImageResource(R.drawable.status_green);
             holder.stationAlertTextView.setText(current.name);
         }
 
@@ -57,6 +59,9 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
             intent.putExtra("stationID", current.stationID);
             context.startActivity(intent);
         });
+
+        //TODO: change to minSDK of 16 instead of 15?
+        holder.getView().setBackground(Drawable.createFromPath("drawable/main_activity_containers.xml"));
     }
 
     public void setStations(List<Station> stations){
