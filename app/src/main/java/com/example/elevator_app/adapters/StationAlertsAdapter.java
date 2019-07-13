@@ -3,6 +3,7 @@ package com.example.elevator_app.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,5 +83,3 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         else return 0;
     }
 }
-
-

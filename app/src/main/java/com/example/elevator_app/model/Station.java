@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -39,7 +41,7 @@ public class Station {
         this.hasElevator = bool;
     }
 
-    public void setRoutes(boolean red, boolean blue, boolean brown, boolean green,boolean orange, boolean pink, boolean purple, boolean yellow){
+    public void setRoutes(boolean red, boolean blue, boolean brown, boolean green, boolean orange, boolean pink, boolean purple, boolean yellow){
         this.red = red;
         this.blue = blue;
         this.brown = brown;
@@ -86,4 +88,14 @@ public class Station {
     }
 
     public boolean hasElevatorAlert(){return hasElevatorAlert; }
+
+    public Boolean hasRedLine(){ return red; }
+    public Boolean hasBlueLine(){ return blue; }
+    public Boolean hasBrownLine(){ return brown; }
+    public Boolean hasGreenLine(){ return green; }
+    public Boolean hasOrangeLine(){ return orange; }
+    public Boolean hasPinkLine(){ return pink; }
+    public Boolean hasPurpleLine(){ return purple; }
+    public Boolean hasYellowLine(){ return yellow; }
+
 }

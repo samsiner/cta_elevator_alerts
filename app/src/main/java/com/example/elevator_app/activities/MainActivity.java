@@ -91,13 +91,11 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
                 .observe(this, info -> {
                     if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-                        Log.d("B", "Building Alerts");
                         buildAlerts();
                     }
                 });
     }
     public void buildAlerts(){
-        Log.d("Building Alerts Finally", "Building Alerts Finally");
         final StringBuilder sb = new StringBuilder();
 
         Thread thread = new Thread() {

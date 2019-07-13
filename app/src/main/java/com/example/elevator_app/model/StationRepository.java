@@ -47,7 +47,6 @@ public class StationRepository {
         addFavorite("41140","Sam");
         addFavorite("41320","Tyler");
         getFavoritesCount();
-        Log.d("Favorites count", Integer.toString(count));
 
         mAllAlertStations = mStationDao.getAllAlertStations();
         mAllFavorites = mStationDao.getAllFavorites();
@@ -185,6 +184,7 @@ public class StationRepository {
     }
 
     private void buildStations(){
+
         String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
         try {
             JSONArray arr = new JSONArray(JSONString);
@@ -194,9 +194,22 @@ public class StationRepository {
                 String mapID = obj.getString("map_id");
                 String stationName = obj.getString("station_name");
                 boolean ada = Boolean.parseBoolean(obj.getString("ada"));
+                boolean red = Boolean.parseBoolean(obj.getString("red"));
+                boolean blue = Boolean.parseBoolean(obj.getString("blue"));
+                boolean brown = Boolean.parseBoolean(obj.getString("brn"));
+                boolean green = Boolean.parseBoolean(obj.getString("g"));
+                boolean orange = Boolean.parseBoolean(obj.getString("o"));
+                boolean pink = Boolean.parseBoolean(obj.getString("pnk"));
+                boolean purple = false;
+                if((Boolean.parseBoolean(obj.getString("p")) || Boolean.parseBoolean(obj.getString("pexp")))){
+                    purple = true;
+                }
+                boolean yellow = Boolean.parseBoolean(obj.getString("y"));
+
                 Station newStation = new Station(mapID);
                 newStation.setName(stationName);
                 newStation.setHasElevator(ada);
+                newStation.setRoutes(red, blue, brown, green, orange, pink, purple, yellow);
                 insert(newStation);
             }
         } catch (JSONException e){

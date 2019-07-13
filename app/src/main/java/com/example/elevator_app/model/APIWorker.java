@@ -16,7 +16,6 @@ public class APIWorker extends Worker {
     @NonNull
     @Override
     public Result doWork(){
-        Log.d("Working", "Working");
         return Result.success();
     }
 }

@@ -42,7 +42,6 @@ public class DisplayAlertActivity extends AppCompatActivity {
             display.append(shortDesc + "\n\n");
         } else{
             boolean hasElevator = mDisplayAlertViewModel.getHasElevator();
-            Log.d("BOOL", Boolean.toString(hasElevator));
             if (hasElevator) {
                 display.append("Elevator is present at this station and working properly.");
             } else{
