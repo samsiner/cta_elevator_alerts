@@ -98,4 +98,9 @@ public class Station {
     public Boolean hasPurpleLine(){ return purple; }
     public Boolean hasYellowLine(){ return yellow; }
 
+    public Boolean[] getRoutes(){
+        return new Boolean[]{red, blue, brown, green, orange, pink, purple, yellow};
+    }
+
+    public String getName(){ return name; }
 }

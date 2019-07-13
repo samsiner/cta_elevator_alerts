@@ -25,6 +25,52 @@
             android:layout_toRightOf="@id/img_alert_station"
             android:layout_centerVertical="true"/>
 
+        <View
+            android:id="@+id/line_0"
+            android:layout_toEndOf="@id/img_alert_station"
+            android:layout_toRightOf="@+id/img_alert_station"
+            style="@style/LineBar"
+            />
+
+        <View
+            android:id="@+id/line_1"
+            android:layout_toEndOf="@id/line_0"
+            android:layout_toRightOf="@id/line_0"
+            style="@style/LineBar"
+            />
+
+        <View
+            android:id="@+id/line_2"
+            android:layout_below="@id/txt_alert_station"
+            android:layout_toEndOf="@id/line_1"
+            android:layout_toRightOf="@+id/line_1"
+            style="@style/LineBar"
+            />
+
+        <View
+            android:id="@+id/line_3"
+            android:layout_below="@id/txt_alert_station"
+            android:layout_toEndOf="@id/line_2"
+            android:layout_toRightOf="@+id/line_2"
+            style="@style/LineBar"
+            />
+
+        <View
+            android:id="@+id/line_4"
+            android:layout_below="@id/txt_alert_station"
+            android:layout_toEndOf="@id/line_3"
+            android:layout_toRightOf="@+id/line_3"
+            style="@style/LineBar"
+            />
+
+        <View
+            android:id="@+id/line_5"
+            android:layout_below="@id/txt_alert_station"
+            android:layout_toEndOf="@id/line_4"
+            android:layout_toRightOf="@+id/line_4"
+            style="@style/LineBar"
+            />
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

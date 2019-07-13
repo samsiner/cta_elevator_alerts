@@ -192,7 +192,15 @@ public class StationRepository {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = (JSONObject) arr.get(i);
                 String mapID = obj.getString("map_id");
+
+
+
                 String stationName = obj.getString("station_name");
+                //name length is too long for this station
+                if(stationName.equals("Harold Washington Library-State/Van Buren")){
+                    stationName = "Harold Wash Library-State/Van Buren";
+                    Log.d("name: ", stationName);
+                }
                 boolean ada = Boolean.parseBoolean(obj.getString("ada"));
                 boolean red = Boolean.parseBoolean(obj.getString("red"));
                 boolean blue = Boolean.parseBoolean(obj.getString("blue"));
