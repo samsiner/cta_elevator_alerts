@@ -28,6 +28,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         private final TextView stationAlertTextView;
         private final View itemView;
         private final View[] lineViews;
+        private int viewPosition;
 
         private StationAlertsViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +44,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
             View line_5 = itemView.findViewById(R.id.line_5);
 
             lineViews = new View[]{line_0, line_1, line_2, line_3, line_4, line_5};
+            viewPosition = 0;
 
         }
 
@@ -72,44 +74,46 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         }
 
         //TODO: there's probably a better way to do this
-        int viewPosition = 0;
         if(current.hasRedLine()) {
-            holder.lineViews[viewPosition].setBackgroundResource(R.color.colorRedLine);
-            viewPosition++;
+            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorRedLine);
+            holder.viewPosition++;
         }
         if(current.hasBlueLine()){
-            holder.lineViews[viewPosition].setBackgroundResource(R.color.colorBlueLine);
-            viewPosition++;
+            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorBlueLine);
+            holder.viewPosition++;
         }
         if(current.hasBrownLine()){
-            holder.lineViews[viewPosition].setBackgroundResource(R.color.colorBrownLine);
-            viewPosition++;
+            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorBrownLine);
+            holder.viewPosition++;
         }
         if(current.hasGreenLine()){
-            holder.lineViews[viewPosition].setBackgroundResource(R.color.colorGreenLine);
-            viewPosition++;
+            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorGreenLine);
+            holder.viewPosition++;
         }
         if(current.hasOrangeLine()) {
-            holder.lineViews[viewPosition].setBackgroundResource(R.color.colorOrangeLine);
-            viewPosition++;
+            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorOrangeLine);
+            holder.viewPosition++;
         }
         if(current.hasPinkLine()) {
-            holder.lineViews[viewPosition].setBackgroundResource(R.color.colorPinkLine);
-            viewPosition++;
+            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorPinkLine);
+            holder.viewPosition++;
         }
         if(current.hasPurpleLine()) {
-            holder.lineViews[viewPosition].setBackgroundResource(R.color.colorPurpleLine);
-            viewPosition++;
+            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorPurpleLine);
+            holder.viewPosition++;
         }
         if(current.hasYellowLine()) {
-            holder.lineViews[viewPosition].setBackgroundResource(R.color.colorYellowLine);
+            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorYellowLine);
         }
+
+        holder.viewPosition = 0;
 
         Log.d("routes", current.getName() + ": " + Arrays.toString(current.getRoutes()));
         //TODO: change to minSDK of 16 instead of 15?
         holder.getView().setBackground(Drawable.createFromPath("drawable/main_activity_containers.xml"));
 
         //remove bottom border styling from last element
+        //TODO: does this work incorrectly when view is 'recycled'?
         if(position == mStations.size()-1){
             holder.stationAlertRelativeLayout.setBackgroundResource(0);
         }

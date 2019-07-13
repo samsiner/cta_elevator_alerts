@@ -24,6 +24,7 @@ public class StationRepository {
     private StationDao mStationDao;
     private LiveData<List<Station>> mAllAlertStations;
     private LiveData<List<Station>> mAllFavorites;
+    boolean duplicateStation;
 
     private static volatile StationRepository INSTANCE;
 
@@ -42,7 +43,7 @@ public class StationRepository {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
         buildStations();
-        //buildAlerts();
+//        buildAlerts();
 
         addFavorite("41140","Sam");
         addFavorite("41320","Tyler");
@@ -184,23 +185,15 @@ public class StationRepository {
     }
 
     private void buildStations(){
-
         String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
         try {
             JSONArray arr = new JSONArray(JSONString);
 
             for (int i = 0; i < arr.length(); i++) {
+                duplicateStation = false;
+
                 JSONObject obj = (JSONObject) arr.get(i);
                 String mapID = obj.getString("map_id");
-
-
-
-                String stationName = obj.getString("station_name");
-                //name length is too long for this station
-                if(stationName.equals("Harold Washington Library-State/Van Buren")){
-                    stationName = "Harold Wash Library-State/Van Buren";
-                    Log.d("name: ", stationName);
-                }
                 boolean ada = Boolean.parseBoolean(obj.getString("ada"));
                 boolean red = Boolean.parseBoolean(obj.getString("red"));
                 boolean blue = Boolean.parseBoolean(obj.getString("blue"));
@@ -208,17 +201,39 @@ public class StationRepository {
                 boolean green = Boolean.parseBoolean(obj.getString("g"));
                 boolean orange = Boolean.parseBoolean(obj.getString("o"));
                 boolean pink = Boolean.parseBoolean(obj.getString("pnk"));
-                boolean purple = false;
-                if((Boolean.parseBoolean(obj.getString("p")) || Boolean.parseBoolean(obj.getString("pexp")))){
-                    purple = true;
-                }
+                boolean purple = Boolean.parseBoolean(obj.getString("p")) || Boolean.parseBoolean(obj.getString("pexp"));
                 boolean yellow = Boolean.parseBoolean(obj.getString("y"));
 
-                Station newStation = new Station(mapID);
-                newStation.setName(stationName);
-                newStation.setHasElevator(ada);
-                newStation.setRoutes(red, blue, brown, green, orange, pink, purple, yellow);
-                insert(newStation);
+                Thread thread = new Thread() {
+                    public void run() {
+                        Station station = mStationDao.getStation(mapID);
+                        if (station != null){
+                            station.updateLines(red, blue, brown, green, orange, pink, purple, yellow);
+                            mStationDao.update(station);
+                            duplicateStation = true;
+                        }
+                    }
+                };
+                thread.start();
+                try{
+                    thread.join();
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+
+                if(!duplicateStation){
+                    String stationName = obj.getString("station_name");
+                    //name length is too long for this station
+                    if(stationName.equals("Harold Washington Library-State/Van Buren")){
+                        stationName = "Harold Wash Library-State/Van Buren";
+                    }
+
+                    Station newStation = new Station(mapID);
+                    newStation.setName(stationName);
+                    newStation.setHasElevator(ada);
+                    newStation.setRoutes(red, blue, brown, green, orange, pink, purple, yellow);
+                    insert(newStation);
+                }
             }
         } catch (JSONException e){
             e.printStackTrace();
@@ -301,6 +316,4 @@ public class StationRepository {
         }
         return sb.toString();
     }
-
-
 }

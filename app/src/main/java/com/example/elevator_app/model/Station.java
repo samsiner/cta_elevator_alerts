@@ -102,5 +102,16 @@ public class Station {
         return new Boolean[]{red, blue, brown, green, orange, pink, purple, yellow};
     }
 
+    public void updateLines(boolean red, boolean blue, boolean brown, boolean green, boolean orange, boolean pink, boolean purple, boolean yellow){
+        if(!this.red && red){ this.red = true; }
+        if(!this.blue && blue){ this.blue = true; }
+        if(!this.brown && brown){ this.brown = true; }
+        if(!this.green && green){ this.green = true; }
+        if(!this.orange && orange){ this.orange = true; }
+        if(!this.pink && pink){ this.pink = true; }
+        if(!this.purple && purple){ this.purple = true; }
+        if(!this.yellow && red){ this.yellow = true; }
+    }
+
     public String getName(){ return name; }
 }
