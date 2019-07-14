@@ -48,6 +48,7 @@
                 android:layout_marginEnd="20dp"
                 />
         </RelativeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:orientation="vertical"
             android:id="@+id/recycler_favorite_stations"
@@ -66,7 +67,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/main_activity_containers"/>
+            android:background="@drawable/main_activity_containers"
+            />
 
         <Button
             android:id="@+id/button_allLines"

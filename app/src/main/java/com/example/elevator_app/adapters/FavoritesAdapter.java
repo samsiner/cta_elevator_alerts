@@ -53,6 +53,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     @NonNull
     public FavoritesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.favorite_station, parent, false);
+        itemView.setBackgroundColor(0x00000000);
         return new FavoritesAdapterViewHolder(itemView);
     }
 
@@ -62,7 +63,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             Station current = mFavoriteStations.get(position);
             holder.favoritesNicknameTextView.setText(current.nickname);
             holder.favoritesStationNameTextView.setText(current.name);
-            holder.getView().setBackground(Drawable.createFromPath("drawable/main_activity_containers.xml"));
 
             if(current.hasElevatorAlert()){
                 holder.favoritesImageView.setImageResource(R.drawable.status_red);
@@ -70,8 +70,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                 holder.favoritesImageView.setImageResource(R.drawable.status_green);
             }
 
+            //remove bottom border on last item
             if(position == mFavoriteStations.size()-1){
                 holder.favoritesLayout.setBackgroundResource(0);
+            } else{
+                holder.favoritesLayout.setBackgroundResource(R.drawable.border_bottom);
             }
 
             ((View)holder.favoritesNicknameTextView.getParent()).setOnClickListener(v -> {
@@ -93,5 +96,3 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         else return 0;
     }
 }
-
-

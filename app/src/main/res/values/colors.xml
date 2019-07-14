@@ -19,7 +19,18 @@
     <color name="colorPurpleLine">#522298</color>
     <color name="colorYellowLine">#F9E300</color>
 
+    <array name="lineColors">
+        <item>@color/colorRedLine</item>
+        <item>@color/colorBlueLine</item>
+        <item>@color/colorBrownLine</item>
+        <item>@color/colorGreenLine</item>
+        <item>@color/colorOrangeLine</item>
+        <item>@color/colorPinkLine</item>
+        <item>@color/colorPurpleLine</item>
+        <item>@color/colorYellowLine</item>
+    </array>
+
     <!-- transparency -->
-    <color name="colorTransparent">#50ffffff</color>
+    <color name="colorTransparent">#00000000</color>
 
 </resources>

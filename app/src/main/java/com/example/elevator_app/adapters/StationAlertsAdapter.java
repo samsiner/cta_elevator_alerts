@@ -28,7 +28,6 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         private final TextView stationAlertTextView;
         private final View itemView;
         private final View[] lineViews;
-        private int viewPosition;
 
         private StationAlertsViewHolder(View itemView) {
             super(itemView);
@@ -44,7 +43,6 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
             View line_5 = itemView.findViewById(R.id.line_5);
 
             lineViews = new View[]{line_0, line_1, line_2, line_3, line_4, line_5};
-            viewPosition = 0;
 
         }
 
@@ -54,10 +52,12 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     private final LayoutInflater mInflater;
     private List<Station> mStations;
     private Context context;
+    private int[] lineColors;
 
     public StationAlertsAdapter(Context context){
         mInflater = LayoutInflater.from(context);
         this.context = context;
+        lineColors = context.getResources().getIntArray(R.array.lineColors);
     }
 
     @Override
@@ -69,54 +69,30 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     @Override
     public void onBindViewHolder(StationAlertsViewHolder holder, int position){
         Station current = mStations.get(position);
-        if (mStations != null){
-            holder.stationAlertTextView.setText(current.name);
+        Boolean[] currentRoutes = current.getRoutes();
+        holder.stationAlertTextView.setText(current.name);
+
+        //populate line bars under station name
+        int viewPosition = 0;
+        for(int i = 0; i < currentRoutes.length; i++){
+            if(currentRoutes[i]){
+                holder.lineViews[viewPosition].setBackgroundColor(lineColors[i]);
+                viewPosition++;
+            }
         }
 
-        //TODO: there's probably a better way to do this
-        if(current.hasRedLine()) {
-            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorRedLine);
-            holder.viewPosition++;
-        }
-        if(current.hasBlueLine()){
-            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorBlueLine);
-            holder.viewPosition++;
-        }
-        if(current.hasBrownLine()){
-            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorBrownLine);
-            holder.viewPosition++;
-        }
-        if(current.hasGreenLine()){
-            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorGreenLine);
-            holder.viewPosition++;
-        }
-        if(current.hasOrangeLine()) {
-            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorOrangeLine);
-            holder.viewPosition++;
-        }
-        if(current.hasPinkLine()) {
-            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorPinkLine);
-            holder.viewPosition++;
-        }
-        if(current.hasPurpleLine()) {
-            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorPurpleLine);
-            holder.viewPosition++;
-        }
-        if(current.hasYellowLine()) {
-            holder.lineViews[holder.viewPosition].setBackgroundResource(R.color.colorYellowLine);
-        }
-
-        holder.viewPosition = 0;
-
-        Log.d("routes", current.getName() + ": " + Arrays.toString(current.getRoutes()));
         //TODO: change to minSDK of 16 instead of 15?
-        holder.getView().setBackground(Drawable.createFromPath("drawable/main_activity_containers.xml"));
 
         //remove bottom border styling from last element
         //TODO: does this work incorrectly when view is 'recycled'?
         if(position == mStations.size()-1){
             holder.stationAlertRelativeLayout.setBackgroundResource(0);
+        } else{
+            holder.stationAlertRelativeLayout.setBackgroundResource(R.drawable.border_bottom);
         }
+
+        //transparent background
+        holder.itemView.setBackgroundColor(0x00000000);
 
         ((View)holder.stationAlertTextView.getParent()).setOnClickListener(v -> {
             Intent intent = new Intent(context, DisplayAlertActivity.class);

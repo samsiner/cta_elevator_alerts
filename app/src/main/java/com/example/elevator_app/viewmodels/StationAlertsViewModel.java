@@ -13,7 +13,6 @@ import java.util.List;
 public class StationAlertsViewModel extends AndroidViewModel {
 
     private LiveData<List<Station>> mAllAlertStations;
-    private Station mStation;
     StationRepository mRepository;
 
     public StationAlertsViewModel(Application application){
@@ -23,11 +22,7 @@ public class StationAlertsViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Station>> getStationAlerts() { return mAllAlertStations;}
-    public Station getStation(){ return mStation; }
     public void putAlertsIntoDatabase(String JSONString){
         mRepository.buildAlerts(JSONString);
     }
-
-
-
 }

@@ -89,15 +89,6 @@ public class Station {
 
     public boolean hasElevatorAlert(){return hasElevatorAlert; }
 
-    public Boolean hasRedLine(){ return red; }
-    public Boolean hasBlueLine(){ return blue; }
-    public Boolean hasBrownLine(){ return brown; }
-    public Boolean hasGreenLine(){ return green; }
-    public Boolean hasOrangeLine(){ return orange; }
-    public Boolean hasPinkLine(){ return pink; }
-    public Boolean hasPurpleLine(){ return purple; }
-    public Boolean hasYellowLine(){ return yellow; }
-
     public Boolean[] getRoutes(){
         return new Boolean[]{red, blue, brown, green, orange, pink, purple, yellow};
     }
@@ -110,7 +101,7 @@ public class Station {
         if(!this.orange && orange){ this.orange = true; }
         if(!this.pink && pink){ this.pink = true; }
         if(!this.purple && purple){ this.purple = true; }
-        if(!this.yellow && red){ this.yellow = true; }
+        if(!this.yellow && yellow){ this.yellow = true; }
     }
 
     public String getName(){ return name; }

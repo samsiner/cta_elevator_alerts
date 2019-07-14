@@ -1,6 +1,7 @@
 package com.example.elevator_app.activities;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Get ViewModel
+        //TODO: figure out why this is causing problems in StationAlertsAdapter
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
         mStationAlertsViewModel.getStationAlerts().observe(this, new Observer<List<Station>>() {
             @Override
@@ -147,5 +149,4 @@ public class MainActivity extends AppCompatActivity {
 ////        savedInstanceState.putSerializable("allAlerts", allAlerts);
 ////    }
 //    }
-
 }

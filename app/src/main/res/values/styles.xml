@@ -57,6 +57,6 @@
         <item name="android:layout_below">@id/txt_alert_station</item>
         <item name="android:layout_marginTop">6dp</item>
         <item name="android:layout_marginRight">1dp</item>
-        <item name="android:background">#00000000</item>
+        <item name="android:background">@color/colorTransparent</item>
     </style>
 </resources>

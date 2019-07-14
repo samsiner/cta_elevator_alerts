@@ -208,9 +208,9 @@ public class StationRepository {
                     public void run() {
                         Station station = mStationDao.getStation(mapID);
                         if (station != null){
+                            duplicateStation = true;
                             station.updateLines(red, blue, brown, green, orange, pink, purple, yellow);
                             mStationDao.update(station);
-                            duplicateStation = true;
                         }
                     }
                 };
