@@ -31,10 +31,12 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
     private final LayoutInflater mInflater;
     private String[] mLines = new String[] {"Red Line", "Blue Line", "Brown Line", "Green Line", "Orange Line", "Pink Line", "Purple Line", "Yellow Line"};
     private Context context;
+    private TextView toolbarTextView;
 
     public AllLinesAdapter(Context context){
         mInflater = LayoutInflater.from(context);
         this.context = context;
+        toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar_title);
     }
 
     @Override
@@ -63,7 +65,11 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
         else return 0;
     }
 
-    public void setTrainIcon(ImageView imageView, String line){
+    public void setToolbarTextView(){
+        toolbarTextView.setText(R.string.all_lines);
+    }
+
+    private void setTrainIcon(ImageView imageView, String line){
         switch(line){
             case "Red Line":
                 imageView.setImageResource(R.drawable.icon_redline);

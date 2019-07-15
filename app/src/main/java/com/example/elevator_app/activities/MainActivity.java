@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
         final StationAlertsAdapter alertsAdapter = new StationAlertsAdapter(this);
         alertsRecyclerView.setAdapter(alertsAdapter);

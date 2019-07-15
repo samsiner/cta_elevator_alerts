@@ -10,13 +10,14 @@
 
     <LinearLayout
         android:id="@+id/linear_all_lines"
-        style="@style/ActivityStyle">
+        style="@style/ActivityStyle"
+        android:paddingTop="30dp">
 
-        <TextView
-            android:id="@+id/text_favorites_header"
-            android:text="@string/all_lines"
-            android:textColor="#000000"
-            style="@style/SubHeaderText"/>
+        <!--<TextView-->
+            <!--android:id="@+id/text_favorites_header"-->
+            <!--android:text="@string/all_lines"-->
+            <!--android:textColor="#000000"-->
+            <!--style="@style/SubHeaderText"/>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_all_lines"

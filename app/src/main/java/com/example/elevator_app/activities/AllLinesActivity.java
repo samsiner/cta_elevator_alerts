@@ -16,11 +16,10 @@ public class AllLinesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_lines);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         RecyclerView linesRecyclerView = findViewById(R.id.recycler_all_lines);
         final AllLinesAdapter linesAdapter = new AllLinesAdapter(this);
+        linesAdapter.setToolbarTextView();
         linesRecyclerView.setAdapter(linesAdapter);
         linesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
