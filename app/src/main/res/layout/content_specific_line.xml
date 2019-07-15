@@ -9,18 +9,10 @@
     tools:showIn="@layout/activity_specific_line">
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/linear_all_lines"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp">
-
-        <TextView
-            android:id="@+id/text_line_header"
-            android:textColor="#000000"
-            style="@style/SubHeaderText"/>
-
+        style="@style/ActivityStyle"
+        >
+ 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_specific_line"
             android:orientation="vertical"
