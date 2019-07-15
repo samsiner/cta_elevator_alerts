@@ -20,12 +20,11 @@ public class SpecificLineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_line);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         mSpecificLineViewModel = ViewModelProviders.of(this, new SpecificLineViewModelFactory(this.getApplication(), getIntent().getStringExtra("line"))).get(SpecificLineViewModel.class);
 
         RecyclerView specificLineRecyclerView = findViewById(R.id.recycler_specific_line);
         final SpecificLineAdapter specificLineAdapter = new SpecificLineAdapter(this, mSpecificLineViewModel.getLine());
+        specificLineAdapter.setToolbarTextView(getIntent().getStringExtra("line"));
         specificLineRecyclerView.setAdapter(specificLineAdapter);
         specificLineRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

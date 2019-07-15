@@ -31,11 +31,13 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     private final LayoutInflater mInflater;
     private Context context;
     private String[] lineStations;
+    private TextView toolbarTextView;
 
-    public SpecificLineAdapter(Context context, String[] stations){
+    public SpecificLineAdapter(Context context, String[] lineStations){
         mInflater = LayoutInflater.from(context);
         this.context = context;
-        lineStations = stations;
+        this.lineStations = lineStations;
+        toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar_title);
     }
 
     @Override
@@ -68,5 +70,9 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     public int getItemCount(){
         if (lineStations != null) return lineStations.length;
         else return 0;
+    }
+
+    public void setToolbarTextView(String lineName){
+        toolbarTextView.setText(lineName);
     }
 }
