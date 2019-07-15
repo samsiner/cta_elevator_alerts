@@ -10,19 +10,13 @@
 
     <LinearLayout
         android:id="@+id/LinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        style="@style/ActivityStyle"
         >
         <RelativeLayout
             android:id="@+id/relative_layout_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-
-
             <TextView
                 android:id="@+id/text_favorites_header"
                 android:text="@string/title_favorites"

@@ -17,6 +17,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- activity styles -->
+    <style name="ActivityStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">30dp</item>
+    </style>
+
     <!-- font styles -->
     <style name="TitleText">
         <item name="android:layout_width">match_parent</item>
@@ -48,6 +57,23 @@
         <item name="android:layout_height">15dp</item>
         <item name="android:layout_marginLeft">15dp</item>
         <item name="android:layout_marginRight">15dp</item>
+    </style>
+
+    <style name="trainIcon">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+    </style>
+
+    <style name="rightArrow">
+        <item name="android:layout_height">15dp</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/right_arrow</item>
     </style>
 
     <!-- line color bar -->

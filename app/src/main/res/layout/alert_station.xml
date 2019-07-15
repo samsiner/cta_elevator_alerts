@@ -25,6 +25,10 @@
             android:layout_toRightOf="@id/img_alert_station"
             android:layout_centerVertical="true"/>
 
+        <ImageView
+            android:id="@+id/img_right_arrow"
+            style="@style/rightArrow"/>
+
         <View
             android:id="@+id/line_0"
             android:layout_toEndOf="@id/img_alert_station"

@@ -9,12 +9,8 @@
     tools:showIn="@layout/activity_all_lines">
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/linear_all_lines"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp">
+        style="@style/ActivityStyle">
 
         <TextView
             android:id="@+id/text_favorites_header"
@@ -26,8 +22,7 @@
             android:id="@+id/recycler_all_lines"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/SubHeaderText"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
