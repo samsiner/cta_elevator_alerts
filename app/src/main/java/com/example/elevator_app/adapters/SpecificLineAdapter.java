@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +22,12 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     class SpecificLineAdapterViewHolder extends RecyclerView.ViewHolder {
         private final TextView specificLineTextView;
+        private final ImageView adaImageView;
 
         private SpecificLineAdapterViewHolder(View itemView) {
             super(itemView);
             specificLineTextView = itemView.findViewById(R.id.txt_line_station);
+            adaImageView = itemView.findViewById(R.id.img_ada);
         }
     }
 
@@ -50,6 +53,10 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     public void onBindViewHolder(SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
         String currStationID = lineStations[position];
         holder.specificLineTextView.setText(((SpecificLineActivity)context).getStationName(currStationID));
+        if(!((SpecificLineActivity)context).getHasElevator(currStationID)){
+            holder.adaImageView.setImageResource(android.R.color.transparent);
+        }
+
 
         ((View)holder.specificLineTextView.getParent()).setOnClickListener(v -> {
             boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);

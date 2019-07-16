@@ -35,6 +35,10 @@ public class SpecificLineActivity extends AppCompatActivity {
     public String getStationName(String stationID){
         return mSpecificLineViewModel.getStationName(stationID);
     }
+
+    public Boolean getHasElevator(String stationID){
+        return mSpecificLineViewModel.getHasElevator(stationID);
+    }
 //
 //    private void buildStationViews(){
 //        LinearLayout stationLayout = findViewById(R.id.linear_line_stations);

@@ -106,7 +106,7 @@ public class StationRepository {
     }
 
     private boolean hasElevator = false;
-    public boolean getHasElevator(String stationID) {
+    public boolean mGetHasElevator(String stationID) {
         Thread thread = new Thread() {
             public void run() {
                 hasElevator = mStationDao.getHasElevator(stationID);

@@ -22,7 +22,7 @@ public class DisplayAlertViewModel extends AndroidViewModel {
         headline = arrList.get(1);
         shortDesc = arrList.get(2);
         beginDateTime = arrList.get(3);
-        hasElevator = mRepository.getHasElevator(stationID);
+        hasElevator = mRepository.mGetHasElevator(stationID);
     }
 
     public String getHeadline(){ return headline;}

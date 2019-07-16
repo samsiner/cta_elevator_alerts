@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.elevator_app.R;
 
@@ -19,8 +20,8 @@ public class AddFavoriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
-        Toolbar toolbar = findViewById(R.id.toolbar_old);
-        setSupportActionBar(toolbar);
+        TextView toolbarTextView = findViewById(R.id.txt_toolbar_title);
+        toolbarTextView.setText(R.string.add_favorite);
         String stationID = getIntent().getStringExtra("stationID");
 ///T
 //        if(stationID != null){
