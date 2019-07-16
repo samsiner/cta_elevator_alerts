@@ -16,11 +16,11 @@
 
         <TextView
             android:id="@+id/txt_toolbar_title"
-            android:text="ALL LINES"
             style="@style/TitleText"
             />
 
         <TextView
+            android:id="@+id/txt_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"

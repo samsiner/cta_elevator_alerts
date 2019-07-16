@@ -24,7 +24,7 @@ public class SpecificLineActivity extends AppCompatActivity {
 
         RecyclerView specificLineRecyclerView = findViewById(R.id.recycler_specific_line);
         final SpecificLineAdapter specificLineAdapter = new SpecificLineAdapter(this, mSpecificLineViewModel.getLine());
-        specificLineAdapter.setToolbarTextView(getIntent().getStringExtra("line"));
+        specificLineAdapter.setToolbar(getIntent().getStringExtra("line"));
         specificLineRecyclerView.setAdapter(specificLineAdapter);
         specificLineRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

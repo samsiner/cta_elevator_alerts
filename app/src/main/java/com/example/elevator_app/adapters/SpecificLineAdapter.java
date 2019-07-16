@@ -3,12 +3,14 @@ package com.example.elevator_app.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,12 +36,14 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     private final LayoutInflater mInflater;
     private Context context;
     private String[] lineStations;
+    private Toolbar toolbar;
     private TextView toolbarTextView;
 
     public SpecificLineAdapter(Context context, String[] lineStations){
         mInflater = LayoutInflater.from(context);
         this.context = context;
         this.lineStations = lineStations;
+        toolbar = ((Activity)context).findViewById(R.id.toolbar_dynamic);
         toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar_title);
     }
 
@@ -79,7 +83,37 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         else return 0;
     }
 
-    public void setToolbarTextView(String lineName){
+    public void setToolbar(String lineName){
         toolbarTextView.setText(lineName);
+        switch(lineName){
+            case("Red Line"):
+                toolbar.setBackgroundResource(R.color.colorRedLine);
+                break;
+            case("Blue Line"):
+                toolbar.setBackgroundResource(R.color.colorBlueLine);
+                break;
+            case("Brown Line"):
+                toolbar.setBackgroundResource(R.color.colorBrownLine);
+                break;
+            case("Green Line"):
+                toolbar.setBackgroundResource(R.color.colorGreenLine);
+                break;
+            case("Orange Line"):
+                toolbar.setBackgroundResource(R.color.colorOrangeLine);
+                break;
+            case("Pink Line"):
+                toolbar.setBackgroundResource(R.color.colorPinkLine);
+                break;
+            case("Purple Line"):
+                toolbar.setBackgroundResource(R.color.colorPurpleLine);
+                break;
+            case("Yellow Line"):
+                TextView cancelText = ((Activity)context).findViewById(R.id.txt_cancel);
+                int colorID = context.getResources().getColor(R.color.colorPrimaryDark);
+                cancelText.setTextColor(colorID);
+                toolbar.setBackgroundResource(R.color.colorYellowLine);
+                toolbarTextView.setTextColor(colorID);
+                break;
+        }
     }
 }
