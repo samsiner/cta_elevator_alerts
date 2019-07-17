@@ -24,7 +24,7 @@ public class StationRepository {
     private StationDao mStationDao;
     private LiveData<List<Station>> mAllAlertStations;
     private LiveData<List<Station>> mAllFavorites;
-    boolean duplicateStation;
+    private boolean duplicateStation;
 
     private static volatile StationRepository INSTANCE;
 
@@ -119,6 +119,22 @@ public class StationRepository {
             e.printStackTrace();
         }
         return hasElevator;
+    }
+
+    private boolean hasElevatorAlert = false;
+    public boolean mGetHasElevatorAlert(String stationID){
+        Thread thread = new Thread() {
+            public void run() {
+                hasElevatorAlert = mStationDao.getHasElevatorAlert(stationID);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return hasElevatorAlert;
     }
 
     public void addAlert(Station station, String headline, String shortDesc, String beginDateTime){

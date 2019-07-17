@@ -12,24 +12,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
 import com.example.elevator_app.activities.AddFavoriteActivity;
 import com.example.elevator_app.activities.DisplayAlertActivity;
 import com.example.elevator_app.activities.SpecificLineActivity;
+import com.example.elevator_app.model.Station;
 import com.example.elevator_app.viewmodels.SpecificLineViewModel;
+
+import java.util.List;
 
 public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapter.SpecificLineAdapterViewHolder> {
 
     class SpecificLineAdapterViewHolder extends RecyclerView.ViewHolder {
         private final TextView specificLineTextView;
         private final ImageView adaImageView;
+        private final ImageView statusImageView;
 
         private SpecificLineAdapterViewHolder(View itemView) {
             super(itemView);
             specificLineTextView = itemView.findViewById(R.id.txt_line_station);
             adaImageView = itemView.findViewById(R.id.img_ada);
+            statusImageView = itemView.findViewById(R.id.img_status);
         }
     }
 
@@ -60,7 +66,9 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         if(!((SpecificLineActivity)context).getHasElevator(currStationID)){
             holder.adaImageView.setImageResource(android.R.color.transparent);
         }
-
+        if(!((SpecificLineActivity) context).getHasElevatorAlert(currStationID)){
+            holder.statusImageView.setImageResource(android.R.color.transparent);
+        }
 
         ((View)holder.specificLineTextView.getParent()).setOnClickListener(v -> {
             boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);

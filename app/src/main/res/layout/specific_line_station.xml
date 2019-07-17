@@ -8,12 +8,20 @@
         android:layout_height="60dp">
 
         <ImageView
-            android:id="@+id/img_ada"
-            android:layout_height="40dp"
-            android:layout_width="40dp"
+        android:id="@+id/img_ada"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/accessible"
+        />
+
+        <ImageView
+            android:id="@+id/img_status"
+            style="@style/StatusImage"
             android:layout_centerVertical="true"
-            android:paddingRight="15dp"
-            android:src="@drawable/accessible"
+            android:src="@drawable/status_red"
+            android:layout_toEndOf="@id/img_ada"
+            android:layout_toRightOf="@+id/img_ada"
             />
 
         <TextView
@@ -23,8 +31,8 @@
             android:layout_height="wrap_content"
             android:text="Howard"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/img_ada"
-            android:layout_toRightOf="@+id/img_ada"
+            android:layout_toEndOf="@id/img_status"
+            android:layout_toRightOf="@+id/img_status"
             />
 
     </RelativeLayout>

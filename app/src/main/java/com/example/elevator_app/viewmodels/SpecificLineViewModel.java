@@ -4,8 +4,12 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
+import com.example.elevator_app.model.Station;
 import com.example.elevator_app.model.StationRepository;
+
+import java.util.List;
 
 public class SpecificLineViewModel extends AndroidViewModel {
 
@@ -47,5 +51,9 @@ public class SpecificLineViewModel extends AndroidViewModel {
 
     public Boolean getHasElevator(String stationID){
         return mRepository.mGetHasElevator(stationID);
+    }
+
+    public Boolean getHasElevatorAlert(String stationID){
+        return mRepository.mGetHasElevatorAlert(stationID);
     }
 }

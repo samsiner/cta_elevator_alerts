@@ -57,4 +57,7 @@ public interface StationDao {
 
         @Query("SELECT hasElevator FROM station_table WHERE stationID = :stationID")
         boolean getHasElevator(String stationID);
+
+        @Query("SELECT hasElevatorAlert FROM station_table WHERE stationID = :stationID")
+        boolean getHasElevatorAlert(String stationID);
 }
