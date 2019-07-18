@@ -16,27 +16,28 @@ public class AddFavoriteActivity extends AppCompatActivity {
     //TODO: Check if user is requesting a station with no elevator
     //TODO: Keep nickname in textview after station is selected
 
+    private String nickname, stationID, stationName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
         TextView toolbarTextView = findViewById(R.id.txt_toolbar_title);
         toolbarTextView.setText(R.string.add_favorite);
-        String stationID = getIntent().getStringExtra("stationID");
-///T
-//        if(stationID != null){
-//            TextView stationName = findViewById(R.id.text_add_favorite_station);
-//            AllStations allStations = (AllStations) getIntent().getSerializableExtra("allStations");
-//            Log.d("allStations size", Integer.toString(allStations.getAllStations().size()));
-//            //stationName.setText(allStations.getStation(stationID).getName());
-//        }
+        stationID = getIntent().getStringExtra("stationID");
+        stationName = getIntent().getStringExtra("stationName");
+
+        if (stationID != null && stationName != null){
+            TextView addStation = findViewById(R.id.text_add_favorite_station);
+            addStation.setText(stationName);
+        }
+        //TODO: if either is null, do something
     }
 
     //TODO: Display station
 
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(AddFavoriteActivity.this, AllLinesActivity.class);
-        intent.putExtra("allStations", getIntent().getSerializableExtra("allStations"));
         intent.putExtra("fromFavorites", true);
         startActivity(intent);
     }
@@ -48,7 +49,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         String nickname = nicknameTextEdit.getText().toString();
         String stationID = getIntent().getStringExtra("stationID");
 
-        if(stationID == null){
+        if (stationID == null){
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Error");
             alert.setMessage("Please enter a nickname and select a station");

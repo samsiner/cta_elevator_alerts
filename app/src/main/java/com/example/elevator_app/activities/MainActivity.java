@@ -78,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if (getIntent().getStringExtra("Nickname") != null){
+            String nickname = getIntent().getStringExtra("Nickname");
+            String stationID = getIntent().getStringExtra("stationID");
+            mFavoritesViewModel.addFavorite(stationID, nickname);
+        }
+
         //Build Alerts API work request
         PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
                 .setConstraints(new Constraints.Builder()
@@ -94,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
     public void buildAlerts(){
         final StringBuilder sb = new StringBuilder();
 

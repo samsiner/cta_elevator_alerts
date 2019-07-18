@@ -62,7 +62,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     @Override
     public void onBindViewHolder(SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
         String currStationID = lineStations[position];
-        holder.specificLineTextView.setText(((SpecificLineActivity)context).getStationName(currStationID));
+        String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
+        holder.specificLineTextView.setText(currStationName);
         if(!((SpecificLineActivity)context).getHasElevator(currStationID)){
             holder.adaImageView.setImageResource(android.R.color.transparent);
         }
@@ -77,6 +78,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             if (fromFavorites){
                 intent = new Intent(context, AddFavoriteActivity.class);
                 intent.putExtra("stationID", currStationID);
+                intent.putExtra("stationName", currStationName);
             } else{
                 intent = new Intent(context, DisplayAlertActivity.class);
                 intent.putExtra("stationID", currStationID);

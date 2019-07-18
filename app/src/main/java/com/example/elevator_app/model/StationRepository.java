@@ -60,6 +60,34 @@ public class StationRepository {
         return mStationDao.getAllFavorites();
     }
 
+    public void mAddFavorite(String stationID, String nickname){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.addFavorite(stationID, nickname);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void mRemoveFavorite(String stationID){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.removeFavorite(stationID);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
     private String s;
     public String mGetStationName(String stationID){
         Thread thread = new Thread() {

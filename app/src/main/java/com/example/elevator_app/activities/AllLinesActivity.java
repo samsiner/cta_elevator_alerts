@@ -11,7 +11,6 @@ import com.example.elevator_app.R;
 
 public class AllLinesActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,4 +22,6 @@ public class AllLinesActivity extends AppCompatActivity {
         linesRecyclerView.setAdapter(linesAdapter);
         linesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+
 }

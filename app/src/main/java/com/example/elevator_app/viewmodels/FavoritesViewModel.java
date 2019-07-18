@@ -12,15 +12,21 @@ import java.util.List;
 
 public class FavoritesViewModel extends AndroidViewModel {
 
+    private StationRepository mRepository;
+
     private LiveData<List<Station>> mAllFavoriteStations;
 
     public FavoritesViewModel(Application application){
         super(application);
-        StationRepository mRepository = StationRepository.getInstance(application);
+        mRepository = StationRepository.getInstance(application);
         mAllFavoriteStations = mRepository.mGetAllFavorites();
     }
 
     public androidx.lifecycle.LiveData<List<Station>> getFavorites() { return mAllFavoriteStations;}
+
+    public void addFavorite(String stationID, String nickname){ mRepository.addFavorite(stationID, nickname);}
+
+    public void removeFavorite(String stationID){ mRepository.removeFavorite(stationID);}
 }
 
 
