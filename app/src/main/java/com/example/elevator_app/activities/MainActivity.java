@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
@@ -28,6 +29,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.example.elevator_app.adapters.FavoritesAdapter;
+import com.example.elevator_app.adapters.SwipeController;
 import com.example.elevator_app.model.APIWorker;
 import com.example.elevator_app.viewmodels.FavoritesViewModel;
 import com.example.elevator_app.adapters.StationAlertsAdapter;
@@ -64,10 +66,16 @@ public class MainActivity extends AppCompatActivity {
         alertsRecyclerView.setAdapter(alertsAdapter);
         alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+
         RecyclerView favoritesRecyclerView = findViewById(R.id.recycler_favorite_stations);
         final FavoritesAdapter favoritesAdapter = new FavoritesAdapter(this);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        SwipeController swipeController = new SwipeController(favoritesAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(favoritesRecyclerView);
 
         //Get ViewModel
         //TODO: figure out why this is causing problems in StationAlertsAdapter
@@ -79,11 +87,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         mFavoritesViewModel.getFavorites().observe(this, new Observer<List<Station>>() {
             @Override
             public void onChanged(List<Station> stations) {
+                LinearLayout rl = findViewById(R.id.LinearLayout);
+                rl.removeView(findViewById(R.id.noFavoritesAdded));
                 favoritesAdapter.setFavorites(stations);
+
+                //If no favorites
+                if (mFavoritesViewModel.getNumFavorites() < 1) {
+                    rl = findViewById(R.id.LinearLayout);
+                    TextView tv = new TextView(MainActivity.this);
+                    tv.setId(R.id.noFavoritesAdded);
+                    tv.setText("No favorites added!");
+                    tv.setTextSize(18);
+                    tv.setTextColor(MainActivity.this.getResources().getColor(R.color.colorWhite));
+                    tv.setHeight(100);
+                    tv.setWidth(100);
+                    tv.setGravity(Gravity.CENTER);
+                    tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
+                    RelativeLayout tv2 = findViewById(R.id.relative_layout_main);
+                    int index = rl.indexOfChild(tv2);
+                    rl.addView(tv, index + 1);
+                }
             }
         });
 
@@ -110,22 +136,6 @@ public class MainActivity extends AppCompatActivity {
                         buildAlerts();
                     }
                 });
-
-        //If no favorites
-        if (mFavoritesViewModel.getNumFavorites() < 1) {
-            LinearLayout rl = this.findViewById(R.id.LinearLayout);
-            TextView tv = new TextView(this);
-            tv.setText("No favorites added!");
-            tv.setTextSize(18);
-            tv.setTextColor(this.getResources().getColor(R.color.colorWhite));
-            tv.setHeight(100);
-            tv.setWidth(100);
-            tv.setGravity(Gravity.CENTER);
-            tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
-            RelativeLayout tv2 = this.findViewById(R.id.relative_layout_main);
-            int index = rl.indexOfChild(tv2);
-            rl.addView(tv, index + 1);
-        }
 
         //If no alerts
         if (mStationAlertsViewModel.getNumAlerts() < 1) {
@@ -188,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         intent.putExtra("fromFavorites", false);
     }
+
+    public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }
 //
 ////    @Override
 //    public void onSaveInstanceState(Bundle savedInstanceState) {
