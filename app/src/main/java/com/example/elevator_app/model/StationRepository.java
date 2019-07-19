@@ -45,9 +45,9 @@ public class StationRepository {
         buildStations();
 //        buildAlerts();
 
-        addFavorite("41140","Sam");
-        addFavorite("41320","Tyler");
-        getFavoritesCount();
+        //addFavorite("41140", "Sam");
+
+        //getFavoritesCount();
 
         mAllAlertStations = mStationDao.getAllAlertStations();
         mAllFavorites = mStationDao.getAllFavorites();
@@ -119,7 +119,7 @@ public class StationRepository {
     }
 
     private int count = 0;
-    public void getFavoritesCount() {
+    public int getFavoritesCount() {
         Thread thread = new Thread() {
             public void run() {
                 count = mStationDao.getFavoritesCount();
@@ -131,6 +131,23 @@ public class StationRepository {
         } catch (InterruptedException e){
             e.printStackTrace();
         }
+        return count;
+    }
+
+    private int countAlerts = 0;
+    public int getAlertsCount() {
+        Thread thread = new Thread() {
+            public void run() {
+                countAlerts = mStationDao.getAlertsCount();
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return countAlerts;
     }
 
     private boolean hasElevator = false;

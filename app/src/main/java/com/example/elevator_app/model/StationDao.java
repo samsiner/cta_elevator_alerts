@@ -43,6 +43,9 @@ public interface StationDao {
         @Query("SELECT COUNT(isFavorite) FROM station_table WHERE isFavorite = 1")
         int getFavoritesCount();
 
+        @Query("SELECT COUNT(hasElevatorAlert) FROM station_table WHERE hasElevatorAlert = 1")
+        int getAlertsCount();
+
         @Query("SELECT name FROM station_table where stationID = :stationID")
         String getName(String stationID);
 

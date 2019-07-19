@@ -23,28 +23,13 @@ public abstract class StationRoomDatabase extends RoomDatabase {
                             .addCallback(sStationRoomDatabaseCallback)
                             //TODO: Look into migration
                             .fallbackToDestructiveMigration()
-                            .addCallback(sStationRoomDatabaseCallback)
+                            //.addCallback(sStationRoomDatabaseCallback)
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
-
-//    private static StationRoomDatabase.Callback sStationRoomDatabaseCallback = new StationRoomDatabase.Callback(){
-//
-//        @Override
-//        public void onCreate (@NonNull SupportSQLiteDatabase db){
-//            super.onCreate(db);
-//            Thread thread = new Thread() {
-//                public void run() {
-//                    StationDao stationDao = INSTANCE.stationDao();
-//                    stationDao.deleteAll();
-//                }
-//            };
-//            thread.start();
-//        }
-//    };
 
     private static StationRoomDatabase.Callback sStationRoomDatabaseCallback = new StationRoomDatabase.Callback(){
 

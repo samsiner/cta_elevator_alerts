@@ -1,10 +1,18 @@
 package com.example.elevator_app.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -44,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
             mFavoritesViewModel.addFavorite(stationID, nickname);
         }
 
+        buildAlerts();
+
         //Build Alerts API work request
         PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
                 .setConstraints(new Constraints.Builder()
@@ -99,6 +110,38 @@ public class MainActivity extends AppCompatActivity {
                         buildAlerts();
                     }
                 });
+
+        //If no favorites
+        if (mFavoritesViewModel.getNumFavorites() < 1) {
+            LinearLayout rl = this.findViewById(R.id.LinearLayout);
+            TextView tv = new TextView(this);
+            tv.setText("No favorites added!");
+            tv.setTextSize(18);
+            tv.setTextColor(this.getResources().getColor(R.color.colorWhite));
+            tv.setHeight(100);
+            tv.setWidth(100);
+            tv.setGravity(Gravity.CENTER);
+            tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
+            RelativeLayout tv2 = this.findViewById(R.id.relative_layout_main);
+            int index = rl.indexOfChild(tv2);
+            rl.addView(tv, index + 1);
+        }
+
+        //If no alerts
+        if (mStationAlertsViewModel.getNumAlerts() < 1) {
+            LinearLayout rl = this.findViewById(R.id.LinearLayout);
+            TextView tv = new TextView(this);
+            tv.setText("No current elevator alerts!");
+            tv.setTextSize(18);
+            tv.setTextColor(this.getResources().getColor(R.color.colorWhite));
+            tv.setHeight(100);
+            tv.setWidth(100);
+            tv.setGravity(Gravity.CENTER);
+            tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
+            TextView tv2 = this.findViewById(R.id.text_tempDown_header);
+            int index = rl.indexOfChild(tv2);
+            rl.addView(tv, index + 1);
+        }
     }
 
     public void buildAlerts(){
