@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
+    //TODO: limit nickname input to a certain characgter length
 
     class FavoritesAdapterViewHolder extends RecyclerView.ViewHolder {
         private final View itemView;
