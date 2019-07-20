@@ -286,7 +286,7 @@ public class StationRepository {
                     String stationName = obj.getString("station_name");
                     //name length is too long for this station
                     if(stationName.equals("Harold Washington Library-State/Van Buren")){
-                        stationName = "Harold Wash Library-State/Van Buren";
+                        stationName = "Harold Washington Library";
                     }
 
                     Station newStation = new Station(mapID);

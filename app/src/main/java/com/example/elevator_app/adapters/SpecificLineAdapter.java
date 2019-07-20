@@ -106,6 +106,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     @Override
     public void onBindViewHolder(SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
+        //TODO add '+' icon next to station name when coming from 'add favorite' activity
         String currStationID = lineStations[position];
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
 
