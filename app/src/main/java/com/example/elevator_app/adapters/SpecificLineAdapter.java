@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +29,55 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     class SpecificLineAdapterViewHolder extends RecyclerView.ViewHolder {
         private final TextView specificLineTextView;
+        private final View verticalBar;
+        private final GradientDrawable circle;
         private final ImageView adaImageView;
         private final ImageView statusImageView;
 
         private SpecificLineAdapterViewHolder(View itemView) {
             super(itemView);
             specificLineTextView = itemView.findViewById(R.id.txt_line_station);
+            verticalBar = itemView.findViewById(R.id.view_vertical_bar);
+            circle = (GradientDrawable)itemView.findViewById(R.id.view_circle).getBackground();
             adaImageView = itemView.findViewById(R.id.img_ada);
             statusImageView = itemView.findViewById(R.id.img_status);
+        }
+
+        public void setUI(String lineName, View verticalBar, GradientDrawable circle){
+            switch(lineName){
+                case("Red Line"):
+                    verticalBar.setBackgroundResource(R.color.colorRedLine);
+                    circle.setStroke(3, context.getResources().getColor(R.color.colorRedLine));
+                    break;
+                case("Blue Line"):
+                    verticalBar.setBackgroundResource(R.color.colorBlueLine);
+                    circle.setStroke(3, context.getResources().getColor(R.color.colorBlueLine));
+                    break;
+                case("Brown Line"):
+                    verticalBar.setBackgroundResource(R.color.colorBrownLine);
+                    circle.setStroke(3, context.getResources().getColor(R.color.colorBrownLine));
+                    break;
+                case("Green Line"):
+                    verticalBar.setBackgroundResource(R.color.colorGreenLine);
+                    circle.setStroke(3, context.getResources().getColor(R.color.colorGreenLine));
+                    break;
+                case("Orange Line"):
+                    verticalBar.setBackgroundResource(R.color.colorOrangeLine);
+                    circle.setStroke(3, context.getResources().getColor(R.color.colorOrangeLine));
+                    break;
+                case("Pink Line"):
+                    verticalBar.setBackgroundResource(R.color.colorPinkLine);
+                    circle.setStroke(3, context.getResources().getColor(R.color.colorPinkLine));
+                    break;
+                case("Purple Line"):
+                    verticalBar.setBackgroundResource(R.color.colorPurpleLine);
+                    circle.setStroke(3, context.getResources().getColor(R.color.colorPurpleLine));
+                    break;
+                case("Yellow Line"):
+                    verticalBar.setBackgroundResource(R.color.colorYellowLine);
+                    circle.setStroke(3, context.getResources().getColor(R.color.colorYellowLine));
+                    break;
+            }
         }
     }
 
@@ -61,8 +103,11 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     @Override
     public void onBindViewHolder(SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
+        holder.setUI(toolbarTextView.getText().toString(), holder.verticalBar, holder.circle);
+
         String currStationID = lineStations[position];
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
+
         holder.specificLineTextView.setText(currStationName);
         if(!((SpecificLineActivity)context).getHasElevator(currStationID)){
             holder.adaImageView.setImageResource(android.R.color.transparent);
@@ -94,6 +139,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     }
 
     public void setToolbar(String lineName){
+        int colorID;
         toolbarTextView.setText(lineName);
         switch(lineName){
             case("Red Line"):
@@ -119,7 +165,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
                 break;
             case("Yellow Line"):
                 TextView cancelText = ((Activity)context).findViewById(R.id.txt_cancel);
-                int colorID = context.getResources().getColor(R.color.colorPrimaryDark);
+                colorID = context.getResources().getColor(R.color.colorPrimaryDark);
                 cancelText.setTextColor(colorID);
                 toolbar.setBackgroundResource(R.color.colorYellowLine);
                 toolbarTextView.setTextColor(colorID);

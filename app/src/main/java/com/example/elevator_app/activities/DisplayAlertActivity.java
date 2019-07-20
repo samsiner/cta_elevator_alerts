@@ -19,8 +19,7 @@ public class DisplayAlertActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_alert);
-        Toolbar toolbar = findViewById(R.id.toolbar_old);
-        setSupportActionBar(toolbar);
+        TextView toolbarText = findViewById(R.id.txt_toolbar);
 
         String stationID = getIntent().getStringExtra("stationID");
 
@@ -31,6 +30,7 @@ public class DisplayAlertActivity extends AppCompatActivity {
         String beginDateTime = mDisplayAlertViewModel.getBeginDateTime();
         String stationName = mDisplayAlertViewModel.getStationName();
 
+        toolbarText.setText(stationName);
         TextView display = findViewById(R.id.txt_display_alert);
         display.setTextSize(15);
         display.setTextColor(Color.BLACK);
