@@ -44,6 +44,7 @@
     </style>
 
     <style name="FavoriteNickname">
+        <item name="android:layout_centerVertical">true</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>

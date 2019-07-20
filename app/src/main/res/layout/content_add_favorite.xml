@@ -10,12 +10,12 @@
 
     <LinearLayout
         style="@style/ActivityStyle"
-        android:paddingTop="30dp"
         >
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputNickname_textedit"
@@ -23,34 +23,38 @@
                 android:layout_height="50dp"
                 android:hint="@string/hint_nickname"
                 />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/border_bottom"
-                >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/border_bottom">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/text_add_favorite_station"
-                    android:text="@string/title_station"
-                    style="@style/FavoriteNickname"
-                    android:onClick="toAllLinesActivity"
-                    />
-            </RelativeLayout>
-
-            <Button
-                android:id="@+id/add_favorite_button"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_add_favorite_station"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/add_favorite"
-                android:onClick="toMainActivity"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/title_station"
+                style="@style/FavoriteNickname"
+                android:onClick="toAllLinesActivity"
                 />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:id="@+id/img_right_arrow"
+                style="@style/rightArrow"
+                android:src="@drawable/right_arrow"
+                />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/add_favorite_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_favorite"
+            android:onClick="toMainActivity"
+            />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
