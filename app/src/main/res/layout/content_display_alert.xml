@@ -8,10 +8,32 @@
     tools:context=".activities.DisplayAlertActivity"
     tools:showIn="@layout/activity_display_alert">
 
-    <TextView
-        android:id="@+id/txt_display_alert"
+    <LinearLayout
+        android:id="@+id/linearLayout_station_alert"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="50dp"
-        />
+        android:layout_height="match_parent"
+        style="@style/ActivityStyle"
+        android:layout_marginTop="30dp">
+
+
+        <TextView
+            android:id="@+id/txt_alert_date_time"
+            android:background="@drawable/border_bottom"
+            style="@style/StationAlertBold"
+            android:paddingBottom="15dp"
+            />
+
+        <!--<TextView-->
+            <!--android:id="@+id/txt_alert_headline"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--style="@style/StationAlertBold"/>-->
+
+        <TextView
+            android:id="@+id/txt_alert_shortDesc"
+            android:layout_marginTop="30dp"
+            android:lineSpacingExtra="6dp"
+            style="@style/StationAlertRegular"/>
+
+
+    </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

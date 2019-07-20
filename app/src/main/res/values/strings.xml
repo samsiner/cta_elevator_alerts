@@ -22,4 +22,6 @@
     <string name="purpleline">Purple Line</string>
     <string name="yellowline">Yellow Line</string>
     <string name="title_activity_specific_line">Specific Line</string>
+    <string name="present_elevator">All elevators at this station are working properly.</string>
+    <string name="no_elevator">There are no elevators at this station.</string>
 </resources>
