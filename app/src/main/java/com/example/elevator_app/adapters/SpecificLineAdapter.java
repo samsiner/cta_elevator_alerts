@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
+import android.widget.RelativeLayout.LayoutParams;
 
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,35 +50,35 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             switch(lineName){
                 case("Red Line"):
                     verticalBar.setBackgroundResource(R.color.colorRedLine);
-                    circle.setStroke(3, context.getResources().getColor(R.color.colorRedLine));
+                    circle.setStroke(5, context.getResources().getColor(R.color.colorRedLine));
                     break;
                 case("Blue Line"):
                     verticalBar.setBackgroundResource(R.color.colorBlueLine);
-                    circle.setStroke(3, context.getResources().getColor(R.color.colorBlueLine));
+                    circle.setStroke(5, context.getResources().getColor(R.color.colorBlueLine));
                     break;
                 case("Brown Line"):
                     verticalBar.setBackgroundResource(R.color.colorBrownLine);
-                    circle.setStroke(3, context.getResources().getColor(R.color.colorBrownLine));
+                    circle.setStroke(5, context.getResources().getColor(R.color.colorBrownLine));
                     break;
                 case("Green Line"):
                     verticalBar.setBackgroundResource(R.color.colorGreenLine);
-                    circle.setStroke(3, context.getResources().getColor(R.color.colorGreenLine));
+                    circle.setStroke(5, context.getResources().getColor(R.color.colorGreenLine));
                     break;
                 case("Orange Line"):
                     verticalBar.setBackgroundResource(R.color.colorOrangeLine);
-                    circle.setStroke(3, context.getResources().getColor(R.color.colorOrangeLine));
+                    circle.setStroke(5, context.getResources().getColor(R.color.colorOrangeLine));
                     break;
                 case("Pink Line"):
                     verticalBar.setBackgroundResource(R.color.colorPinkLine);
-                    circle.setStroke(3, context.getResources().getColor(R.color.colorPinkLine));
+                    circle.setStroke(5, context.getResources().getColor(R.color.colorPinkLine));
                     break;
                 case("Purple Line"):
                     verticalBar.setBackgroundResource(R.color.colorPurpleLine);
-                    circle.setStroke(3, context.getResources().getColor(R.color.colorPurpleLine));
+                    circle.setStroke(5, context.getResources().getColor(R.color.colorPurpleLine));
                     break;
                 case("Yellow Line"):
                     verticalBar.setBackgroundResource(R.color.colorYellowLine);
-                    circle.setStroke(3, context.getResources().getColor(R.color.colorYellowLine));
+                    circle.setStroke(5, context.getResources().getColor(R.color.colorYellowLine));
                     break;
             }
         }
@@ -103,10 +106,18 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     @Override
     public void onBindViewHolder(SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
-        holder.setUI(toolbarTextView.getText().toString(), holder.verticalBar, holder.circle);
-
         String currStationID = lineStations[position];
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
+
+        holder.setUI(toolbarTextView.getText().toString(), holder.verticalBar, holder.circle);
+        if(position == 0 || position == lineStations.length - 1){
+            holder.verticalBar.getLayoutParams().height = 60;
+            if(position == lineStations.length - 1){
+                LayoutParams lp = (LayoutParams)holder.verticalBar.getLayoutParams();
+                lp.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                holder.verticalBar.setLayoutParams(lp);
+            }
+        }
 
         holder.specificLineTextView.setText(currStationName);
         if(!((SpecificLineActivity)context).getHasElevator(currStationID)){

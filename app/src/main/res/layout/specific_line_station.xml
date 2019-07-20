@@ -26,6 +26,7 @@
                 android:id="@+id/view_vertical_bar"
                 style="@style/stationLineLine"
                 android:background="@color/colorRedLine"
+                android:layout_alignParentBottom="true"
                 />
             <View
                 android:id="@+id/view_circle"
