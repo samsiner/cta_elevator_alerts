@@ -2,13 +2,9 @@ package com.example.elevator_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,7 +14,6 @@ import com.example.elevator_app.R;
 import com.example.elevator_app.activities.DisplayAlertActivity;
 import com.example.elevator_app.model.Station;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdapter.StationAlertsViewHolder> {
@@ -45,14 +40,12 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
             lineViews = new View[]{line_0, line_1, line_2, line_3, line_4, line_5};
 
         }
-
-        public View getView(){ return itemView; }
     }
 
     private final LayoutInflater mInflater;
     private List<Station> mStations;
-    private Context context;
-    private int[] lineColors;
+    private final Context context;
+    private final int[] lineColors;
 
     public StationAlertsAdapter(Context context){
         mInflater = LayoutInflater.from(context);

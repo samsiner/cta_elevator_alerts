@@ -1,15 +1,11 @@
 package com.example.elevator_app.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,14 +18,12 @@ import com.example.elevator_app.activities.MainActivity;
 import com.example.elevator_app.model.Station;
 import com.example.elevator_app.viewmodels.FavoritesViewModel;
 
-import java.util.Collections;
 import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
-    //TODO: limit nickname input to a certain characgter length
+    //TODO: limit nickname input to a certain character length
 
     class FavoritesAdapterViewHolder extends RecyclerView.ViewHolder {
-        private final View itemView;
         private final RelativeLayout favoritesLayout;
         private final ImageView favoritesImageView;
         private final TextView favoritesNicknameTextView;
@@ -37,20 +31,17 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
         private FavoritesAdapterViewHolder(View itemView) {
             super(itemView);
-            this.itemView = itemView;
             favoritesLayout = itemView.findViewById(R.id.relative_layout_favorites);
             favoritesImageView = itemView.findViewById(R.id.img_favorite_station);
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
             favoritesStationNameTextView = itemView.findViewById(R.id.txt_name_favorite_station);
         }
-
-        public View getView(){return itemView;}
     }
 
     private final LayoutInflater mInflater;
     private List<Station> mFavoriteStations;
-    private Context context;
-    private FavoritesViewModel mFavoritesViewModel;
+    private final Context context;
+    private final FavoritesViewModel mFavoritesViewModel;
 
     public FavoritesAdapter(Context context){
         mInflater = LayoutInflater.from(context);

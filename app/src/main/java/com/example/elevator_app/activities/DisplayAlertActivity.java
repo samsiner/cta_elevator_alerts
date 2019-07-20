@@ -1,15 +1,10 @@
 package com.example.elevator_app.activities;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.util.Log;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.elevator_app.R;

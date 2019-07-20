@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/border_bottom">
+    android:layout_height="60dp"
+    android:background="@drawable/border_bottom">
 
         <ImageView
             android:id="@+id/img_train_icon"
             style="@style/trainIcon"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:contentDescription="Train Icon"/>
 
         <TextView
             android:id="@+id/txt_all_lines"
@@ -24,6 +21,6 @@
 
         <ImageView
             android:id="@+id/img_right_arrow"
-            style="@style/rightArrow"/>
-        </RelativeLayout>
+            style="@style/rightArrow"
+            android:contentDescription="Right Arrow"/>
 </RelativeLayout>

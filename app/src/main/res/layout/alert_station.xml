@@ -27,7 +27,8 @@
 
         <ImageView
             android:id="@+id/img_right_arrow"
-            style="@style/rightArrow"/>
+            style="@style/rightArrow"
+            android:contentDescription="Right Arrow"/>
 
         <View
             android:id="@+id/line_0"

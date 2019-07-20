@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import java.util.ArrayList;
 import java.util.List;
 //TODO: Write migration class, change version numbers
 @Dao
@@ -27,9 +26,6 @@ public interface StationDao {
 
         @Query("UPDATE station_table SET isFavorite = 0, nickname = '' WHERE stationID = :id")
         void removeFavorite(String id);
-
-        @Query("SELECT * FROM station_table")
-        LiveData<List<Station>> getAllStations();
 
         @Query("SELECT * FROM station_table WHERE hasElevatorAlert = 1")
         LiveData<List<Station>> getAllAlertStations();

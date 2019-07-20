@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,16 +15,14 @@ public class AddFavoriteActivity extends AppCompatActivity {
     //TODO: Check if user is requesting a station with no elevator
     //TODO: Keep nickname in textview after station is selected
 
-    private String nickname, stationID, stationName;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
         TextView toolbarTextView = findViewById(R.id.txt_toolbar_title);
         toolbarTextView.setText(R.string.add_favorite);
-        stationID = getIntent().getStringExtra("stationID");
-        stationName = getIntent().getStringExtra("stationName");
+        String stationID = getIntent().getStringExtra("stationID");
+        String stationName = getIntent().getStringExtra("stationName");
 
         if (stationID != null && stationName != null){
             TextView addStation = findViewById(R.id.text_add_favorite_station);

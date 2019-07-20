@@ -4,17 +4,13 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
-import com.example.elevator_app.model.Station;
 import com.example.elevator_app.model.StationRepository;
-
-import java.util.List;
 
 public class SpecificLineViewModel extends AndroidViewModel {
 
-    String mLine;
-    StationRepository mRepository;
+    private final String mLine;
+    private final StationRepository mRepository;
 
     public SpecificLineViewModel(@NonNull Application application, String line) {
         super(application);

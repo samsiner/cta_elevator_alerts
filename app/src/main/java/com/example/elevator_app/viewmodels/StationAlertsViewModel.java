@@ -12,8 +12,7 @@ import java.util.List;
 
 public class StationAlertsViewModel extends AndroidViewModel {
 
-    private LiveData<List<Station>> mAllAlertStations;
-    StationRepository mRepository;
+    private final StationRepository mRepository;
 
     public StationAlertsViewModel(Application application){
         super(application);
