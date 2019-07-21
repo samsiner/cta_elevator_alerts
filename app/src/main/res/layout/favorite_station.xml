@@ -7,7 +7,6 @@
         android:id="@+id/relative_layout_favorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:background="@drawable/border_bottom">
 
@@ -20,9 +19,9 @@
         <TextView
             android:id="@+id/txt_nickname_favorite_station"
             style="@style/FavoriteNickname"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_toEndOf="@id/img_favorite_station"
             android:layout_toRightOf="@id/img_favorite_station"
             android:text="@string/title_nickname" />
@@ -32,9 +31,10 @@
             style="@style/StationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_nickname_favorite_station"
             android:layout_toEndOf="@id/img_favorite_station"
             android:layout_toRightOf="@id/img_favorite_station"
+            android:layout_below="@+id/txt_nickname_favorite_station"
+            android:layout_marginTop="3dp"
             android:text="@string/title_station" />
 
         <ImageView

@@ -67,14 +67,11 @@
 
         <Button
             android:id="@+id/button_allLines"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
+            style="@style/actionButton"
             android:onClick="toAllLinesActivity"
             android:text="@string/all_lines"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -44,7 +44,6 @@
     </style>
 
     <style name="FavoriteNickname">
-        <item name="android:layout_centerVertical">true</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
@@ -106,5 +105,15 @@
         <item name="android:layout_width">2dp</item>
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <!-- button graphic -->
+    <style name="actionButton">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+
     </style>
 </resources>
