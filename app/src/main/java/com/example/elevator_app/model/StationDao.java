@@ -30,6 +30,9 @@ public interface StationDao {
         @Query("SELECT * FROM station_table WHERE hasElevatorAlert = 1")
         LiveData<List<Station>> getAllAlertStations();
 
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1")
+        List<String> getAllAlertStationIDs();
+
         @Query("SELECT * FROM station_table WHERE stationID = :stationID")
         Station getStation(String stationID);
 
@@ -45,9 +48,6 @@ public interface StationDao {
         @Query("SELECT name FROM station_table where stationID = :stationID")
         String getName(String stationID);
 
-        @Query("SELECT headline FROM station_table where stationID = :stationID")
-        String getHeadline(String stationID);
-
         @Query("SELECT shortDescription FROM station_table where stationID = :stationID")
         String getShortDescription(String stationID);
 
@@ -59,4 +59,10 @@ public interface StationDao {
 
         @Query("SELECT hasElevatorAlert FROM station_table WHERE stationID = :stationID")
         boolean getHasElevatorAlert(String stationID);
+
+        @Query("SELECT isFavorite FROM station_table WHERE stationID = :stationID")
+        boolean isFavoriteStation(String stationID);
+
+        @Query("UPDATE station_table SET hasElevatorAlert = 0, shortDescription = '', beginDateTime = '' WHERE stationID = :stationID")
+        void removeAlert(String stationID);
 }
