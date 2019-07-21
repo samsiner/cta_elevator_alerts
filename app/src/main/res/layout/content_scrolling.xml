@@ -65,13 +65,19 @@
             android:background="@drawable/main_activity_containers"
             />
 
-        <Button
-            android:id="@+id/button_allLines"
+        <RelativeLayout
             style="@style/actionButton"
-            android:onClick="toAllLinesActivity"
-            android:text="@string/all_lines"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:onClick="toAllLinesActivity">
+            <TextView
+                android:id="@+id/button_allLines"
+                style="@style/ActionButtonText"
+                android:text="@string/all_lines" />
+            <ImageView
+                android:src="@drawable/right_arrow"
+                style="@style/rightArrow"/>
+        </RelativeLayout>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
