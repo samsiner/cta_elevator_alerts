@@ -48,8 +48,7 @@
             android:layout_centerVertical="true"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="removeFavorite"
-            />
+            android:contentDescription="Edit or Remove Icon"/>
 
     </RelativeLayout>
 

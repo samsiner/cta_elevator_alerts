@@ -31,7 +31,7 @@ public abstract class StationRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static StationRoomDatabase.Callback sStationRoomDatabaseCallback = new StationRoomDatabase.Callback(){
+    private static final StationRoomDatabase.Callback sStationRoomDatabaseCallback = new StationRoomDatabase.Callback(){
 
         @Override
         public void onOpen (@NonNull SupportSQLiteDatabase db){

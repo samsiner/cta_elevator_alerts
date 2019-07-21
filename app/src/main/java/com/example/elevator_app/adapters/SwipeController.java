@@ -1,10 +1,5 @@
 package com.example.elevator_app.adapters;
 
-import android.graphics.Canvas;
-import android.telecom.Call;
-import android.view.MotionEvent;
-import android.view.View;
-
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 

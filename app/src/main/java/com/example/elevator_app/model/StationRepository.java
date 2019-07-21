@@ -4,9 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,16 +11,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class StationRepository {
-    private StationDao mStationDao;
-    private LiveData<List<Station>> mAllAlertStations;
-    private LiveData<List<Station>> mAllFavorites;
+    private final StationDao mStationDao;
     private boolean duplicateStation;
 
     private static volatile StationRepository INSTANCE;
@@ -44,13 +37,6 @@ public class StationRepository {
         mStationDao = db.stationDao();
         buildStations();
 //        buildAlerts();
-
-        //addFavorite("41140", "Sam");
-
-        //getFavoritesCount();
-
-        mAllAlertStations = mStationDao.getAllAlertStations();
-        mAllFavorites = mStationDao.getAllFavorites();
     }
 
     public LiveData<List<Station>> mGetAllAlertStations() {
@@ -58,34 +44,6 @@ public class StationRepository {
     }
     public LiveData<List<Station>> mGetAllFavorites() {
         return mStationDao.getAllFavorites();
-    }
-
-    public void mAddFavorite(String stationID, String nickname){
-        Thread thread = new Thread() {
-            public void run() {
-                mStationDao.addFavorite(stationID, nickname);
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void mRemoveFavorite(String stationID){
-        Thread thread = new Thread() {
-            public void run() {
-                mStationDao.removeFavorite(stationID);
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
     }
 
     private String s;
@@ -104,7 +62,7 @@ public class StationRepository {
         return s;
     }
 
-    public void insert(Station station) {
+    private void insert(Station station) {
         Thread thread = new Thread() {
             public void run() {
                 mStationDao.insert(station);
@@ -182,7 +140,7 @@ public class StationRepository {
         return hasElevatorAlert;
     }
 
-    public void addAlert(Station station, String headline, String shortDesc, String beginDateTime){
+    private void addAlert(Station station, String headline, String shortDesc, String beginDateTime){
         Thread thread = new Thread() {
             public void run() {
                 station.addAlert(headline, shortDesc, beginDateTime);
@@ -203,9 +161,8 @@ public class StationRepository {
         Thread thread = new Thread() {
             public void run() {
                 list2.add(0, mStationDao.getName(stationID));
-                list2.add(1, mStationDao.getHeadline(stationID));
-                list2.add(2, mStationDao.getShortDescription(stationID));
-                list2.add(3, mStationDao.getBeginDateTime(stationID));
+                list2.add(1, mStationDao.getShortDescription(stationID));
+                list2.add(2, mStationDao.getBeginDateTime(stationID));
             }
         };
         thread.start();

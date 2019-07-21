@@ -1,13 +1,8 @@
 package com.example.elevator_app.activities;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,8 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,11 +28,9 @@ import com.example.elevator_app.viewmodels.FavoritesViewModel;
 import com.example.elevator_app.adapters.StationAlertsAdapter;
 import com.example.elevator_app.viewmodels.StationAlertsViewModel;
 import com.example.elevator_app.R;
-import com.example.elevator_app.model.Station;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -51,10 +42,16 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Make error catching more specific - or throw instead of catch?
     //TODO: Test for no network availability
     //TODO: Notifications?
+    //TODO: Display last updated time for elevator alerts
+    //TODO: right facing arrow next to each station on specificLine
+    //TODO: TESTS
+    //TODO: Edit favorite functionality
+    //TODO: Show trash can when swiping to remove favorite
+    //TODO: Keep nickname on add favorites
+    //TODO: Not rebuild database every time you open
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,36 +77,28 @@ public class MainActivity extends AppCompatActivity {
         //Get ViewModel
         //TODO: figure out why this is causing problems in StationAlertsAdapter
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
-        mStationAlertsViewModel.getStationAlerts().observe(this, new Observer<List<Station>>() {
-            @Override
-            public void onChanged(List<Station> stations) {
-                alertsAdapter.setStations(stations);
-            }
-        });
+        mStationAlertsViewModel.getStationAlerts().observe(this, alertsAdapter::setStations);
 
-        mFavoritesViewModel.getFavorites().observe(this, new Observer<List<Station>>() {
-            @Override
-            public void onChanged(List<Station> stations) {
-                LinearLayout rl = findViewById(R.id.LinearLayout);
-                rl.removeView(findViewById(R.id.noFavoritesAdded));
-                favoritesAdapter.setFavorites(stations);
+        mFavoritesViewModel.getFavorites().observe(this, stations -> {
+            LinearLayout rl = findViewById(R.id.LinearLayout);
+            rl.removeView(findViewById(R.id.noFavoritesAdded));
+            favoritesAdapter.setFavorites(stations);
 
-                //If no favorites
-                if (mFavoritesViewModel.getNumFavorites() < 1) {
-                    rl = findViewById(R.id.LinearLayout);
-                    TextView tv = new TextView(MainActivity.this);
-                    tv.setId(R.id.noFavoritesAdded);
-                    tv.setText("No favorites added!");
-                    tv.setTextSize(18);
-                    tv.setTextColor(MainActivity.this.getResources().getColor(R.color.colorWhite));
-                    tv.setHeight(100);
-                    tv.setWidth(100);
-                    tv.setGravity(Gravity.CENTER);
-                    tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
-                    RelativeLayout tv2 = findViewById(R.id.relative_layout_main);
-                    int index = rl.indexOfChild(tv2);
-                    rl.addView(tv, index + 1);
-                }
+            //If no favorites
+            if (mFavoritesViewModel.getNumFavorites() < 1) {
+                rl = findViewById(R.id.LinearLayout);
+                TextView tv = new TextView(MainActivity.this);
+                tv.setId(R.id.noFavoritesAdded);
+                tv.setText("No favorites added!");
+                tv.setTextSize(18);
+                tv.setTextColor(MainActivity.this.getResources().getColor(R.color.colorWhite));
+                tv.setHeight(100);
+                tv.setWidth(100);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
+                RelativeLayout tv2 = findViewById(R.id.relative_layout_main);
+                int index = rl.indexOfChild(tv2);
+                rl.addView(tv, index + 1);
             }
         });
 
@@ -154,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void buildAlerts(){
+    private void buildAlerts(){
         final StringBuilder sb = new StringBuilder();
 
         Thread thread = new Thread() {

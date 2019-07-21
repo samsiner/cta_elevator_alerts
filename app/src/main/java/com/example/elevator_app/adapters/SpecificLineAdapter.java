@@ -3,10 +3,7 @@ package com.example.elevator_app.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +13,12 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 import android.widget.RelativeLayout.LayoutParams;
 
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
 import com.example.elevator_app.activities.AddFavoriteActivity;
 import com.example.elevator_app.activities.DisplayAlertActivity;
 import com.example.elevator_app.activities.SpecificLineActivity;
-import com.example.elevator_app.model.Station;
-import com.example.elevator_app.viewmodels.SpecificLineViewModel;
-
-import java.util.List;
 
 public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapter.SpecificLineAdapterViewHolder> {
 
@@ -46,7 +38,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             statusImageView = itemView.findViewById(R.id.img_status);
         }
 
-        public void setUI(String lineName, View verticalBar, GradientDrawable circle){
+        private void setUI(String lineName, View verticalBar, GradientDrawable circle){
             switch(lineName){
                 case("Red Line"):
                     verticalBar.setBackgroundResource(R.color.colorRedLine);
@@ -85,10 +77,10 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     }
 
     private final LayoutInflater mInflater;
-    private Context context;
-    private String[] lineStations;
-    private Toolbar toolbar;
-    private TextView toolbarTextView;
+    private final Context context;
+    private final String[] lineStations;
+    private final Toolbar toolbar;
+    private final TextView toolbarTextView;
 
     public SpecificLineAdapter(Context context, String[] lineStations){
         mInflater = LayoutInflater.from(context);

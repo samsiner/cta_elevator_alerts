@@ -29,9 +29,9 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
     }
 
     private final LayoutInflater mInflater;
-    private String[] mLines = new String[] {"Red Line", "Blue Line", "Brown Line", "Green Line", "Orange Line", "Pink Line", "Purple Line", "Yellow Line"};
-    private Context context;
-    private TextView toolbarTextView;
+    private final String[] mLines = new String[] {"Red Line", "Blue Line", "Brown Line", "Green Line", "Orange Line", "Pink Line", "Purple Line", "Yellow Line"};
+    private final Context context;
+    private final TextView toolbarTextView;
 
     public AllLinesAdapter(Context context){
         mInflater = LayoutInflater.from(context);

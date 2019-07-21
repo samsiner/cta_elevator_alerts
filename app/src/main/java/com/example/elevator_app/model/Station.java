@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -16,7 +14,7 @@ public class Station {
 
     @PrimaryKey
     @NonNull
-    public String stationID;
+    public final String stationID;
     public boolean hasElevator, hasElevatorAlert, isFavorite;
     public boolean red, blue, brown, green, orange, pink, purple, yellow;
     public String name, headline, shortDescription, beginDateTime, nickname;
@@ -59,23 +57,6 @@ public class Station {
         hasElevatorAlert = true;
     }
 
-    public void removeAlert(){
-        this.headline = "";
-        this.shortDescription = "";
-        this.beginDateTime = "";
-        hasElevatorAlert = false;
-    }
-
-    public void addFavorite(String nickname){
-        this.isFavorite = true;
-        this.nickname = nickname;
-    }
-
-    public void removeFavorite(){
-        this.isFavorite = false;
-        nickname = "";
-    }
-
     private String convertDateTime(String s){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss", Locale.US);
         try {
@@ -103,6 +84,4 @@ public class Station {
         if(!this.purple && purple){ this.purple = true; }
         if(!this.yellow && yellow){ this.yellow = true; }
     }
-
-    public String getName(){ return name; }
 }

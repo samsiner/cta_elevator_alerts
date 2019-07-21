@@ -9,8 +9,8 @@ import com.example.elevator_app.viewmodels.DisplayAlertViewModel;
 
 public class DisplayAlertViewModelFactory implements ViewModelProvider.Factory {
 
-    private Application mApplication;
-    private String mParam;
+    private final Application mApplication;
+    private final String mParam;
 
     public DisplayAlertViewModelFactory(Application application, String param){
         mApplication = application;
@@ -18,6 +18,7 @@ public class DisplayAlertViewModelFactory implements ViewModelProvider.Factory {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(Class<T> modelClass){
         return (T) new DisplayAlertViewModel(mApplication, mParam);
     }

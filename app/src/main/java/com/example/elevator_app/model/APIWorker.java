@@ -1,7 +1,6 @@
 package com.example.elevator_app.model;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;

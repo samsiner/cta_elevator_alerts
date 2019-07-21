@@ -3,7 +3,6 @@ package com.example.elevator_app.viewmodels;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import com.example.elevator_app.model.Station;
 import com.example.elevator_app.model.StationRepository;
@@ -12,9 +11,7 @@ import java.util.List;
 
 public class FavoritesViewModel extends AndroidViewModel {
 
-    private StationRepository mRepository;
-
-    private LiveData<List<Station>> mAllFavoriteStations;
+    private final StationRepository mRepository;
 
     public FavoritesViewModel(Application application){
         super(application);
