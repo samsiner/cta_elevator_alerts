@@ -28,7 +28,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/border_bottom">
+            android:background="@drawable/border_bottom"
+            android:onClick="toAllLinesActivity">
 
             <TextView
                 android:id="@+id/text_add_favorite_station"
@@ -37,7 +38,6 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/title_station"
                 style="@style/FavoriteNickname"
-                android:onClick="toAllLinesActivity"
                 />
 
             <ImageView
