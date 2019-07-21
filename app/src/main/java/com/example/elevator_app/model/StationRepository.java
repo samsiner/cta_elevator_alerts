@@ -18,6 +18,8 @@ import java.util.Scanner;
 public class StationRepository {
     private final StationDao mStationDao;
     private boolean duplicateStation;
+    private ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
+    private ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
 
     private static volatile StationRepository INSTANCE;
 
@@ -140,10 +142,10 @@ public class StationRepository {
         return hasElevatorAlert;
     }
 
-    private void addAlert(Station station, String headline, String shortDesc, String beginDateTime){
+    private void addAlert(Station station, String shortDesc, String beginDateTime){
         Thread thread = new Thread() {
             public void run() {
-                station.addAlert(headline, shortDesc, beginDateTime);
+                station.addAlert(shortDesc, beginDateTime);
                 mStationDao.update(station);
             }
         };
@@ -192,6 +194,51 @@ public class StationRepository {
         Thread thread = new Thread() {
             public void run() {
                 mStationDao.removeFavorite(stationID);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    boolean isFavorite = false;
+    public boolean isFavorite(String stationID){
+        Thread thread = new Thread() {
+            public void run() {
+                isFavorite = mStationDao.isFavoriteStation(stationID);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return isFavorite;
+    }
+
+    public void removeAlert(String stationID){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.removeAlert(stationID);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    private ArrayList<String> allAlertStationIDs;
+    private void getAllAlertStationIDs(){
+        Thread thread = new Thread() {
+            public void run() {
+                allAlertStationIDs = (ArrayList) mStationDao.getAllAlertStationIDs();
             }
         };
         thread.start();
@@ -261,6 +308,9 @@ public class StationRepository {
     public void buildAlerts(String JSONString){
         //String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
 
+        getAllAlertStationIDs();
+        ArrayList<String> afterStationsOut = new ArrayList<>();
+
         try {
             JSONObject outer = new JSONObject(JSONString);
             JSONObject inner = outer.getJSONObject("CTAAlerts");
@@ -280,18 +330,22 @@ public class StationRepository {
                         String id = serviceInstance.getString("ServiceId");
                         String headline = alert.getString("Headline");
 
-                        //Eliminates "back in service" alerts
                         if (headline.contains("Back in Service")) continue;
 
-                        String shortDesc = alert.getString("ShortDescription");
+                        afterStationsOut.add(id);
+                        if (mGetHasElevatorAlert(id)) continue;
 
+                        String shortDesc = alert.getString("ShortDescription");
                         String beginDateTime = alert.getString("EventStart");
 
                         Thread thread = new Thread() {
                             public void run() {
+                               try{
                                    Station station = mStationDao.getStation(id);
-                                   if (station == null) Log.d("NULL", "NULL");
-                                   else addAlert(station, headline, shortDesc, beginDateTime);
+                                   addAlert(station, shortDesc, beginDateTime);
+                               } catch(NullPointerException e){
+                                   e.printStackTrace();
+                               }
                             }
                         };
                         thread.start();
@@ -307,7 +361,23 @@ public class StationRepository {
         } catch (JSONException | NullPointerException e) {
             e.printStackTrace();
         }
+
+        for (String id : allAlertStationIDs){
+            if (!afterStationsOut.contains(id)){
+                removeAlert(id);
+                if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
+            }
+        }
+
+        for (String id : afterStationsOut){
+            if (!allAlertStationIDs.contains(id)){
+                if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
+            }
+        }
     }
+
+    public List<String> getFavoriteElevatorNewlyWorking(){ return favoriteElevatorNewlyWorking; }
+    public List<String> getFavoriteElevatorNewlyOut(){ return favoriteElevatorNewlyOut; }
 
     private String pullJSONFromWebService(String url){
         final StringBuilder sb = new StringBuilder();

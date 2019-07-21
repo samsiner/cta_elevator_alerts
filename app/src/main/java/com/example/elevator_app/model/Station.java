@@ -17,7 +17,7 @@ public class Station {
     public final String stationID;
     public boolean hasElevator, hasElevatorAlert, isFavorite;
     public boolean red, blue, brown, green, orange, pink, purple, yellow;
-    public String name, headline, shortDescription, beginDateTime, nickname;
+    public String name, shortDescription, beginDateTime, nickname;
 
     public Station(@NonNull String stationID){
         this.stationID = stationID;
@@ -25,7 +25,6 @@ public class Station {
         hasElevator = false;
         hasElevatorAlert = false;
         isFavorite = false;
-        headline = "";
         shortDescription = "";
         beginDateTime = "";
         nickname = "";
@@ -50,8 +49,7 @@ public class Station {
         this.yellow = yellow;
     }
 
-    public void addAlert(String headline, String shortDescription, String beginDateTime){
-        this.headline = headline;
+    public void addAlert(String shortDescription, String beginDateTime){
         this.shortDescription = shortDescription;
         this.beginDateTime = convertDateTime(beginDateTime);
         hasElevatorAlert = true;

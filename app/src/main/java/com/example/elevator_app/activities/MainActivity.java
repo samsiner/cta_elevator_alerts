@@ -1,8 +1,14 @@
 package com.example.elevator_app.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,11 +61,15 @@ public class MainActivity extends AppCompatActivity {
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
+    private NotificationCompat.Builder builder;
+    private boolean isClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        buildNotification();
 
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
         final StationAlertsAdapter alertsAdapter = new StationAlertsAdapter(this);
@@ -78,7 +90,26 @@ public class MainActivity extends AppCompatActivity {
         //Get ViewModel
         //TODO: figure out why this is causing problems in StationAlertsAdapter
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
-        mStationAlertsViewModel.getStationAlerts().observe(this, alertsAdapter::setStations);
+        mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
+            alertsAdapter.setStations(stations1);
+
+            //Display notification if elevator is newly out
+            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
+            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
+            if (mStationAlertsViewModel.getStationElevatorsNewlyOut() != null){
+                for (String s : mStationAlertsViewModel.getStationElevatorsNewlyOut()) {
+                    showNotification(Integer.parseInt(s), true);
+                }
+            }
+
+            //Display notification if elevator is newly working
+            if (mStationAlertsViewModel.getStationElevatorsNewlyWorking() != null) {
+
+                for (String s : mStationAlertsViewModel.getStationElevatorsNewlyWorking()) {
+                    showNotification(Integer.parseInt(s), false);
+                }
+            }
+        });
 
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
             LinearLayout rl = findViewById(R.id.LinearLayout);
@@ -144,6 +175,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void buildNotification(){
+        //Create notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", "Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("This is a channel");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        //Create notification builder
+        builder = new NotificationCompat.Builder(this,"CHANNEL_ID")
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_MAX);
+    }
+
+    private void showNotification(int id, boolean isNewlyOut){
+        //Show notification
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        //Create notification tap action
+        Intent intent = new Intent(this, DisplayAlertActivity.class);
+        intent.putExtra("stationID", Integer.toString(id));
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(intent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (isNewlyOut){
+            builder.setSmallIcon(R.drawable.status_red)
+                    .setContentIntent(resultPendingIntent)
+                    .setContentTitle("Elevator is down!")
+                   .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is down");
+        } else {
+            builder.setSmallIcon(R.drawable.status_green)
+                    .setContentIntent(resultPendingIntent)
+                    .setContentTitle("Elevator is back up!")
+                    .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is back up and running");
+        }
+
+        notificationManager.notify(id, builder.build());
+    }
+
     private void buildAlerts(){
         final StringBuilder sb = new StringBuilder();
 
@@ -169,14 +241,6 @@ public class MainActivity extends AppCompatActivity {
         }
         mStationAlertsViewModel.putAlertsIntoDatabase(sb.toString());
     }
-
-//    private void dialogPositiveButton(String title, String message){
-//        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-//        alert.setTitle(title);
-//        alert.setMessage(message);
-//        alert.setPositiveButton("OK", null);
-//        alert.show();
-//    }
 
     public void toAddFavoriteActivity(View v){
         Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
