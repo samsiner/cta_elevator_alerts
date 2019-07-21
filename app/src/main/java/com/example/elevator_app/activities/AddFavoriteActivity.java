@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.elevator_app.R;
 
 public class AddFavoriteActivity extends AppCompatActivity {
-    //TODO: Check if user is requesting an already favorite station or same nickname
+    //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
     //TODO: Make station grayed out if no elevator
 
     @Override
