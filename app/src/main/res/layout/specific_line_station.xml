@@ -22,8 +22,15 @@
             android:layout_toEndOf="@+id/img_ada"
             android:layout_toRightOf="@+id/img_ada"
             >
+
             <View
-                android:id="@+id/view_vertical_bar"
+                android:id="@+id/view_vertical_bar_top"
+                style="@style/stationLineLine"
+                android:background="@color/colorRedLine"
+                android:layout_alignParentTop="true"
+                />
+            <View
+                android:id="@+id/view_vertical_bar_bottom"
                 style="@style/stationLineLine"
                 android:background="@color/colorRedLine"
                 android:layout_alignParentBottom="true"

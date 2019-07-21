@@ -24,7 +24,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     class SpecificLineAdapterViewHolder extends RecyclerView.ViewHolder {
         private final TextView specificLineTextView;
-        private final View verticalBar;
+        private final View verticalBarTop;
+        private final View verticalBarBottom;
         private final GradientDrawable circle;
         private final ImageView adaImageView;
         private final ImageView statusImageView;
@@ -32,44 +33,53 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         private SpecificLineAdapterViewHolder(View itemView) {
             super(itemView);
             specificLineTextView = itemView.findViewById(R.id.txt_line_station);
-            verticalBar = itemView.findViewById(R.id.view_vertical_bar);
+            verticalBarTop = itemView.findViewById(R.id.view_vertical_bar_top);
+            verticalBarBottom = itemView.findViewById(R.id.view_vertical_bar_bottom);
             circle = (GradientDrawable)itemView.findViewById(R.id.view_circle).getBackground();
             adaImageView = itemView.findViewById(R.id.img_ada);
             statusImageView = itemView.findViewById(R.id.img_status);
         }
 
-        private void setUI(String lineName, View verticalBar, GradientDrawable circle){
+        private void setUI(String lineName, View verticalBarTop, View verticalBarBottom, GradientDrawable circle){
             switch(lineName){
                 case("Red Line"):
-                    verticalBar.setBackgroundResource(R.color.colorRedLine);
+                    verticalBarTop.setBackgroundResource(R.color.colorRedLine);
+                    verticalBarBottom.setBackgroundResource(R.color.colorRedLine);
                     circle.setStroke(5, context.getResources().getColor(R.color.colorRedLine));
                     break;
                 case("Blue Line"):
-                    verticalBar.setBackgroundResource(R.color.colorBlueLine);
+                    verticalBarTop.setBackgroundResource(R.color.colorBlueLine);
+                    verticalBarBottom.setBackgroundResource(R.color.colorBlueLine);
                     circle.setStroke(5, context.getResources().getColor(R.color.colorBlueLine));
                     break;
                 case("Brown Line"):
-                    verticalBar.setBackgroundResource(R.color.colorBrownLine);
+                    verticalBarTop.setBackgroundResource(R.color.colorBrownLine);
+                    verticalBarBottom.setBackgroundResource(R.color.colorBrownLine);
                     circle.setStroke(5, context.getResources().getColor(R.color.colorBrownLine));
                     break;
                 case("Green Line"):
-                    verticalBar.setBackgroundResource(R.color.colorGreenLine);
+                    verticalBarTop.setBackgroundResource(R.color.colorGreenLine);
+                    verticalBarBottom.setBackgroundResource(R.color.colorGreenLine);
                     circle.setStroke(5, context.getResources().getColor(R.color.colorGreenLine));
                     break;
                 case("Orange Line"):
-                    verticalBar.setBackgroundResource(R.color.colorOrangeLine);
+                    verticalBarTop.setBackgroundResource(R.color.colorOrangeLine);
+                    verticalBarBottom.setBackgroundResource(R.color.colorOrangeLine);
                     circle.setStroke(5, context.getResources().getColor(R.color.colorOrangeLine));
                     break;
                 case("Pink Line"):
-                    verticalBar.setBackgroundResource(R.color.colorPinkLine);
+                    verticalBarTop.setBackgroundResource(R.color.colorPinkLine);
+                    verticalBarBottom.setBackgroundResource(R.color.colorPinkLine);
                     circle.setStroke(5, context.getResources().getColor(R.color.colorPinkLine));
                     break;
                 case("Purple Line"):
-                    verticalBar.setBackgroundResource(R.color.colorPurpleLine);
+                    verticalBarTop.setBackgroundResource(R.color.colorPurpleLine);
+                    verticalBarBottom.setBackgroundResource(R.color.colorPurpleLine);
                     circle.setStroke(5, context.getResources().getColor(R.color.colorPurpleLine));
                     break;
                 case("Yellow Line"):
-                    verticalBar.setBackgroundResource(R.color.colorYellowLine);
+                    verticalBarTop.setBackgroundResource(R.color.colorYellowLine);
+                    verticalBarBottom.setBackgroundResource(R.color.colorYellowLine);
                     circle.setStroke(5, context.getResources().getColor(R.color.colorYellowLine));
                     break;
             }
@@ -101,15 +111,14 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         //TODO add '+' icon next to station name when coming from 'add favorite' activity
         String currStationID = lineStations[position];
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
+        int transparentColor = context.getResources().getColor(R.color.colorTransparent);
 
-        holder.setUI(toolbarTextView.getText().toString(), holder.verticalBar, holder.circle);
-        if(position == 0 || position == lineStations.length - 1){
-            holder.verticalBar.getLayoutParams().height = 60;
-            if(position == lineStations.length - 1){
-                LayoutParams lp = (LayoutParams)holder.verticalBar.getLayoutParams();
-                lp.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                holder.verticalBar.setLayoutParams(lp);
-            }
+        holder.setUI(toolbarTextView.getText().toString(), holder.verticalBarTop, holder.verticalBarBottom, holder.circle);
+        if(position == 0){
+            holder.verticalBarTop.setBackgroundColor(transparentColor);
+        }
+        if(position == lineStations.length - 1){
+            holder.verticalBarBottom.setBackgroundColor(transparentColor);
         }
 
         holder.specificLineTextView.setText(currStationName);

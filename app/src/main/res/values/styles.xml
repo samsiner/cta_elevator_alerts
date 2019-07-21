@@ -104,7 +104,7 @@
     <!-- specific line graphic -->
     <style name="stationLineLine">
         <item name="android:layout_width">2dp</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">30dp</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
 </resources>
