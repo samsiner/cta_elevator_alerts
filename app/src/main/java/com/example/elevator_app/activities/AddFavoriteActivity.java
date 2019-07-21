@@ -12,8 +12,7 @@ import com.example.elevator_app.R;
 
 public class AddFavoriteActivity extends AppCompatActivity {
     //TODO: Check if user is requesting an already favorite station or same nickname
-    //TODO: Check if user is requesting a station with no elevator
-    //TODO: Keep nickname in textview after station is selected
+    //TODO: Make station grayed out if no elevator
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +22,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         toolbarTextView.setText(R.string.add_favorite);
         String stationID = getIntent().getStringExtra("stationID");
         String stationName = getIntent().getStringExtra("stationName");
+        setNicknameText(getIntent().getStringExtra("nickname"));
 
         if (stationID != null && stationName != null){
             TextView addStation = findViewById(R.id.text_add_favorite_station);
@@ -36,17 +36,29 @@ public class AddFavoriteActivity extends AppCompatActivity {
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(AddFavoriteActivity.this, AllLinesActivity.class);
         intent.putExtra("fromFavorites", true);
+        intent.putExtra("nickname", getNicknameText());
         startActivity(intent);
+    }
+
+    private String getNicknameText(){
+        TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
+        try{
+            return nicknameTextEdit.getText().toString();
+        } catch (NullPointerException e){
+            return "";
+        }
+    }
+
+    private void setNicknameText(String s){
+        TextView nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
+        nicknameTextEdit.setText(s);
     }
 
     public void toMainActivity(View v) {
         //TODO: check for null nickname
-        TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
-
-        String nickname = nicknameTextEdit.getText().toString();
         String stationID = getIntent().getStringExtra("stationID");
 
-        if (stationID == null){
+        if (stationID == null || getNicknameText().equals("")){
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Error");
             alert.setMessage("Please enter a nickname and select a station");
@@ -54,7 +66,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
             alert.show();
         } else{
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-            intent.putExtra("Nickname", nickname);
+            intent.putExtra("Nickname", getNicknameText());
             intent.putExtra("stationID", stationID);
             startActivity(intent);
         }

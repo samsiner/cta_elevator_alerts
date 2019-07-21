@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Show trash can when swiping to remove favorite
     //TODO: Keep nickname on add favorites
     //TODO: Not rebuild database every time you open
+    //TODO:
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;

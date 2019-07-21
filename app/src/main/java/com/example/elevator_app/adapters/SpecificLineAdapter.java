@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 import android.widget.RelativeLayout.LayoutParams;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
@@ -124,15 +125,26 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);
 
             Intent intent;
-            if (fromFavorites){
-                intent = new Intent(context, AddFavoriteActivity.class);
-                intent.putExtra("stationID", currStationID);
-                intent.putExtra("stationName", currStationName);
+
+            if (fromFavorites) {
+                if (!((SpecificLineActivity) context).getHasElevator(currStationID)) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setTitle("No elevator!");
+                    alert.setMessage("No elevator is present at this station. Please choose a favorite station with an elevator.");
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+                } else {
+                    intent = new Intent(context, AddFavoriteActivity.class);
+                    intent.putExtra("stationID", currStationID);
+                    intent.putExtra("stationName", currStationName);
+                    intent.putExtra("nickname", ((Activity) context).getIntent().getStringExtra("nickname"));
+                    context.startActivity(intent);
+                }
             } else{
                 intent = new Intent(context, DisplayAlertActivity.class);
                 intent.putExtra("stationID", currStationID);
+                context.startActivity(intent);
             }
-            context.startActivity(intent);
         });
     }
 
