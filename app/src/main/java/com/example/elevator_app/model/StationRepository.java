@@ -306,11 +306,11 @@ public class StationRepository {
         }
     }
 
-    private ArrayList<String> allAlertStationIDs;
-    private void getAllAlertStationIDs(){
+    private List<String> getAllAlertStationIDs(){
+        List<String> list2 = new ArrayList<>();
         Thread thread = new Thread() {
             public void run() {
-                allAlertStationIDs = (ArrayList) mStationDao.getAllAlertStationIDs();
+                list2.addAll(mStationDao.getAllAlertStationIDs());
             }
         };
         thread.start();
@@ -319,6 +319,7 @@ public class StationRepository {
         } catch (InterruptedException e){
             e.printStackTrace();
         }
+        return list2;
     }
 
     private void buildStations(){
@@ -388,9 +389,6 @@ public class StationRepository {
     }
 
     public void buildAlerts(String JSONString){
-        //String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-
-        getAllAlertStationIDs();
         ArrayList<String> afterStationsOut = new ArrayList<>();
 
         try {
@@ -443,17 +441,27 @@ public class StationRepository {
             e.printStackTrace();
         }
 
-        for (String id : allAlertStationIDs){
-            if (!afterStationsOut.contains(id)){
-                removeAlert(id);
-                if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
-            }
-        }
+        Thread thread = new Thread() {
+            public void run() {
+                for (String id : mStationDao.getAllAlertStationIDs()){
+                    if (!afterStationsOut.contains(id)){
+                        removeAlert(id);
+                        if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
+                    }
+                }
 
-        for (String id : afterStationsOut){
-            if (!allAlertStationIDs.contains(id)){
-                if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
+                for (String id : afterStationsOut){
+                    if (!mStationDao.getAllAlertStationIDs().contains(id)){
+                        if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
+                    }
+                }
             }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
         }
     }
 

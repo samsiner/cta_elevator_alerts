@@ -47,12 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: Reduce app size for deployment; Proguard?
     //TODO: User bug reporting; Instabug?
-    //TODO: Pulldown refresh
     //TODO: Make error catching more specific
     //TODO: Test for no network availability
     //TODO: Display last updated time for elevator alerts
     //TODO: right facing arrow next to each station on specificLine
-    //TODO: TESTS
+    //TODO: More tests
     //TODO: Edit / Remove favorite functionality
     //TODO: Database updating timing
     //TODO: OnSavedInstanceState
@@ -67,8 +66,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
 
+        //Create ViewModels for favorites and alerts
+        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
+
+        mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -78,10 +81,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         buildNotification();
-
-        //Create ViewModels for favorites and alerts
-        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
-        mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
 
         //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
