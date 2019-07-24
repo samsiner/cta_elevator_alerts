@@ -45,4 +45,6 @@ public abstract class StationRoomDatabase extends RoomDatabase {
             thread.start();
         }
     };
+
+    public StationDao getDao(){ return stationDao(); }
 }

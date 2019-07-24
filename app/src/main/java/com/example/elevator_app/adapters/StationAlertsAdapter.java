@@ -77,7 +77,6 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         //TODO: change to minSDK of 16 instead of 15?
 
         //remove bottom border styling from last element
-        //TODO: does this work incorrectly when view is 'recycled'?
         if(position == mStations.size()-1){
             holder.stationAlertRelativeLayout.setBackgroundResource(0);
         } else{

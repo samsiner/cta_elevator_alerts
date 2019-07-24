@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.example.elevator_app.R;
 
 public class AddFavoriteActivity extends AppCompatActivity {
-    //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
-    //TODO: Make station grayed out if no elevator
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +26,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
             TextView addStation = findViewById(R.id.text_add_favorite_station);
             addStation.setText(stationName);
         }
-        //TODO: if either is null, do something
     }
-
-    //TODO: Display station
 
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(AddFavoriteActivity.this, AllLinesActivity.class);
@@ -55,7 +50,6 @@ public class AddFavoriteActivity extends AppCompatActivity {
     }
 
     public void toMainActivity(View v) {
-        //TODO: check for null nickname
         String stationID = getIntent().getStringExtra("stationID");
 
         if (stationID == null || getNicknameText().equals("")){

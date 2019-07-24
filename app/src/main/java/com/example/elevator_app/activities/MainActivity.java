@@ -44,25 +44,22 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: Proguard?
-    //TODO: Instabug?
-    //TODO: Refresh?
-    //TODO: Make error catching more specific - or throw instead of catch?
+    //TODO: Reduce app size for deployment; Proguard?
+    //TODO: User bug reporting; Instabug?
+    //TODO: Pulldown refresh
+    //TODO: Make error catching more specific
     //TODO: Test for no network availability
-    //TODO: Notifications?
     //TODO: Display last updated time for elevator alerts
     //TODO: right facing arrow next to each station on specificLine
     //TODO: TESTS
-    //TODO: Edit favorite functionality
-    //TODO: Show trash can when swiping to remove favorite
-    //TODO: Keep nickname on add favorites
-    //TODO: Not rebuild database every time you open
-    //TODO: (SAM) Shared preferences for favorites && why is it so slow???
+    //TODO: Edit / Remove favorite functionality
+    //TODO: Database updating timing
+    //TODO: OnSavedInstanceState
+    //TODO: Main menu
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
-    private boolean isClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,14 +146,14 @@ public class MainActivity extends AppCompatActivity {
                         .build())
                 .build();
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
-
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
-                .observe(this, info -> {
-                    if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-                        buildAlerts();
-                    }
-                });
+//        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
+////
+////        WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
+////                .observe(this, info -> {
+////                    if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
+////                        buildAlerts();
+////                    }
+////                });
 
         //If no alerts
         if (mStationAlertsViewModel.getNumAlerts() < 1) {

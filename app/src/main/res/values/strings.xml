@@ -3,7 +3,7 @@
     <string name="title_activity_display_alert">Alert Details</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_nickname">Nickname</string>
-    <string name="title_station">Station</string>
+    <string name="title_station">Select station</string>
     <string name="add_favorite">Add Favorite</string>
     <string name="button_add_favorite">+</string>
     <string name="cancel">Cancel</string>

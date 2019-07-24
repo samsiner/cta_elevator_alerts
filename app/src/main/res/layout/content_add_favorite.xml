@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/title_station" />
+                    android:hint="@string/title_station" />
 
                 <ImageView
                     android:id="@+id/img_right_arrow"

@@ -7,48 +7,46 @@
         android:id="@+id/relative_layout_favorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:background="@drawable/border_bottom">
+        android:background="@drawable/border_bottom"
+        android:paddingBottom="10dp">
 
         <ImageView
             android:id="@+id/img_favorite_station"
             style="@style/StatusImage"
             android:layout_centerVertical="true"
-            android:contentDescription="@string/image_elevator_out"/>
+            android:contentDescription="@string/image_elevator_out" />
 
         <TextView
             android:id="@+id/txt_nickname_favorite_station"
             style="@style/FavoriteNickname"
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/img_favorite_station"
-            android:layout_toRightOf="@id/img_favorite_station"
-            android:text="@string/title_nickname" />
+            android:layout_toRightOf="@id/img_favorite_station" />
 
         <TextView
             android:id="@+id/txt_name_favorite_station"
             style="@style/StationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/img_favorite_station"
-            android:layout_toRightOf="@id/img_favorite_station"
             android:layout_below="@+id/txt_nickname_favorite_station"
             android:layout_marginTop="3dp"
-            android:text="@string/title_station" />
+            android:layout_toEndOf="@id/img_favorite_station"
+            android:layout_toRightOf="@id/img_favorite_station" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:src="@drawable/icon_edit_remove"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:clickable="true"
+            android:contentDescription="Edit or Remove Icon"
             android:focusable="true"
-            android:contentDescription="Edit or Remove Icon"/>
+            android:src="@drawable/icon_edit_remove" />
 
     </RelativeLayout>
 

@@ -50,6 +50,7 @@ public class Station {
     }
 
     public void addAlert(String shortDescription, String beginDateTime){
+        //TODO: put function into Dao
         this.shortDescription = shortDescription;
         this.beginDateTime = convertDateTime(beginDateTime);
         hasElevatorAlert = true;

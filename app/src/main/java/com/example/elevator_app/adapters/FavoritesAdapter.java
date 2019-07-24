@@ -21,7 +21,7 @@ import com.example.elevator_app.viewmodels.FavoritesViewModel;
 import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
-    //TODO: limit nickname input to a certain character length
+    //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
 
     class FavoritesAdapterViewHolder extends RecyclerView.ViewHolder {
         private final RelativeLayout favoritesLayout;
