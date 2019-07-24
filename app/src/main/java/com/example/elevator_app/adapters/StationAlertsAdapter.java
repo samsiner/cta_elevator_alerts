@@ -15,10 +15,7 @@ import com.example.elevator_app.R;
 import com.example.elevator_app.activities.DisplayAlertActivity;
 import com.example.elevator_app.activities.MainActivity;
 import com.example.elevator_app.model.Station;
-import com.example.elevator_app.viewmodels.FavoritesViewModel;
 import com.example.elevator_app.viewmodels.StationAlertsViewModel;
-
-import java.util.List;
 
 public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdapter.StationAlertsViewHolder> {
 
@@ -78,8 +75,6 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
                 viewPosition++;
             }
         }
-
-        //TODO: change to minSDK of 16 instead of 15?
 
         //remove bottom border styling from last element
         if(position == mStationAlertsViewModel.getNumAlerts()-1){

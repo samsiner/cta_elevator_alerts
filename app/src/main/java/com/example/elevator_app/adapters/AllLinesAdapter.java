@@ -48,7 +48,7 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
     }
 
     @Override
-    public void onBindViewHolder(AllLinesViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull AllLinesViewHolder holder, int position){
         String current = mLines[position];
         holder.allLinesTextView.setText(current);
         setTrainIcon(holder.trainIconImageView, current);

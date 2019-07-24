@@ -276,8 +276,8 @@ public class StationRepository {
         }
     }
 
-    boolean isFavorite = false;
-    public boolean isFavorite(String stationID){
+    private boolean isFavorite = false;
+    private boolean isFavorite(String stationID){
         Thread thread = new Thread() {
             public void run() {
                 isFavorite = mStationDao.isFavoriteStation(stationID);
@@ -292,7 +292,7 @@ public class StationRepository {
         return isFavorite;
     }
 
-    public void removeAlert(String stationID){
+    private void removeAlert(String stationID){
         Thread thread = new Thread() {
             public void run() {
                 mStationDao.removeAlert(stationID);

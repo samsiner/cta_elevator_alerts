@@ -38,26 +38,25 @@ import com.example.elevator_app.adapters.StationAlertsAdapter;
 import com.example.elevator_app.viewmodels.StationAlertsViewModel;
 import com.example.elevator_app.R;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
-
 public class MainActivity extends AppCompatActivity {
 
+    //Sam:
     //TODO: Reduce app size for deployment; Proguard?
     //TODO: User bug reporting; Instabug?
-    //TODO: Make error catching more specific
     //TODO: Test for no network availability
-    //TODO: Display last updated time for elevator alerts
-    //TODO: right facing arrow next to each station on specificLine
+    //TODO: Write migration class, schema export for database
     //TODO: More tests
-    //TODO: Edit / Remove favorite functionality
-    //TODO: Database updating timing
     //TODO: OnSavedInstanceState
-    //TODO: Navigation - tabs? (FragmentPagerAdapter?)
     //TODO: Get worker to work correctly
 
+    //Tyler:
+    //TODO: Display last updated time for elevator alerts
+    //TODO: right facing arrow or plus sign (depending on situation) next to each station on specificLine
+    //TODO: Edit / Remove favorite functionality
+    //TODO: Navigation - tabs? (FragmentPagerAdapter?)
+    //TODO: Figure out alternative to Toolbar or change minimum API
+    //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
+    
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
@@ -74,12 +73,9 @@ public class MainActivity extends AppCompatActivity {
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mStationAlertsViewModel.rebuildAlerts();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mStationAlertsViewModel.rebuildAlerts();
+            mSwipeRefreshLayout.setRefreshing(false);
         });
 
 
@@ -150,9 +146,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Adding favorite", nickname);
             mFavoritesViewModel.addFavorite(stationID, nickname);
         }
-
-        //buildAlerts();
-//
+        //
 //        //Build Alerts API work request
 //        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
 //                .setConstraints(new Constraints.Builder()
@@ -226,31 +220,6 @@ public class MainActivity extends AppCompatActivity {
 
         notificationManager.notify(id, builder.build());
     }
-
-//    private void buildAlerts(){
-//        final StringBuilder sb = new StringBuilder();
-//
-//        Thread thread = new Thread() {
-//            public void run() {
-//                try {
-//                    URL url = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-//                    Scanner scan = new Scanner(url.openStream());
-//                    while (scan.hasNext()) sb.append(scan.nextLine());
-//                    scan.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    sb.append("");
-//                }
-//            }
-//        };
-//
-//        thread.start();
-//        try{
-//            thread.join();
-//        } catch (InterruptedException e){
-//            e.printStackTrace();
-//        }
-//    }
 
     public void toAddFavoriteActivity(View v){
         Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);

@@ -2,11 +2,9 @@ package com.example.elevator_app.model;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Station.class}, version = 1)
 public abstract class StationRoomDatabase extends RoomDatabase {
@@ -20,8 +18,6 @@ public abstract class StationRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             StationRoomDatabase.class, "station_database")
-//                            .addCallback(sStationRoomDatabaseCallback)
-                            //TODO: Look into migration
                             .build();
                 }
             }

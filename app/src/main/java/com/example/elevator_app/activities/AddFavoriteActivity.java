@@ -37,11 +37,8 @@ public class AddFavoriteActivity extends AppCompatActivity {
 
     private String getNicknameText(){
         TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
-        try{
-            return nicknameTextEdit.getText().toString();
-        } catch (NullPointerException e){
-            return "";
-        }
+        if (nicknameTextEdit.getText() == null) return "";
+        return nicknameTextEdit.getText().toString();
     }
 
     private void setNicknameText(String s){

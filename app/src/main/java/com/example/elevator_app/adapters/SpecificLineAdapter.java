@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
-import android.widget.RelativeLayout.LayoutParams;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -111,7 +109,6 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
-        //TODO add '+' icon next to station name when coming from 'add favorite' activity
         String currStationID = lineStations[position];
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
         int transparentColor = context.getResources().getColor(R.color.colorTransparent);

@@ -2,6 +2,7 @@ package com.example.elevator_app.viewmodelfactories;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,8 +19,9 @@ public class SpecificLineViewModelFactory implements ViewModelProvider.Factory {
     }
 
     @Override
+    @NonNull
     @SuppressWarnings("unchecked")
-    public <T extends ViewModel> T create(Class<T> modelClass){
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass){
         return (T) new SpecificLineViewModel(mApplication, mParam);
     }
 

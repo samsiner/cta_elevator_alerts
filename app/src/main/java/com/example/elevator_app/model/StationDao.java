@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
-//TODO: Write migration class, change version numbers
 @Dao
 public interface StationDao {
 

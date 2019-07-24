@@ -20,7 +20,6 @@ import com.example.elevator_app.model.Station;
 import com.example.elevator_app.viewmodels.FavoritesViewModel;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
-    //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
 
     class FavoritesAdapterViewHolder extends RecyclerView.ViewHolder {
         private final RelativeLayout favoritesLayout;
