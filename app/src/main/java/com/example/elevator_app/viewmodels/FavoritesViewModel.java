@@ -27,12 +27,11 @@ public class FavoritesViewModel extends AndroidViewModel {
     }
 
     public int getNumFavorites(){ return mRepository.getFavoritesCount();}
-
     public void addFavorite(String stationID, String nickname){ mRepository.addFavorite(stationID, nickname);}
-
     public void removeFavorite(String stationID){ mRepository.removeFavorite(stationID);}
-
     public boolean getHasElevatorAlert(String stationID){ return mRepository.mGetHasElevatorAlert(stationID);}
+    public boolean[] getAllRoutes(String stationID){ return mRepository.mGetAllRoutes(stationID);}
+
 }
 
 

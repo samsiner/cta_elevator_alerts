@@ -41,7 +41,7 @@ public class StationRepository {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
         buildStations();
-//        buildAlerts();
+        buildAlerts();
     }
 
     public LiveData<List<Station>> mGetAllAlertStations() {
@@ -323,72 +323,78 @@ public class StationRepository {
     }
 
     private void buildStations(){
-        String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
-        try {
-            JSONArray arr = new JSONArray(JSONString);
+        Thread thread = new Thread() {
+            public void run() {
+                if (mStationDao.getStationCount() < 1) {
+                    String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
+                    try {
+                        JSONArray arr = new JSONArray(JSONString);
 
-            for (int i = 0; i < arr.length(); i++) {
+                        for (int i = 0; i < arr.length(); i++) {
 
-                JSONObject obj = (JSONObject) arr.get(i);
-                String mapID = obj.getString("map_id");
-                boolean ada = Boolean.parseBoolean(obj.getString("ada"));
-                boolean red = Boolean.parseBoolean(obj.getString("red"));
-                boolean blue = Boolean.parseBoolean(obj.getString("blue"));
-                boolean brown = Boolean.parseBoolean(obj.getString("brn"));
-                boolean green = Boolean.parseBoolean(obj.getString("g"));
-                boolean orange = Boolean.parseBoolean(obj.getString("o"));
-                boolean pink = Boolean.parseBoolean(obj.getString("pnk"));
-                boolean purple = Boolean.parseBoolean(obj.getString("p")) || Boolean.parseBoolean(obj.getString("pexp"));
-                boolean yellow = Boolean.parseBoolean(obj.getString("y"));
+                            JSONObject obj = (JSONObject) arr.get(i);
+                            String mapID = obj.getString("map_id");
+                            boolean ada = Boolean.parseBoolean(obj.getString("ada"));
+                            boolean red = Boolean.parseBoolean(obj.getString("red"));
+                            boolean blue = Boolean.parseBoolean(obj.getString("blue"));
+                            boolean brown = Boolean.parseBoolean(obj.getString("brn"));
+                            boolean green = Boolean.parseBoolean(obj.getString("g"));
+                            boolean orange = Boolean.parseBoolean(obj.getString("o"));
+                            boolean pink = Boolean.parseBoolean(obj.getString("pnk"));
+                            boolean purple = Boolean.parseBoolean(obj.getString("p")) || Boolean.parseBoolean(obj.getString("pexp"));
+                            boolean yellow = Boolean.parseBoolean(obj.getString("y"));
 
-                Thread thread = new Thread() {
-                    public void run() {
-                        Station station = mStationDao.getStation(mapID);
+                            Station station = mStationDao.getStation(mapID);
 
-                        //
-                        if (station == null){ //If station already exists but routes need to be updated
-                            Station newStation = new Station(mapID);
-                            String stationName;
-                            try{
-                                stationName = obj.getString("station_name");
-                            } catch (JSONException e){
-                                stationName = "";
+                            //
+                            if (station == null) { //If station already exists but routes need to be updated
+                                Station newStation = new Station(mapID);
+                                String stationName;
+                                try {
+                                    stationName = obj.getString("station_name");
+                                } catch (JSONException e) {
+                                    stationName = "";
+                                }
+
+                                //name length is too long for this station
+                                if (stationName.equals("Harold Washington Library-State/Van Buren")) {
+                                    stationName = "Harold Washington Library";
+                                }
+
+                                insert(newStation);
+                                mStationDao.updateName(mapID, stationName);
+                                mStationDao.setHasElevator(mapID);
                             }
 
-                            //name length is too long for this station
-                            if(stationName.equals("Harold Washington Library-State/Van Buren")){
-                                stationName = "Harold Washington Library";
-                            }
-
-                            insert(newStation);
-                            mStationDao.updateName(mapID, stationName);
-                            mStationDao.setHasElevator(mapID);
+                            //Set routes that come to this station
+                            if (ada) mStationDao.setHasElevator(mapID);
+                            if (red) mStationDao.setRedTrue(mapID);
+                            if (blue) mStationDao.setBlueTrue(mapID);
+                            if (brown) mStationDao.setBrownTrue(mapID);
+                            if (green) mStationDao.setGreenTrue(mapID);
+                            if (orange) mStationDao.setOrangeTrue(mapID);
+                            if (pink) mStationDao.setPinkTrue(mapID);
+                            if (purple) mStationDao.setPurpleTrue(mapID);
+                            if (yellow) mStationDao.setYellowTrue(mapID);
                         }
-
-                        //Set routes that come to this station
-                        if (red) mStationDao.setRedTrue(mapID);
-                        if (blue) mStationDao.setBlueTrue(mapID);
-                        if (brown) mStationDao.setBrownTrue(mapID);
-                        if (green) mStationDao.setGreenTrue(mapID);
-                        if (orange) mStationDao.setOrangeTrue(mapID);
-                        if (pink) mStationDao.setPinkTrue(mapID);
-                        if (purple) mStationDao.setPurpleTrue(mapID);
-                        if (yellow) mStationDao.setYellowTrue(mapID);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                };
-                thread.start();
-                try{
-                    thread.join();
-                } catch (InterruptedException e){
-                    e.printStackTrace();
                 }
             }
-        } catch (JSONException e){
+        };
+        thread.start();
+
+        try{
+            thread.join();
+        } catch (InterruptedException e){
             e.printStackTrace();
         }
     }
 
-    public void buildAlerts(String JSONString){
+    public void buildAlerts(){
+        String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+
         ArrayList<String> afterStationsOut = new ArrayList<>();
 
         try {

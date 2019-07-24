@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Edit / Remove favorite functionality
     //TODO: Database updating timing
     //TODO: OnSavedInstanceState
-    //TODO: Main menu
+    //TODO: Navigation - tabs? (FragmentPagerAdapter?)
+    //TODO: Get worker to work correctly
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        buildNotification();
 
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
@@ -75,12 +77,11 @@ public class MainActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                buildAlerts();
+                mStationAlertsViewModel.rebuildAlerts();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        buildNotification();
 
         //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
@@ -98,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(favoritesRecyclerView);
 
         //Get ViewModel
-        //TODO: figure out why this is causing problems in StationAlertsAdapter
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
             alertsAdapter.notifyDataSetChanged();
 
@@ -151,23 +151,23 @@ public class MainActivity extends AppCompatActivity {
             mFavoritesViewModel.addFavorite(stationID, nickname);
         }
 
-        buildAlerts();
-
-        //Build Alerts API work request
-        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
-                .setConstraints(new Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build())
-                .build();
-
+        //buildAlerts();
+//
+//        //Build Alerts API work request
+//        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
+//                .setConstraints(new Constraints.Builder()
+//                        .setRequiredNetworkType(NetworkType.CONNECTED)
+//                        .build())
+//                .build();
+//
 //        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
-////
-////        WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
-////                .observe(this, info -> {
-////                    if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-////                        buildAlerts();
-////                    }
-////                });
+//
+//        WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
+//                .observe(this, info -> {
+//                    if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
+//                        buildAlerts();
+//                    }
+//                });
 
         //If no alerts
         if (mStationAlertsViewModel.getNumAlerts() < 1) {
@@ -227,31 +227,30 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(id, builder.build());
     }
 
-    private void buildAlerts(){
-        final StringBuilder sb = new StringBuilder();
-
-        Thread thread = new Thread() {
-            public void run() {
-                try {
-                    URL url = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-                    Scanner scan = new Scanner(url.openStream());
-                    while (scan.hasNext()) sb.append(scan.nextLine());
-                    scan.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    sb.append("");
-                }
-            }
-        };
-
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        mStationAlertsViewModel.putAlertsIntoDatabase(sb.toString());
-    }
+//    private void buildAlerts(){
+//        final StringBuilder sb = new StringBuilder();
+//
+//        Thread thread = new Thread() {
+//            public void run() {
+//                try {
+//                    URL url = new URL("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
+//                    Scanner scan = new Scanner(url.openStream());
+//                    while (scan.hasNext()) sb.append(scan.nextLine());
+//                    scan.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    sb.append("");
+//                }
+//            }
+//        };
+//
+//        thread.start();
+//        try{
+//            thread.join();
+//        } catch (InterruptedException e){
+//            e.printStackTrace();
+//        }
+//    }
 
     public void toAddFavoriteActivity(View v){
         Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);

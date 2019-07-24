@@ -2,6 +2,7 @@ package com.example.elevator_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         private final ImageView favoritesImageView;
         private final TextView favoritesNicknameTextView;
         private final TextView favoritesStationNameTextView;
+        private final View[] lineViews;
 
         private FavoritesAdapterViewHolder(View itemView) {
             super(itemView);
@@ -33,17 +35,28 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             favoritesImageView = itemView.findViewById(R.id.img_favorite_station);
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
             favoritesStationNameTextView = itemView.findViewById(R.id.txt_name_favorite_station);
+
+            View line_0 = itemView.findViewById(R.id.line_0);
+            View line_1 = itemView.findViewById(R.id.line_1);
+            View line_2 = itemView.findViewById(R.id.line_2);
+            View line_3 = itemView.findViewById(R.id.line_3);
+            View line_4 = itemView.findViewById(R.id.line_4);
+            View line_5 = itemView.findViewById(R.id.line_5);
+
+            lineViews = new View[]{line_0, line_1, line_2, line_3, line_4, line_5};
         }
     }
 
     private final LayoutInflater mInflater;
     private final Context context;
     private final FavoritesViewModel mFavoritesViewModel;
+    private final int[] lineColors;
 
     public FavoritesAdapter(Context context){
         mFavoritesViewModel = ((MainActivity)context).getFavoritesViewModel();
         mInflater = LayoutInflater.from(context);
         this.context = context;
+        lineColors = context.getResources().getIntArray(R.array.lineColors);
     }
 
     @Override
@@ -57,6 +70,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapterViewHolder holder, int position){
         Station current = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
+        Log.d("Current stationID", current.stationID);
+        boolean[] currentRoutes = mFavoritesViewModel.getAllRoutes(current.stationID);
         holder.favoritesNicknameTextView.setText(current.nickname);
         holder.favoritesStationNameTextView.setText(current.name);
 
@@ -64,6 +79,16 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             holder.favoritesImageView.setImageResource(R.drawable.status_red);
         } else {
             holder.favoritesImageView.setImageResource(R.drawable.status_green);
+        }
+
+        //populate line bars to show colors of each route under station name
+        int viewPosition = 0;
+        for(int i = 0; i < currentRoutes.length; i++){
+            if(currentRoutes[i]){
+                Log.d("Current routes", Integer.toString(i));
+                holder.lineViews[viewPosition].setBackgroundColor(lineColors[i]);
+                viewPosition++;
+            }
         }
 
         //remove bottom border on last item

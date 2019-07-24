@@ -47,6 +47,9 @@ public interface StationDao {
         @Query("SELECT COUNT(hasElevatorAlert) FROM station_table WHERE hasElevatorAlert = 1")
         int getAlertsCount();
 
+        @Query("SELECT COUNT(*) FROM station_table")
+        int getStationCount();
+
         @Query("SELECT name FROM station_table WHERE stationID = :stationID")
         String getName(String stationID);
 
