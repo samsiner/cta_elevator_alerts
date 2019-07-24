@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
@@ -60,11 +61,21 @@ public class MainActivity extends AppCompatActivity {
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                buildAlerts();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         buildNotification();
 

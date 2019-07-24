@@ -25,6 +25,8 @@ public class FavoritesViewModel extends AndroidViewModel {
     public void addFavorite(String stationID, String nickname){ mRepository.addFavorite(stationID, nickname);}
 
     public void removeFavorite(String stationID){ mRepository.removeFavorite(stationID);}
+
+    public void getHasElevatorAlert(String stationID){ mRepository.mGetHasElevatorAlert(stationID);}
 }
 
 
