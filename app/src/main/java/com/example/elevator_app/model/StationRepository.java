@@ -1,7 +1,6 @@
 package com.example.elevator_app.model;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -11,14 +10,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class StationRepository {
 
     private final StationDao mStationDao;
-    private boolean duplicateStation;
     private ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
     private ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
 
@@ -45,8 +47,66 @@ public class StationRepository {
     public LiveData<List<Station>> mGetAllAlertStations() {
         return mStationDao.getAllAlertStations();
     }
+
     public LiveData<List<Station>> mGetAllFavorites() {
         return mStationDao.getAllFavorites();
+    }
+
+    public List<Station> mGetAllFavoritesNotLiveData(){
+        final List<Station> list2 = new ArrayList<>();
+
+        Thread thread = new Thread() {
+            public void run() {
+                list2.addAll(mStationDao.getAllFavoritesNotLiveData());
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return list2;
+    }
+
+    public List<Station> mGetStationAlertsNotLiveData(){
+        final List<Station> list2 = new ArrayList<>();
+
+        Thread thread = new Thread() {
+            public void run() {
+                list2.addAll(mStationDao.getAllAlertStationsNotLiveData());
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return list2;
+    }
+
+    public boolean[] mGetAllRoutes(String stationID){
+        boolean[] b = new boolean[8];
+        Thread thread = new Thread() {
+            public void run() {
+                b[0] = mStationDao.getRed(stationID);
+                b[1] = mStationDao.getBlue(stationID);
+                b[2] = mStationDao.getBrown(stationID);
+                b[3] = mStationDao.getGreen(stationID);
+                b[4] = mStationDao.getOrange(stationID);
+                b[5] = mStationDao.getPink(stationID);
+                b[6] = mStationDao.getPurple(stationID);
+                b[7] = mStationDao.getYellow(stationID);
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return b;
     }
 
     private String s;
@@ -144,11 +204,10 @@ public class StationRepository {
         return hasElevatorAlert;
     }
 
-    private void addAlert(Station station, String shortDesc, String beginDateTime){
+    private void addAlert(String stationID, String shortDesc, String beginDateTime){
         Thread thread = new Thread() {
             public void run() {
-                station.addAlert(shortDesc, beginDateTime);
-                mStationDao.update(station);
+                mStationDao.setAlert(stationID, shortDesc, convertDateTime(beginDateTime));
             }
         };
         thread.start();
@@ -156,6 +215,17 @@ public class StationRepository {
             thread.join();
         } catch (InterruptedException e){
             e.printStackTrace();
+        }
+    }
+
+    private String convertDateTime(String s){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss", Locale.US);
+        try {
+            Date originalDate = dateFormat.parse(s);
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
+            return dateFormat2.format(originalDate);
+        } catch (ParseException e) {
+            return s;
         }
     }
 
@@ -257,7 +327,6 @@ public class StationRepository {
             JSONArray arr = new JSONArray(JSONString);
 
             for (int i = 0; i < arr.length(); i++) {
-                duplicateStation = false;
 
                 JSONObject obj = (JSONObject) arr.get(i);
                 String mapID = obj.getString("map_id");
@@ -274,11 +343,36 @@ public class StationRepository {
                 Thread thread = new Thread() {
                     public void run() {
                         Station station = mStationDao.getStation(mapID);
-                        if (station != null){
-                            duplicateStation = true;
-                            station.updateLines(red, blue, brown, green, orange, pink, purple, yellow);
-                            mStationDao.update(station);
+
+                        //
+                        if (station == null){ //If station already exists but routes need to be updated
+                            Station newStation = new Station(mapID);
+                            String stationName;
+                            try{
+                                stationName = obj.getString("station_name");
+                            } catch (JSONException e){
+                                stationName = "";
+                            }
+
+                            //name length is too long for this station
+                            if(stationName.equals("Harold Washington Library-State/Van Buren")){
+                                stationName = "Harold Washington Library";
+                            }
+
+                            insert(newStation);
+                            mStationDao.updateName(mapID, stationName);
+                            mStationDao.setHasElevator(mapID);
                         }
+
+                        //Set routes that come to this station
+                        if (red) mStationDao.setRedTrue(mapID);
+                        if (blue) mStationDao.setBlueTrue(mapID);
+                        if (brown) mStationDao.setBrownTrue(mapID);
+                        if (green) mStationDao.setGreenTrue(mapID);
+                        if (orange) mStationDao.setOrangeTrue(mapID);
+                        if (pink) mStationDao.setPinkTrue(mapID);
+                        if (purple) mStationDao.setPurpleTrue(mapID);
+                        if (yellow) mStationDao.setYellowTrue(mapID);
                     }
                 };
                 thread.start();
@@ -286,20 +380,6 @@ public class StationRepository {
                     thread.join();
                 } catch (InterruptedException e){
                     e.printStackTrace();
-                }
-
-                if(!duplicateStation){
-                    String stationName = obj.getString("station_name");
-                    //name length is too long for this station
-                    if(stationName.equals("Harold Washington Library-State/Van Buren")){
-                        stationName = "Harold Washington Library";
-                    }
-
-                    Station newStation = new Station(mapID);
-                    newStation.setName(stationName);
-                    newStation.setHasElevator(ada);
-                    newStation.setRoutes(red, blue, brown, green, orange, pink, purple, yellow);
-                    insert(newStation);
                 }
             }
         } catch (JSONException e){
@@ -343,8 +423,7 @@ public class StationRepository {
                         Thread thread = new Thread() {
                             public void run() {
                                try{
-                                   Station station = mStationDao.getStation(id);
-                                   addAlert(station, shortDesc, beginDateTime);
+                                   addAlert(id, shortDesc, beginDateTime);
                                } catch(NullPointerException e){
                                    e.printStackTrace();
                                }

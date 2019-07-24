@@ -51,8 +51,10 @@ public class UnitTests {
             assertFalse(station.isFavorite);
 
             station.hasElevator = true;
-            station.setName("Howard");
-            station.addAlert("short description", "begin date time");
+            station.name = "Howard";
+            station.hasElevatorAlert = true;
+            station.shortDescription = "short description";
+            station.beginDateTime = "begin date time";
 
 //            assertEquals(station.name, "Howard");
 //            assertEquals(station.shortDescription, "short description");

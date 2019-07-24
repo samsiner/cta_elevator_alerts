@@ -18,8 +18,6 @@ import com.example.elevator_app.activities.MainActivity;
 import com.example.elevator_app.model.Station;
 import com.example.elevator_app.viewmodels.FavoritesViewModel;
 
-import java.util.List;
-
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
     //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
 
@@ -43,9 +41,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     private final FavoritesViewModel mFavoritesViewModel;
 
     public FavoritesAdapter(Context context){
+        mFavoritesViewModel = ((MainActivity)context).getFavoritesViewModel();
         mInflater = LayoutInflater.from(context);
         this.context = context;
-        mFavoritesViewModel = ((MainActivity)context).getFavoritesViewModel();
     }
 
     @Override
@@ -58,52 +56,39 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapterViewHolder holder, int position){
-        if (mFavoritesViewModel.getFavorites().getValue() != null) {
-            Station current = mFavoritesViewModel.getFavorites().getValue().get(position);
-            holder.favoritesNicknameTextView.setText(current.nickname);
-            holder.favoritesStationNameTextView.setText(current.name);
+        Station current = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
+        holder.favoritesNicknameTextView.setText(current.nickname);
+        holder.favoritesStationNameTextView.setText(current.name);
 
-            if (mFavoritesViewModel.getHasElevatorAlert(current.stationID)) {
-                holder.favoritesImageView.setImageResource(R.drawable.status_red);
-            } else {
-                holder.favoritesImageView.setImageResource(R.drawable.status_green);
-            }
-
-            //remove bottom border on last item
-            if (position == mFavoritesViewModel.getNumFavorites() - 1) {
-                holder.favoritesLayout.setBackgroundResource(0);
-            } else {
-                holder.favoritesLayout.setBackgroundResource(R.drawable.border_bottom);
-            }
-
-            ((View) holder.favoritesNicknameTextView.getParent()).setOnClickListener(v -> {
-                Intent intent = new Intent(context, DisplayAlertActivity.class);
-                intent.putExtra("stationID", current.stationID);
-                context.startActivity(intent);
-            });
+        if (mFavoritesViewModel.getHasElevatorAlert(current.stationID)) {
+            holder.favoritesImageView.setImageResource(R.drawable.status_red);
+        } else {
+            holder.favoritesImageView.setImageResource(R.drawable.status_green);
         }
-    }
 
-//    public void updateFavorites(){
-//        //mFavoriteStations = stations;
-//        notifyDataSetChanged();
-//    }
+        //remove bottom border on last item
+        if (position == mFavoritesViewModel.getNumFavorites() - 1) {
+            holder.favoritesLayout.setBackgroundResource(0);
+        } else {
+            holder.favoritesLayout.setBackgroundResource(R.drawable.border_bottom);
+        }
+
+        //Make favorite station clickable to see alert details
+        ((View) holder.favoritesNicknameTextView.getParent()).setOnClickListener(v -> {
+            Intent intent = new Intent(context, DisplayAlertActivity.class);
+            intent.putExtra("stationID", current.stationID);
+            context.startActivity(intent);
+        });
+    }
 
     @Override
     public int getItemCount(){
         return mFavoritesViewModel.getNumFavorites();
     }
 
-//    public boolean onItemMove(int fromPosition, int toPosition){
-//        if(fromPosition < toPosition){
-//            for(int i = fromPosition; i < toPosition; i++){
-//                Collections.swap()
-//            }
-//        }
-//    }
-
     public void onItemDismiss(int position){
-        Station s = mFavoritesViewModel.getFavorites().getValue().get(position);
+        Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
         mFavoritesViewModel.removeFavorite(s.stationID);
+        notifyDataSetChanged();
     }
 }

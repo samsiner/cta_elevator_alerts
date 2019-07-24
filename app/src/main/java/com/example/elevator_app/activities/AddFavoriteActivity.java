@@ -60,7 +60,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
             alert.show();
         } else{
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-            intent.putExtra("Nickname", getNicknameText());
+            intent.putExtra("nickname", getNicknameText());
             intent.putExtra("stationID", stationID);
             startActivity(intent);
         }

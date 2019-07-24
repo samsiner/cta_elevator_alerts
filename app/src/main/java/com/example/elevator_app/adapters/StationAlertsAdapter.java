@@ -8,11 +8,15 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
 import com.example.elevator_app.activities.DisplayAlertActivity;
+import com.example.elevator_app.activities.MainActivity;
 import com.example.elevator_app.model.Station;
+import com.example.elevator_app.viewmodels.FavoritesViewModel;
+import com.example.elevator_app.viewmodels.StationAlertsViewModel;
 
 import java.util.List;
 
@@ -38,34 +42,35 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
             View line_5 = itemView.findViewById(R.id.line_5);
 
             lineViews = new View[]{line_0, line_1, line_2, line_3, line_4, line_5};
-
         }
     }
 
     private final LayoutInflater mInflater;
-    private List<Station> mStations;
     private final Context context;
     private final int[] lineColors;
+    private final StationAlertsViewModel mStationAlertsViewModel;
 
     public StationAlertsAdapter(Context context){
+        mStationAlertsViewModel = ((MainActivity)context).getStationAlertsViewModel();
         mInflater = LayoutInflater.from(context);
         this.context = context;
         lineColors = context.getResources().getIntArray(R.array.lineColors);
     }
 
     @Override
-    public StationAlertsViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    @NonNull
+    public StationAlertsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.alert_station, parent, false);
         return new StationAlertsViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(StationAlertsViewHolder holder, int position){
-        Station current = mStations.get(position);
-        Boolean[] currentRoutes = current.getRoutes();
+    public void onBindViewHolder(@NonNull StationAlertsViewHolder holder, int position){
+        Station current = mStationAlertsViewModel.mGetStationAlertsNotLiveData().get(position);
+        boolean[] currentRoutes = mStationAlertsViewModel.getAllRoutes(current.stationID);
         holder.stationAlertTextView.setText(current.name);
 
-        //populate line bars under station name
+        //populate line bars to show colors of each route under station name
         int viewPosition = 0;
         for(int i = 0; i < currentRoutes.length; i++){
             if(currentRoutes[i]){
@@ -77,7 +82,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         //TODO: change to minSDK of 16 instead of 15?
 
         //remove bottom border styling from last element
-        if(position == mStations.size()-1){
+        if(position == mStationAlertsViewModel.getNumAlerts()-1){
             holder.stationAlertRelativeLayout.setBackgroundResource(0);
         } else{
             holder.stationAlertRelativeLayout.setBackgroundResource(R.drawable.border_bottom);
@@ -93,14 +98,8 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         });
     }
 
-    public void setStations(List<Station> stations){
-        mStations = stations;
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemCount(){
-        if (mStations != null) return mStations.size();
-        else return 0;
+        return mStationAlertsViewModel.getNumAlerts();
     }
 }

@@ -79,12 +79,15 @@ public class MainActivity extends AppCompatActivity {
 
         buildNotification();
 
+        //Create ViewModels for favorites and alerts
+        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
+
+        //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
         final StationAlertsAdapter alertsAdapter = new StationAlertsAdapter(this);
         alertsRecyclerView.setAdapter(alertsAdapter);
         alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
 
         RecyclerView favoritesRecyclerView = findViewById(R.id.recycler_favorite_stations);
         final FavoritesAdapter favoritesAdapter = new FavoritesAdapter(this);
@@ -97,9 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Get ViewModel
         //TODO: figure out why this is causing problems in StationAlertsAdapter
-        mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
-            alertsAdapter.setStations(stations1);
+            alertsAdapter.notifyDataSetChanged();
 
             //Display notification if elevator is newly out
             Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
@@ -143,9 +145,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (getIntent().getStringExtra("Nickname") != null){
-            String nickname = getIntent().getStringExtra("Nickname");
+        if (getIntent().getStringExtra("nickname") != null){
+            String nickname = getIntent().getStringExtra("nickname");
             String stationID = getIntent().getStringExtra("stationID");
+            Log.d("Adding favorite", nickname);
             mFavoritesViewModel.addFavorite(stationID, nickname);
         }
 
@@ -263,6 +266,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }
+
+    public StationAlertsViewModel getStationAlertsViewModel(){ return mStationAlertsViewModel; }
+
 //
 ////    @Override
 //    public void onSaveInstanceState(Bundle savedInstanceState) {

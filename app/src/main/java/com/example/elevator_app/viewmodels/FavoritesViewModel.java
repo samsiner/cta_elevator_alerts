@@ -18,7 +18,13 @@ public class FavoritesViewModel extends AndroidViewModel {
         mRepository = StationRepository.getInstance(application);
     }
 
-    public androidx.lifecycle.LiveData<List<Station>> getFavorites() { return mRepository.mGetAllFavorites();}
+    public androidx.lifecycle.LiveData<List<Station>> getFavorites() {
+        return mRepository.mGetAllFavorites();
+    }
+
+    public List<Station> getFavoritesNotLiveData(){
+        return mRepository.mGetAllFavoritesNotLiveData();
+    }
 
     public int getNumFavorites(){ return mRepository.getFavoritesCount();}
 

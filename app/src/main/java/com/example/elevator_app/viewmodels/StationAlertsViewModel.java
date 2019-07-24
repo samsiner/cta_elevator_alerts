@@ -20,6 +20,7 @@ public class StationAlertsViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Station>> getStationAlerts() { return mRepository.mGetAllAlertStations();}
+    public List<Station> mGetStationAlertsNotLiveData(){ return mRepository.mGetStationAlertsNotLiveData(); }
     public void putAlertsIntoDatabase(String JSONString){
         mRepository.buildAlerts(JSONString);
     }
@@ -28,4 +29,5 @@ public class StationAlertsViewModel extends AndroidViewModel {
     public List<String> getStationElevatorsNewlyWorking(){ return mRepository.getFavoriteElevatorNewlyWorking(); }
     public List<String> getStationElevatorsNewlyOut(){ return mRepository.getFavoriteElevatorNewlyOut(); }
     public String getStationName(String stationID){ return mRepository.mGetStationName(stationID); }
+    public boolean[] getAllRoutes(String stationID){ return mRepository.mGetAllRoutes(stationID);}
 }
