@@ -122,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
             LinearLayout rl = findViewById(R.id.LinearLayout);
             rl.removeView(findViewById(R.id.noFavoritesAdded));
-            favoritesAdapter.setFavorites(stations);
+
+            favoritesAdapter.notifyDataSetChanged();
 
             //If no favorites
             if (mFavoritesViewModel.getNumFavorites() < 1) {

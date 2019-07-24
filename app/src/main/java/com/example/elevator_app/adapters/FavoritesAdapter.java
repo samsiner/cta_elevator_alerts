@@ -39,7 +39,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     }
 
     private final LayoutInflater mInflater;
-    private List<Station> mFavoriteStations;
     private final Context context;
     private final FavoritesViewModel mFavoritesViewModel;
 
@@ -59,39 +58,40 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapterViewHolder holder, int position){
-        Station current = mFavoriteStations.get(position);
-        holder.favoritesNicknameTextView.setText(current.nickname);
-        holder.favoritesStationNameTextView.setText(current.name);
+        if (mFavoritesViewModel.getFavorites().getValue() != null) {
+            Station current = mFavoritesViewModel.getFavorites().getValue().get(position);
+            holder.favoritesNicknameTextView.setText(current.nickname);
+            holder.favoritesStationNameTextView.setText(current.name);
 
-        if(current.hasElevatorAlert()){
-            holder.favoritesImageView.setImageResource(R.drawable.status_red);
-        } else {
-            holder.favoritesImageView.setImageResource(R.drawable.status_green);
+            if (mFavoritesViewModel.getHasElevatorAlert(current.stationID)) {
+                holder.favoritesImageView.setImageResource(R.drawable.status_red);
+            } else {
+                holder.favoritesImageView.setImageResource(R.drawable.status_green);
+            }
+
+            //remove bottom border on last item
+            if (position == mFavoritesViewModel.getNumFavorites() - 1) {
+                holder.favoritesLayout.setBackgroundResource(0);
+            } else {
+                holder.favoritesLayout.setBackgroundResource(R.drawable.border_bottom);
+            }
+
+            ((View) holder.favoritesNicknameTextView.getParent()).setOnClickListener(v -> {
+                Intent intent = new Intent(context, DisplayAlertActivity.class);
+                intent.putExtra("stationID", current.stationID);
+                context.startActivity(intent);
+            });
         }
-
-        //remove bottom border on last item
-        if(position == mFavoriteStations.size()-1){
-            holder.favoritesLayout.setBackgroundResource(0);
-        } else{
-            holder.favoritesLayout.setBackgroundResource(R.drawable.border_bottom);
-        }
-
-        ((View)holder.favoritesNicknameTextView.getParent()).setOnClickListener(v -> {
-            Intent intent = new Intent(context, DisplayAlertActivity.class);
-            intent.putExtra("stationID", current.stationID);
-            context.startActivity(intent);
-        });
     }
 
-    public void setFavorites(List<Station> stations){
-        mFavoriteStations = stations;
-        notifyDataSetChanged();
-    }
+//    public void updateFavorites(){
+//        //mFavoriteStations = stations;
+//        notifyDataSetChanged();
+//    }
 
     @Override
     public int getItemCount(){
-        if (mFavoriteStations != null) return mFavoriteStations.size();
-        else return 0;
+        return mFavoritesViewModel.getNumFavorites();
     }
 
 //    public boolean onItemMove(int fromPosition, int toPosition){
@@ -103,7 +103,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 //    }
 
     public void onItemDismiss(int position){
-        Station s = mFavoriteStations.get(position);
+        Station s = mFavoritesViewModel.getFavorites().getValue().get(position);
         mFavoritesViewModel.removeFavorite(s.stationID);
     }
 }
