@@ -11,15 +11,12 @@ import com.example.elevator_app.activities.DisplayAlertActivity;
 import com.example.elevator_app.activities.MainActivity;
 import com.example.elevator_app.activities.SpecificLineActivity;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
 import static org.junit.Assert.*;

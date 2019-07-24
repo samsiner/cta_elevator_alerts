@@ -17,7 +17,6 @@ import org.junit.runners.JUnit4;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Unit tests for temp.

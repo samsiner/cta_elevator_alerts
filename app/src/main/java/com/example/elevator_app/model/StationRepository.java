@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class StationRepository {
+
     private final StationDao mStationDao;
     private boolean duplicateStation;
     private ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
