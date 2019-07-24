@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elevator_app.R;
@@ -40,7 +41,8 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
     }
 
     @Override
-    public AllLinesViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    @NonNull
+    public AllLinesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.all_lines, parent, false);
         return new AllLinesViewHolder(itemView);
     }
@@ -62,8 +64,7 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
 
     @Override
     public int getItemCount(){
-        if (mLines != null) return mLines.length;
-        else return 0;
+        return mLines.length;
     }
 
     public void setToolbarTextView(){

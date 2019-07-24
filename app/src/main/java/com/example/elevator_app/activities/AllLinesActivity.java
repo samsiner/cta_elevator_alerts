@@ -21,6 +21,4 @@ public class AllLinesActivity extends AppCompatActivity {
         linesRecyclerView.setAdapter(linesAdapter);
         linesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-
 }

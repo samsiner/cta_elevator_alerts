@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 import android.widget.RelativeLayout.LayoutParams;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -102,13 +103,14 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     }
 
     @Override
-    public SpecificLineAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    @NonNull
+    public SpecificLineAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.specific_line_station, parent, false);
         return new SpecificLineAdapter.SpecificLineAdapterViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
         //TODO add '+' icon next to station name when coming from 'add favorite' activity
         String currStationID = lineStations[position];
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
