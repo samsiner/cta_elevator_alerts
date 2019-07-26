@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Reduce app size for deployment; Proguard?
     //TODO: User bug reporting; Instabug?
     //TODO: Test for no network availability
-    //TODO: Write migration class, schema export for database
     //TODO: More tests
     //TODO: OnSavedInstanceState
     //TODO: Get worker to work correctly
