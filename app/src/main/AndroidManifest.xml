@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.elevator_app">
+    package="com.github.cta_elevator_alerts">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
