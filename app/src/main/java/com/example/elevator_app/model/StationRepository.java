@@ -1,6 +1,7 @@
 package com.example.elevator_app.model;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -235,8 +236,14 @@ public class StationRepository {
         Thread thread = new Thread() {
             public void run() {
                 list2.add(0, mStationDao.getName(stationID));
-                list2.add(1, mStationDao.getShortDescription(stationID));
-                list2.add(2, mStationDao.getBeginDateTime(stationID));
+                String shortDesc = mStationDao.getShortDescription(stationID);
+                String beginDT = mStationDao.getBeginDateTime(stationID);
+
+                if (shortDesc != null) list2.add(1, mStationDao.getShortDescription(stationID));
+                else list2.add(1, "");
+
+                if (beginDT != null) list2.add(2, mStationDao.getBeginDateTime(stationID));
+                else list2.add(2, "");
             }
         };
         thread.start();
@@ -331,7 +338,6 @@ public class StationRepository {
                         JSONArray arr = new JSONArray(JSONString);
 
                         for (int i = 0; i < arr.length(); i++) {
-
                             JSONObject obj = (JSONObject) arr.get(i);
                             String mapID = obj.getString("map_id");
                             boolean ada = Boolean.parseBoolean(obj.getString("ada"));
@@ -346,7 +352,6 @@ public class StationRepository {
 
                             Station station = mStationDao.getStation(mapID);
 
-                            //
                             if (station == null) { //If station already exists but routes need to be updated
                                 Station newStation = new Station(mapID);
                                 String stationName;
@@ -363,7 +368,6 @@ public class StationRepository {
 
                                 insert(newStation);
                                 mStationDao.updateName(mapID, stationName);
-                                mStationDao.setHasElevator(mapID);
                             }
 
                             //Set routes that come to this station

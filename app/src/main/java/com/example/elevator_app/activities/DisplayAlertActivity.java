@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.elevator_app.R;
@@ -32,7 +33,8 @@ public class DisplayAlertActivity extends AppCompatActivity {
         String stationName = mDisplayAlertViewModel.getStationName();
 
         toolbarText.setText(stationName);
-        if(!beginDateTime.equals("")){
+
+        if (!beginDateTime.equals("")){
             tv_beginDateTime.setText(beginDateTime);
 //            tv_headline.setText(headline);
             tv_shortDesc.setText(shortDesc);
