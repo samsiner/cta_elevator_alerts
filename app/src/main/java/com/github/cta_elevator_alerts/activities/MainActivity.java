@@ -23,31 +23,41 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
 import com.github.cta_elevator_alerts.adapters.SwipeController;
+import com.github.cta_elevator_alerts.model.APIWorker;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 import com.github.cta_elevator_alerts.R;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: Test for no network availability
+    //TODO: Network availability: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring
     //TODO: More tests
     //TODO: Get worker to work correctly
 
     //Tyler:
     //TODO: Display last updated time for elevator alerts
+    //TODO: Make favorite station and alert station heights the same in MainActivity
     //TODO: right facing arrow or plus sign (depending on situation) next to each station on specificLine
     //TODO: Edit / Remove favorite functionality
     //TODO: Navigation - tabs? (FragmentPagerAdapter?)
-    //TODO: Figure out alternative to Toolbar or change minimum API
+    //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
     //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
 
     //To do before deployment:
-    //TODO: Reduce app size for deployment: https://developer.android.com/studio/build/shrink-code
+    //TODO: Reduce app size: https://developer.android.com/studio/build/shrink-code
 
     //Possible future features:
     //Firebase - cloud database
@@ -74,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
             mSwipeRefreshLayout.setRefreshing(false);
         });
 
-
         //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
         final StationAlertsAdapter alertsAdapter = new StationAlertsAdapter(this);
@@ -90,18 +99,24 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(favoritesRecyclerView);
 
-        //Get ViewModel
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
+            //Display notification if elevator is newly out
+            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
+            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
             alertsAdapter.notifyDataSetChanged();
 
             //Display notification if elevator is newly out
             Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
             Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
+
             if (mStationAlertsViewModel.getStationElevatorsNewlyOut() != null){
                 for (String s : mStationAlertsViewModel.getStationElevatorsNewlyOut()) {
                     showNotification(Integer.parseInt(s), true);
                 }
             }
+            //Display notification if elevator is newly out
+            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
+            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
 
             //Display notification if elevator is newly working
             if (mStationAlertsViewModel.getStationElevatorsNewlyWorking() != null) {
@@ -110,6 +125,10 @@ public class MainActivity extends AppCompatActivity {
                     showNotification(Integer.parseInt(s), false);
                 }
             }
+            //Display notification if elevator is newly out
+            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
+            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
+
         });
 
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
@@ -123,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 rl = findViewById(R.id.LinearLayout);
                 TextView tv = new TextView(MainActivity.this);
                 tv.setId(R.id.noFavoritesAdded);
-                tv.setText("No favorites added!");
+                tv.setText(R.string.no_favorites_added);
                 tv.setTextSize(18);
                 tv.setTextColor(MainActivity.this.getResources().getColor(R.color.colorWhite));
                 tv.setHeight(100);
@@ -142,28 +161,28 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Adding favorite", nickname);
             mFavoritesViewModel.addFavorite(stationID, nickname);
         }
-        //
-//        //Build Alerts API work request
-//        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
-//                .setConstraints(new Constraints.Builder()
-//                        .setRequiredNetworkType(NetworkType.CONNECTED)
-//                        .build())
-//                .build();
-//
-//        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
-//
-//        WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
-//                .observe(this, info -> {
-//                    if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-//                        buildAlerts();
-//                    }
-//                });
+
+        //Build Alerts API work request
+        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(new Constraints.Builder()
+                        //.setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build())
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
+                .observe(this, info -> {
+                    if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
+                        mStationAlertsViewModel.rebuildAlerts();
+                    }
+                });
 
         //If no alerts
         if (mStationAlertsViewModel.getNumAlerts() < 1) {
             LinearLayout rl = this.findViewById(R.id.LinearLayout);
             TextView tv = new TextView(this);
-            tv.setText("No current elevator alerts!");
+            tv.setText(R.string.no_current_alerts);
             tv.setTextSize(18);
             tv.setTextColor(this.getResources().getColor(R.color.colorWhite));
             tv.setHeight(100);

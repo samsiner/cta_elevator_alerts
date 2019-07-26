@@ -9,60 +9,57 @@
     tools:showIn="@layout/activity_add_favorite"
     android:fillViewport="true"
     >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="30dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="30dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_text_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputNickname_textedit"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:hint="@string/hint_nickname" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <RelativeLayout
-                android:id="@+id/relative_station"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputNickname_textedit"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/layout_text_input"
-                android:background="@drawable/border_bottom"
-                android:onClick="toAllLinesActivity">
+                android:hint="@string/hint_nickname" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/text_add_favorite_station"
-                    style="@style/FavoriteNickname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/title_station" />
+        <RelativeLayout
+            android:id="@+id/relative_station"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/layout_text_input"
+            android:background="@drawable/border_bottom"
+            android:onClick="toAllLinesActivity">
 
-                <ImageView
-                    android:id="@+id/img_right_arrow"
-                    style="@style/rightArrow"
-                    android:src="@drawable/right_arrow" />
-
-            </RelativeLayout>
-
-            <Button
-                android:id="@+id/add_favorite_button"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_add_favorite_station"
+                style="@style/FavoriteNickname"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:onClick="toMainActivity"
-                android:text="@string/add_favorite"
-                />
+                android:layout_marginTop="10dp"
+                android:hint="@string/title_station" />
+
+            <ImageView
+                android:id="@+id/img_right_arrow"
+                style="@style/rightArrow"
+                android:src="@drawable/right_arrow"
+                android:contentDescription="@string/content_description_right_arrow"/>
+
         </RelativeLayout>
-    </LinearLayout>
+
+        <Button
+            android:id="@+id/add_favorite_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:onClick="toMainActivity"
+            android:text="@string/add_favorite"
+            />
+    </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

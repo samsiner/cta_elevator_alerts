@@ -27,6 +27,8 @@
 
             <Button
                 android:id="@+id/button_addFavorite"
+                android:layout_alignRight="@id/text_favorites_header"
+                android:layout_alignEnd="@id/text_favorites_header"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:clickable="true"
@@ -48,7 +50,7 @@
             android:id="@+id/recycler_favorite_stations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No favorites added"
+            android:text="@string/no_favorites_added"
             android:background="@drawable/main_activity_containers"
             />
 
@@ -77,7 +79,8 @@
                 android:text="@string/all_lines" />
             <ImageView
                 android:src="@drawable/right_arrow"
-                style="@style/rightArrow"/>
+                style="@style/rightArrow"
+                android:contentDescription="@string/content_description_right_arrow"/>
         </RelativeLayout>
 
     </LinearLayout>

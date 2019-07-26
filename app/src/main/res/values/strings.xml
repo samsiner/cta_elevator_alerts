@@ -8,6 +8,8 @@
     <string name="button_add_favorite">+</string>
     <string name="cancel">Cancel</string>
     <string name="all_lines">All Lines</string>
+    <string name="no_favorites_added">No favorites added!</string>
+    <string name="no_current_alerts">No current elevator alerts!</string>
     <string name="hint_nickname">Choose a station nickname</string>
     <string name="title_all_alerts">All Elevator Alerts</string>
     <string name="title_activity_add_favorite">Add Favorite Station</string>
@@ -24,4 +26,9 @@
     <string name="title_activity_specific_line">Specific Line</string>
     <string name="present_elevator">All elevators at this station are working properly.</string>
     <string name="no_elevator">There are no elevators at this station.</string>
+    <string name="content_description_train">Background image of CTA train</string>
+    <string name="content_description_right_arrow">Right arrow</string>
+    <string name="content_description_train_icon">Train icon</string>
+    <string name="content_description_edit_remove_icon">Edit or remove icon</string>
+    <string name="content_description_accessible_icon">Accessible station icon</string>
 </resources>

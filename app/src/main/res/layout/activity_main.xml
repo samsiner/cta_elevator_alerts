@@ -21,7 +21,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/chicago_train_dark_50"
-                android:contentDescription="Background Image of CTA Train"/>
+                android:contentDescription="@string/content_description_train"/>
         </LinearLayout>
 
         <LinearLayout

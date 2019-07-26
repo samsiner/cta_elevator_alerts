@@ -43,8 +43,10 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
+            android:layout_alignRight="@id/txt_nickname_favorite_station"
+            android:layout_alignEnd="@id/txt_nickname_favorite_station"
             android:clickable="true"
-            android:contentDescription="Edit or Remove Icon"
+            android:contentDescription="@string/content_description_edit_remove_icon"
             android:focusable="true"
             android:src="@drawable/icon_edit_remove" />
 

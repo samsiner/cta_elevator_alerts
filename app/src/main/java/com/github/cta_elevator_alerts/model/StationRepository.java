@@ -21,8 +21,8 @@ import java.util.Scanner;
 public class StationRepository {
 
     private final StationDao mStationDao;
-    private ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
-    private ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
+    private final ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
+    private final ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
 
     private static volatile StationRepository INSTANCE;
 
@@ -312,22 +312,6 @@ public class StationRepository {
         }
     }
 
-    private List<String> getAllAlertStationIDs(){
-        List<String> list2 = new ArrayList<>();
-        Thread thread = new Thread() {
-            public void run() {
-                list2.addAll(mStationDao.getAllAlertStationIDs());
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return list2;
-    }
-
     private void buildStations(){
         Thread thread = new Thread() {
             public void run() {
@@ -366,6 +350,11 @@ public class StationRepository {
                                 }
 
                                 insert(newStation);
+
+                                //TODO: Remove
+                                //For testing notifications
+                                addFavorite(mapID, mapID);
+
                                 mStationDao.updateName(mapID, stationName);
                             }
 

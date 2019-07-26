@@ -14,7 +14,7 @@
         android:layout_width="30dp"
         android:layout_centerVertical="true"
         android:src="@drawable/accessible"
-        android:contentDescription="Accessible Station" />
+        android:contentDescription="@string/content_description_accessible_icon" />
 
         <RelativeLayout
             android:id="@+id/relative_line_graphic"
