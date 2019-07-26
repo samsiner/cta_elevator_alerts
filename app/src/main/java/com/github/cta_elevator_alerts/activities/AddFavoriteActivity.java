@@ -12,26 +12,38 @@ import com.github.cta_elevator_alerts.R;
 
 public class AddFavoriteActivity extends AppCompatActivity {
 
+    private String stationID = "", stationName = "", nickname = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
         TextView toolbarTextView = findViewById(R.id.txt_toolbar_title);
         toolbarTextView.setText(R.string.add_favorite);
-        String stationID = getIntent().getStringExtra("stationID");
-        String stationName = getIntent().getStringExtra("stationName");
-        setNicknameText(getIntent().getStringExtra("nickname"));
 
-        if (stationID != null && stationName != null){
-            TextView addStation = findViewById(R.id.text_add_favorite_station);
-            addStation.setText(stationName);
+        //If system destroyed activity and recreated it
+        if (savedInstanceState != null){
+            if (savedInstanceState.getString("stationID") != null) stationID = savedInstanceState.getString("stationID");
+            if (savedInstanceState.getString("stationName") != null) stationName = savedInstanceState.getString("stationName");
+            if (savedInstanceState.getString("nickname") != null) nickname = savedInstanceState.getString("nickname");
         }
+
+        //Pull in the station that the user selected
+        if (getIntent().getStringExtra("stationID") != null) stationID = getIntent().getStringExtra("stationID");
+        if (getIntent().getStringExtra("stationName") != null) stationName = getIntent().getStringExtra("stationName");
+        if (getIntent().getStringExtra("nickname") != null) nickname = getIntent().getStringExtra("nickname");
+
+        TextView nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
+        nicknameTextEdit.setText(nickname);
+
+        TextView addStation = findViewById(R.id.text_add_favorite_station);
+        addStation.setText(stationName);
     }
 
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(AddFavoriteActivity.this, AllLinesActivity.class);
         intent.putExtra("fromFavorites", true);
-        intent.putExtra("nickname", getNicknameText());
+        intent.putExtra("nickname", nickname);
         startActivity(intent);
     }
 
@@ -39,11 +51,6 @@ public class AddFavoriteActivity extends AppCompatActivity {
         TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
         if (nicknameTextEdit.getText() == null) return "";
         return nicknameTextEdit.getText().toString();
-    }
-
-    private void setNicknameText(String s){
-        TextView nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
-        nicknameTextEdit.setText(s);
     }
 
     public void toMainActivity(View v) {
@@ -61,5 +68,13 @@ public class AddFavoriteActivity extends AppCompatActivity {
             intent.putExtra("stationID", stationID);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("nickname", nickname);
+        savedInstanceState.putString("stationID", stationID);
+        savedInstanceState.putString("stationName", stationName);
     }
 }

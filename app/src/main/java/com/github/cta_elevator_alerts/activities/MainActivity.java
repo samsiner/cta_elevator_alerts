@@ -34,11 +34,8 @@ import com.github.cta_elevator_alerts.R;
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: Reduce app size for deployment; Proguard?
-    //TODO: User bug reporting; Instabug?
     //TODO: Test for no network availability
     //TODO: More tests
-    //TODO: OnSavedInstanceState
     //TODO: Get worker to work correctly
 
     //Tyler:
@@ -48,7 +45,13 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Navigation - tabs? (FragmentPagerAdapter?)
     //TODO: Figure out alternative to Toolbar or change minimum API
     //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
-    
+
+    //To do before deployment:
+    //TODO: Reduce app size for deployment: https://developer.android.com/studio/build/shrink-code
+
+    //Possible future features:
+    //Firebase - cloud database
+
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
@@ -229,12 +232,4 @@ public class MainActivity extends AppCompatActivity {
 
     public StationAlertsViewModel getStationAlertsViewModel(){ return mStationAlertsViewModel; }
 
-//
-////    @Override
-//    public void onSaveInstanceState(Bundle savedInstanceState) {
-//        super.onSaveInstanceState(savedInstanceState);
-////        savedInstanceState.putSerializable("allStations", allStations);
-////        savedInstanceState.putSerializable("allAlerts", allAlerts);
-////    }
-//    }
 }
