@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Tyler:
     //TODO: Display last updated time for elevator alerts
-    //TODO: Make favorite station and alert station heights the same in MainActivity
     //TODO: right facing arrow or plus sign (depending on situation) next to each station on specificLine
     //TODO: Edit / Remove favorite functionality
     //TODO: Navigation - tabs? (FragmentPagerAdapter?)
