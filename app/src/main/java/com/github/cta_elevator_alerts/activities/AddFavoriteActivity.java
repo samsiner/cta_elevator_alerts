@@ -43,7 +43,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(AddFavoriteActivity.this, AllLinesActivity.class);
         intent.putExtra("fromFavorites", true);
-        intent.putExtra("nickname", nickname);
+        intent.putExtra("nickname", getNicknameText());
         startActivity(intent);
     }
 
@@ -51,6 +51,11 @@ public class AddFavoriteActivity extends AppCompatActivity {
         TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
         if (nicknameTextEdit.getText() == null) return "";
         return nicknameTextEdit.getText().toString();
+    }
+
+    private void setNicknameText(String input){
+        TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
+        nicknameTextEdit.setText(input);
     }
 
     public void toMainActivity(View v) {
@@ -62,9 +67,19 @@ public class AddFavoriteActivity extends AppCompatActivity {
             alert.setMessage("Please enter a nickname and select a station");
             alert.setPositiveButton("OK", null);
             alert.show();
-        } else{
+        } else if(getNicknameText().length() >= 20){
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Error");
+            alert.setMessage("Nickname must be less than 20 characters");
+            alert.setPositiveButton("OK", null);
+            alert.show();
+            setNicknameText("");
+        }
+        else{
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-            intent.putExtra("nickname", getNicknameText());
+            String text = getNicknameText();
+            String capText = text.substring(0,1).toUpperCase() + text.substring(1);
+            intent.putExtra("nickname", capText);
             intent.putExtra("stationID", stationID);
             startActivity(intent);
         }

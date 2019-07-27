@@ -4,7 +4,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Edit / Remove favorite functionality
     //TODO: Navigation - tabs? (FragmentPagerAdapter?)
     //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
-    //TODO: Check if user is requesting an already favorite station or same nickname or too long nickname
 
     //To do before deployment:
     //TODO: Reduce app size: https://developer.android.com/studio/build/shrink-code
+    //TODO: improve UI performance
 
     //Possible future features:
     //Firebase - cloud database
@@ -65,12 +67,15 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private String updateAlertsTime;
     private TextView tv_alertsTime;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv_alertsTime = findViewById(R.id.txt_update_alert_time);
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        tv_alertsTime.setText(sharedPref.getString("Updated Time", "No time found"));
 
         buildNotification();
 
@@ -254,4 +259,12 @@ public class MainActivity extends AppCompatActivity {
     public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }
 
     public StationAlertsViewModel getStationAlertsViewModel(){ return mStationAlertsViewModel; }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle){
+        super.onSaveInstanceState(bundle);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Updated Time", updateAlertsTime);
+        editor.apply();
+    }
 }

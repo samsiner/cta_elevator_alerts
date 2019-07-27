@@ -45,11 +45,11 @@ public class SpecificLineViewModel extends AndroidViewModel {
         return mRepository.mGetStationName(stationID);
     }
 
-    public Boolean getHasElevator(String stationID){
+    public boolean getHasElevator(String stationID){
         return mRepository.mGetHasElevator(stationID);
     }
 
-    public Boolean getHasElevatorAlert(String stationID){
+    public boolean getHasElevatorAlert(String stationID){
         return mRepository.mGetHasElevatorAlert(stationID);
     }
 }
