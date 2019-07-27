@@ -35,12 +35,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
             favoritesStationNameTextView = itemView.findViewById(R.id.txt_name_favorite_station);
 
-            View line_0 = itemView.findViewById(R.id.line_0);
-            View line_1 = itemView.findViewById(R.id.line_1);
-            View line_2 = itemView.findViewById(R.id.line_2);
-            View line_3 = itemView.findViewById(R.id.line_3);
-            View line_4 = itemView.findViewById(R.id.line_4);
-            View line_5 = itemView.findViewById(R.id.line_5);
+            View line_0 = itemView.findViewById(R.id.favorite_line_0);
+            View line_1 = itemView.findViewById(R.id.favorite_line_1);
+            View line_2 = itemView.findViewById(R.id.favorite_line_2);
+            View line_3 = itemView.findViewById(R.id.favorite_line_3);
+            View line_4 = itemView.findViewById(R.id.favorite_line_4);
+            View line_5 = itemView.findViewById(R.id.favorite_line_5);
 
             lineViews = new View[]{line_0, line_1, line_2, line_3, line_4, line_5};
         }
