@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     //Sam:
     //TODO: Network availability: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring
     //TODO: More tests
-    //TODO: Get worker to work correctly
+    //TODO: Get notifications to work correctly
 
     //Tyler:
     //TODO: Display last updated time for elevator alerts

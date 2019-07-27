@@ -351,10 +351,6 @@ public class StationRepository {
 
                                 insert(newStation);
 
-                                //TODO: Remove
-                                //For testing notifications
-                                addFavorite(mapID, mapID);
-
                                 mStationDao.updateName(mapID, stationName);
                             }
 

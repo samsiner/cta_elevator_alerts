@@ -69,7 +69,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapterViewHolder holder, int position){
         Station current = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
-        Log.d("Current stationID", current.stationID);
         boolean[] currentRoutes = mFavoritesViewModel.getAllRoutes(current.stationID);
         holder.favoritesNicknameTextView.setText(current.nickname);
         holder.favoritesStationNameTextView.setText(current.name);
@@ -84,7 +83,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         int viewPosition = 0;
         for(int i = 0; i < currentRoutes.length; i++){
             if(currentRoutes[i]){
-                Log.d("Current routes", Integer.toString(i));
                 holder.lineViews[viewPosition].setBackgroundColor(lineColors[i]);
                 viewPosition++;
             }
