@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Get notifications to work correctly
 
     //Tyler:
-    //TODO: Display last updated time for elevator alerts
     //TODO: Edit / Remove favorite functionality
     //TODO: Navigation - tabs? (FragmentPagerAdapter?)
     //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
@@ -64,21 +63,27 @@ public class MainActivity extends AppCompatActivity {
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private String updateAlertsTime;
+    private TextView tv_alertsTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tv_alertsTime = findViewById(R.id.txt_update_alert_time);
 
         buildNotification();
 
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
+        updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+        tv_alertsTime.setText(updateAlertsTime);
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            mStationAlertsViewModel.rebuildAlerts();
+            updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+            tv_alertsTime.setText(updateAlertsTime);
             mSwipeRefreshLayout.setRefreshing(false);
         });
 
@@ -172,7 +177,8 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
                 .observe(this, info -> {
                     if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-                        mStationAlertsViewModel.rebuildAlerts();
+                        updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+                        tv_alertsTime.setText(updateAlertsTime);
                     }
                 });
 
@@ -248,5 +254,4 @@ public class MainActivity extends AppCompatActivity {
     public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }
 
     public StationAlertsViewModel getStationAlertsViewModel(){ return mStationAlertsViewModel; }
-
 }

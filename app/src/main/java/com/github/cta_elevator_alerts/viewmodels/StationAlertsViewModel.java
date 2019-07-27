@@ -21,7 +21,7 @@ public class StationAlertsViewModel extends AndroidViewModel {
 
     public LiveData<List<Station>> getStationAlerts() { return mRepository.mGetAllAlertStations();}
     public List<Station> mGetStationAlertsNotLiveData(){ return mRepository.mGetStationAlertsNotLiveData(); }
-    public void rebuildAlerts(){mRepository.buildAlerts();}
+    public String rebuildAlerts(){return mRepository.buildAlerts();}
 
     public int getNumAlerts(){ return mRepository.getAlertsCount(); }
     public List<String> getStationElevatorsNewlyWorking(){ return mRepository.getFavoriteElevatorNewlyWorking(); }

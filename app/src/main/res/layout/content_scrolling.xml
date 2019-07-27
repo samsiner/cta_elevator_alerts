@@ -82,6 +82,15 @@
                 style="@style/rightArrow"
                 android:contentDescription="@string/content_description_right_arrow"/>
         </RelativeLayout>
+        <TextView
+            android:id="@+id/txt_update_alert_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="center"
+            android:textStyle="italic"
+            />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

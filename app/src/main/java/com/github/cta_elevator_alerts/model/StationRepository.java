@@ -384,7 +384,7 @@ public class StationRepository {
         }
     }
 
-    public void buildAlerts(){
+    public String buildAlerts(){
         String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
 
         ArrayList<String> afterStationsOut = new ArrayList<>();
@@ -461,6 +461,10 @@ public class StationRepository {
         } catch (InterruptedException e){
             e.printStackTrace();
         }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated: 'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
+        Date date = new Date(System.currentTimeMillis());
+        return dateFormat.format(date);
     }
 
     public List<String> getFavoriteElevatorNewlyWorking(){ return favoriteElevatorNewlyWorking; }
