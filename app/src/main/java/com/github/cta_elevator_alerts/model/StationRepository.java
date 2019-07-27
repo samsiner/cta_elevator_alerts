@@ -324,6 +324,10 @@ public class StationRepository {
                             JSONObject obj = (JSONObject) arr.get(i);
                             String mapID = obj.getString("map_id");
                             boolean ada = Boolean.parseBoolean(obj.getString("ada"));
+
+                            //fix incorrect data for Quincy/Wells
+                            if(mapID.equals("40040")){ ada = true; }
+
                             boolean red = Boolean.parseBoolean(obj.getString("red"));
                             boolean blue = Boolean.parseBoolean(obj.getString("blue"));
                             boolean brown = Boolean.parseBoolean(obj.getString("brn"));

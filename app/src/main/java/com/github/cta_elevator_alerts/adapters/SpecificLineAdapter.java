@@ -29,6 +29,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         private final GradientDrawable circle;
         private final ImageView adaImageView;
         private final ImageView statusImageView;
+        private final ImageView rightArrow;
+        private final ImageView icon_add;
 
         private SpecificLineAdapterViewHolder(View itemView) {
             super(itemView);
@@ -38,6 +40,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             circle = (GradientDrawable)itemView.findViewById(R.id.view_circle).getBackground();
             adaImageView = itemView.findViewById(R.id.img_ada);
             statusImageView = itemView.findViewById(R.id.img_status);
+            rightArrow = itemView.findViewById(R.id.img_right);
+            icon_add = itemView.findViewById(R.id.img_add_button);
         }
 
         private void setUI(String lineName, View verticalBarTop, View verticalBarBottom, GradientDrawable circle){
@@ -112,7 +116,15 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         String currStationID = lineStations[position];
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
         int transparentColor = context.getResources().getColor(R.color.colorTransparent);
+        boolean hasElevator = ((SpecificLineActivity)context).getHasElevator(currStationID);
+        boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);
 
+        if(fromFavorites){
+            holder.rightArrow.setVisibility(View.GONE);
+            if(!hasElevator){ holder.icon_add.setVisibility(View.GONE);}
+        } else{
+            holder.icon_add.setVisibility(View.GONE);
+        }
         holder.setUI(toolbarTextView.getText().toString(), holder.verticalBarTop, holder.verticalBarBottom, holder.circle);
         if(position == 0){
             holder.verticalBarTop.setBackgroundColor(transparentColor);
@@ -122,7 +134,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         }
 
         holder.specificLineTextView.setText(currStationName);
-        if(!((SpecificLineActivity)context).getHasElevator(currStationID)){
+        if(!hasElevator){
             holder.adaImageView.setImageResource(android.R.color.transparent);
         }
         if(!((SpecificLineActivity) context).getHasElevatorAlert(currStationID)){
@@ -130,12 +142,10 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         }
 
         ((View)holder.specificLineTextView.getParent()).setOnClickListener(v -> {
-            boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);
-
             Intent intent;
 
             if (fromFavorites) {
-                if (!((SpecificLineActivity) context).getHasElevator(currStationID)) {
+                if (!hasElevator) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(context);
                     alert.setTitle("No elevator!");
                     alert.setMessage("No elevator is present at this station. Please choose a favorite station with an elevator.");

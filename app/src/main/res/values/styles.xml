@@ -99,6 +99,16 @@
         <item name="android:src">@drawable/right_arrow</item>
     </style>
 
+    <style name="icon_add">
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+    </style>
+
     <!-- line color bar -->
     <style name="LineBar">
         <item name="android:layout_width">45dp</item>
