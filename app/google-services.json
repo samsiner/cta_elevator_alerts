@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1047885094973",
+    "firebase_url": "https://cta-elevator-alerts.firebaseio.com",
+    "project_id": "cta-elevator-alerts",
+    "storage_bucket": "cta-elevator-alerts.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047885094973:android:509a9ff328d82eac",
+        "android_client_info": {
+          "package_name": "com.github.cta_elevator_alerts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047885094973-lh4vctfml4qijkgfe0uq8lj2ium5a980.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUveBy7PYAfJO9ebf4Rs_d2dpikubHFl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047885094973-lh4vctfml4qijkgfe0uq8lj2ium5a980.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
