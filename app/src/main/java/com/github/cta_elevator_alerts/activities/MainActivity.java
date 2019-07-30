@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -47,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     //Sam:
     //TODO: Network availability: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring
     //TODO: More tests
-    //TODO: Get notifications to work correctly
 
     //Tyler:
     //TODO: Edit / Remove favorite functionality
@@ -68,11 +66,13 @@ public class MainActivity extends AppCompatActivity {
     private String updateAlertsTime;
     private TextView tv_alertsTime;
     private SharedPreferences sharedPref;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        linearLayout = findViewById(R.id.LinearLayout);
         tv_alertsTime = findViewById(R.id.txt_update_alert_time);
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         tv_alertsTime.setText(sharedPref.getString("Updated Time", "No time found"));
@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
-        updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
         tv_alertsTime.setText(updateAlertsTime);
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
@@ -91,6 +90,17 @@ public class MainActivity extends AppCompatActivity {
             tv_alertsTime.setText(updateAlertsTime);
             mSwipeRefreshLayout.setRefreshing(false);
         });
+
+        //For testing notifications:
+//        Button b = new Button(this);
+//        b.setText("Remove alert");
+//        b.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mStationAlertsViewModel.removeAlert("41140");
+//            }
+//        });
+//        linearLayout.addView(b);
 
         //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
@@ -108,24 +118,16 @@ public class MainActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(favoritesRecyclerView);
 
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
-            //Display notification if elevator is newly out
-            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
-            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
             alertsAdapter.notifyDataSetChanged();
 
             //Display notification if elevator is newly out
             Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
             Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
-
             if (mStationAlertsViewModel.getStationElevatorsNewlyOut() != null){
                 for (String s : mStationAlertsViewModel.getStationElevatorsNewlyOut()) {
                     showNotification(Integer.parseInt(s), true);
                 }
             }
-            //Display notification if elevator is newly out
-            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
-            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
-
             //Display notification if elevator is newly working
             if (mStationAlertsViewModel.getStationElevatorsNewlyWorking() != null) {
 
@@ -133,21 +135,17 @@ public class MainActivity extends AppCompatActivity {
                     showNotification(Integer.parseInt(s), false);
                 }
             }
-            //Display notification if elevator is newly out
-            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
-            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
-
         });
 
+        updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
-            LinearLayout rl = findViewById(R.id.LinearLayout);
-            rl.removeView(findViewById(R.id.noFavoritesAdded));
+            linearLayout.removeView(findViewById(R.id.noFavoritesAdded));
 
             favoritesAdapter.notifyDataSetChanged();
 
             //If no favorites
             if (mFavoritesViewModel.getNumFavorites() < 1) {
-                rl = findViewById(R.id.LinearLayout);
                 TextView tv = new TextView(MainActivity.this);
                 tv.setId(R.id.noFavoritesAdded);
                 tv.setText(R.string.no_favorites_added);
@@ -158,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
                 tv.setGravity(Gravity.CENTER);
                 tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
                 RelativeLayout tv2 = findViewById(R.id.relative_layout_main);
-                int index = rl.indexOfChild(tv2);
-                rl.addView(tv, index + 1);
+                int index = linearLayout.indexOfChild(tv2);
+                linearLayout.addView(tv, index + 1);
             }
         });
 
@@ -189,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
 
         //If no alerts
         if (mStationAlertsViewModel.getNumAlerts() < 1) {
-            LinearLayout rl = this.findViewById(R.id.LinearLayout);
             TextView tv = new TextView(this);
             tv.setText(R.string.no_current_alerts);
             tv.setTextSize(18);
@@ -199,8 +196,8 @@ public class MainActivity extends AppCompatActivity {
             tv.setGravity(Gravity.CENTER);
             tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
             TextView tv2 = this.findViewById(R.id.text_tempDown_header);
-            int index = rl.indexOfChild(tv2);
-            rl.addView(tv, index + 1);
+            int index = linearLayout.indexOfChild(tv2);
+            linearLayout.addView(tv, index + 1);
         }
     }
 

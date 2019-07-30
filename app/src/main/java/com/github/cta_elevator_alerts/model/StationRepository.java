@@ -41,7 +41,6 @@ public class StationRepository {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
         buildStations();
-        buildAlerts();
     }
 
     public LiveData<List<Station>> mGetAllAlertStations() {
@@ -204,20 +203,6 @@ public class StationRepository {
         return hasElevatorAlert;
     }
 
-    private void addAlert(String stationID, String shortDesc, String beginDateTime){
-        Thread thread = new Thread() {
-            public void run() {
-                mStationDao.setAlert(stationID, shortDesc, convertDateTime(beginDateTime));
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-
     private String convertDateTime(String s){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss", Locale.US);
         try {
@@ -298,7 +283,21 @@ public class StationRepository {
         return isFavorite;
     }
 
-    private void removeAlert(String stationID){
+    public void addAlert(String stationID, String shortDesc, String beginDateTime){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.setAlert(stationID, shortDesc, convertDateTime(beginDateTime));
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void removeAlert(String stationID){
         Thread thread = new Thread() {
             public void run() {
                 mStationDao.removeAlert(stationID);
@@ -387,7 +386,23 @@ public class StationRepository {
     public String buildAlerts(){
         String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
 
-        ArrayList<String> afterStationsOut = new ArrayList<>();
+        ArrayList<String> beforeStationsOut = new ArrayList<>();
+
+        favoriteElevatorNewlyOut.clear();
+        favoriteElevatorNewlyWorking.clear();
+        beforeStationsOut.clear();
+
+        Thread thread = new Thread() {
+            public void run() {
+                beforeStationsOut.addAll(mStationDao.getAllAlertStationIDs());
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
 
         try {
             JSONObject outer = new JSONObject(JSONString);
@@ -410,27 +425,17 @@ public class StationRepository {
 
                         if (headline.contains("Back in Service")) continue;
 
-                        afterStationsOut.add(id);
-                        if (mGetHasElevatorAlert(id)) continue;
+                        if (mGetHasElevatorAlert(id)){
+                            beforeStationsOut.remove(id);
+                            continue;
+                        }
 
                         String shortDesc = alert.getString("ShortDescription");
                         String beginDateTime = alert.getString("EventStart");
 
-                        Thread thread = new Thread() {
-                            public void run() {
-                               try{
-                                   addAlert(id, shortDesc, beginDateTime);
-                               } catch(NullPointerException e){
-                                   e.printStackTrace();
-                               }
-                            }
-                        };
-                        thread.start();
-                        try{
-                            thread.join();
-                        } catch (InterruptedException e){
-                            e.printStackTrace();
-                        }
+                        if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
+                        addAlert(id, shortDesc, beginDateTime);
+
                         break;
                     }
                 }
@@ -439,28 +444,13 @@ public class StationRepository {
             e.printStackTrace();
         }
 
-        Thread thread = new Thread() {
-            public void run() {
-                for (String id : mStationDao.getAllAlertStationIDs()){
-                    if (!afterStationsOut.contains(id)){
-                        removeAlert(id);
-                        if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
-                    }
-                }
-
-                for (String id : afterStationsOut){
-                    if (!mStationDao.getAllAlertStationIDs().contains(id)){
-                        if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
-                    }
-                }
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
+        for (String id : beforeStationsOut){
+            removeAlert(id);
+            if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
         }
+//        Log.d("Newly Before3", beforeStationsOut.toString());
+//        Log.d("Newly working3", favoriteElevatorNewlyWorking.toString());
+//        Log.d("Newly out3", favoriteElevatorNewlyOut.toString());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated: 'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
         Date date = new Date(System.currentTimeMillis());
