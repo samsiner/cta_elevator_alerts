@@ -1,0 +1,124 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "67f5318c3cd4299fd0b88bb0593aa820",
+    "entities": [
+      {
+        "tableName": "station_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`stationID` TEXT NOT NULL, `hasElevator` INTEGER NOT NULL, `hasElevatorAlert` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, `red` INTEGER NOT NULL, `blue` INTEGER NOT NULL, `brown` INTEGER NOT NULL, `green` INTEGER NOT NULL, `orange` INTEGER NOT NULL, `pink` INTEGER NOT NULL, `purple` INTEGER NOT NULL, `yellow` INTEGER NOT NULL, `name` TEXT, `shortDescription` TEXT, `beginDateTime` TEXT, `nickname` TEXT, PRIMARY KEY(`stationID`))",
+        "fields": [
+          {
+            "fieldPath": "stationID",
+            "columnName": "stationID",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hasElevator",
+            "columnName": "hasElevator",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hasElevatorAlert",
+            "columnName": "hasElevatorAlert",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "red",
+            "columnName": "red",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "blue",
+            "columnName": "blue",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brown",
+            "columnName": "brown",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "green",
+            "columnName": "green",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orange",
+            "columnName": "orange",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pink",
+            "columnName": "pink",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "purple",
+            "columnName": "purple",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "yellow",
+            "columnName": "yellow",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "shortDescription",
+            "columnName": "shortDescription",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "beginDateTime",
+            "columnName": "beginDateTime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nickname",
+            "columnName": "nickname",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "stationID"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '67f5318c3cd4299fd0b88bb0593aa820')"
+    ]
+  }
+}

@@ -46,8 +46,8 @@
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:orientation="vertical"
             android:id="@+id/recycler_favorite_stations"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/no_favorites_added"
