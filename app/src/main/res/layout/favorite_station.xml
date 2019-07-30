@@ -47,8 +47,8 @@
             android:layout_alignEnd="@id/txt_nickname_favorite_station"
             android:clickable="true"
             android:contentDescription="@string/content_description_edit_remove_icon"
-            android:focusable="true"
-            android:src="@drawable/icon_burger" />
+            android:focusable="true"/>
+            <!--android:src="@drawable/icon_burger" />-->
 
         <View
             android:id="@+id/favorite_line_0"

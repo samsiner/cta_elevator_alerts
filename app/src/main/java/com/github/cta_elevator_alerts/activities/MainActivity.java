@@ -8,11 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     //Sam:
     //TODO: Network availability: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring
     //TODO: More tests
+    //TODO: Observer instead of if statement for "No alerts" and "No stations"
 
     //Tyler:
     //TODO: Edit / Remove favorite functionality
@@ -83,24 +87,25 @@ public class MainActivity extends AppCompatActivity {
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
         tv_alertsTime.setText(updateAlertsTime);
+        if (isConnectedToInternet()) mStationAlertsViewModel.buildStations();
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+            if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
             tv_alertsTime.setText(updateAlertsTime);
             mSwipeRefreshLayout.setRefreshing(false);
         });
 
         //For testing notifications:
-//        Button b = new Button(this);
-//        b.setText("Remove alert");
-//        b.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mStationAlertsViewModel.removeAlert("41140");
-//            }
-//        });
-//        linearLayout.addView(b);
+        Button b = new Button(this);
+        b.setText("Remove all alerts");
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStationAlertsViewModel.removeAllAlerts();
+            }
+        });
+        linearLayout.addView(b);
 
         //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
@@ -120,9 +125,9 @@ public class MainActivity extends AppCompatActivity {
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
             alertsAdapter.notifyDataSetChanged();
 
-            //Display notification if elevator is newly out
-            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
-            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
+//            //Display notification if elevator is newly out
+//            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
+//            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
             if (mStationAlertsViewModel.getStationElevatorsNewlyOut() != null){
                 for (String s : mStationAlertsViewModel.getStationElevatorsNewlyOut()) {
                     showNotification(Integer.parseInt(s), true);
@@ -135,29 +140,27 @@ public class MainActivity extends AppCompatActivity {
                     showNotification(Integer.parseInt(s), false);
                 }
             }
+
+            //If no alerts
+            TextView tv = findViewById(R.id.noStationAlerts);
+            if (mStationAlertsViewModel.getNumAlerts() < 1) {
+                tv.setVisibility(View.VISIBLE);
+            } else {
+                tv.setVisibility(View.GONE);
+            }
         });
 
-        updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+        if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
 
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
-            linearLayout.removeView(findViewById(R.id.noFavoritesAdded));
-
             favoritesAdapter.notifyDataSetChanged();
 
             //If no favorites
+            TextView tv = findViewById(R.id.noFavoritesAdded);
             if (mFavoritesViewModel.getNumFavorites() < 1) {
-                TextView tv = new TextView(MainActivity.this);
-                tv.setId(R.id.noFavoritesAdded);
-                tv.setText(R.string.no_favorites_added);
-                tv.setTextSize(18);
-                tv.setTextColor(MainActivity.this.getResources().getColor(R.color.colorWhite));
-                tv.setHeight(100);
-                tv.setWidth(100);
-                tv.setGravity(Gravity.CENTER);
-                tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
-                RelativeLayout tv2 = findViewById(R.id.relative_layout_main);
-                int index = linearLayout.indexOfChild(tv2);
-                linearLayout.addView(tv, index + 1);
+                tv.setVisibility(View.VISIBLE);
+            } else {
+                tv.setVisibility(View.GONE);
             }
         });
 
@@ -180,25 +183,10 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
                 .observe(this, info -> {
                     if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-                        updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+                        if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
                         tv_alertsTime.setText(updateAlertsTime);
                     }
                 });
-
-        //If no alerts
-        if (mStationAlertsViewModel.getNumAlerts() < 1) {
-            TextView tv = new TextView(this);
-            tv.setText(R.string.no_current_alerts);
-            tv.setTextSize(18);
-            tv.setTextColor(this.getResources().getColor(R.color.colorWhite));
-            tv.setHeight(100);
-            tv.setWidth(100);
-            tv.setGravity(Gravity.CENTER);
-            tv.setTypeface(tv.getTypeface(), Typeface.ITALIC);
-            TextView tv2 = this.findViewById(R.id.text_tempDown_header);
-            int index = linearLayout.indexOfChild(tv2);
-            linearLayout.addView(tv, index + 1);
-        }
     }
 
     private void buildNotification(){
@@ -214,6 +202,12 @@ public class MainActivity extends AppCompatActivity {
         builder = new NotificationCompat.Builder(this,"CHANNEL_ID")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
+    }
+
+    private boolean isConnectedToInternet(){
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
     }
 
     private void showNotification(int id, boolean isNewlyOut){

@@ -70,12 +70,14 @@
         <ImageView
         android:id="@+id/img_right"
         style="@style/rightArrow"
+        android:contentDescription="@string/content_description_right_arrow"
         />
 
         <ImageView
             android:id="@+id/img_add_button"
             android:src="@drawable/icon_add"
-            style="@style/icon_add"/>
+            style="@style/icon_add"
+            android:contentDescription="@string/add_favorite"/>
 
     </RelativeLayout>
 

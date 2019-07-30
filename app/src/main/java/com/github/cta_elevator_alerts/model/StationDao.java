@@ -67,6 +67,12 @@ public interface StationDao {
         @Query("UPDATE station_table SET hasElevatorAlert = 1, shortDescription = :shortDesc, beginDateTime = :begin WHERE stationID = :stationID")
         void setAlert(String stationID, String shortDesc, String begin);
 
+        @Query("UPDATE station_table SET hasElevatorAlert = 0, shortDescription = '', beginDateTime = '' WHERE stationID = :stationID")
+        void removeAlert(String stationID);
+
+        @Query("UPDATE station_table SET hasElevatorAlert = 0, shortDescription = '', beginDateTime = ''")
+        void removeAllAlerts();
+
         @Query("SELECT hasElevatorAlert FROM station_table WHERE stationID = :stationID")
         boolean getHasElevatorAlert(String stationID);
 
@@ -120,7 +126,4 @@ public interface StationDao {
 
         @Query("UPDATE station_table SET yellow = 1 WHERE stationID = :stationID")
         void setYellowTrue(String stationID);
-
-        @Query("UPDATE station_table SET hasElevatorAlert = 0, shortDescription = '', beginDateTime = '' WHERE stationID = :stationID")
-        void removeAlert(String stationID);
 }

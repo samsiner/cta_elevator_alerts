@@ -53,11 +53,6 @@ public class AddFavoriteActivity extends AppCompatActivity {
         return nicknameTextEdit.getText().toString();
     }
 
-    private void setNicknameText(String input){
-        TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
-        nicknameTextEdit.setText(input);
-    }
-
     public void toMainActivity(View v) {
         String stationID = getIntent().getStringExtra("stationID");
 
@@ -73,8 +68,8 @@ public class AddFavoriteActivity extends AppCompatActivity {
             alert.setMessage("Nickname must be less than 20 characters");
             alert.setPositiveButton("OK", null);
             alert.show();
-            setNicknameText("");
-        }
+            TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
+            nicknameTextEdit.setText("");        }
         else{
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
             String text = getNicknameText();

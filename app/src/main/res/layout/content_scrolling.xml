@@ -45,6 +45,17 @@
                 />
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noFavoritesAdded"
+            android:text="@string/no_favorites_added"
+            android:textSize="18sp"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="center"
+            android:textStyle="italic"
+            android:visibility="gone"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:orientation="vertical"
             android:id="@+id/recycler_favorite_stations"
@@ -58,6 +69,17 @@
             android:id="@+id/text_tempDown_header"
             android:text="@string/title_all_alerts"
             style="@style/SubHeaderText"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noStationAlerts"
+            android:text="@string/no_current_alerts"
+            android:textSize="18sp"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="center"
+            android:textStyle="italic"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_station_alerts"

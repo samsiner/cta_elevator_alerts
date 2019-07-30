@@ -40,7 +40,6 @@ public class StationRepository {
     private StationRepository(Application application) {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
-        buildStations();
     }
 
     public LiveData<List<Station>> mGetAllAlertStations() {
@@ -171,6 +170,19 @@ public class StationRepository {
         return countAlerts;
     }
 
+    public void removeAllAlerts() {
+        Thread thread = new Thread() {
+            public void run() {mStationDao.removeAllAlerts();
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
     private boolean hasElevator = false;
     public boolean mGetHasElevator(String stationID) {
         Thread thread = new Thread() {
@@ -283,7 +295,7 @@ public class StationRepository {
         return isFavorite;
     }
 
-    public void addAlert(String stationID, String shortDesc, String beginDateTime){
+    private void addAlert(String stationID, String shortDesc, String beginDateTime){
         Thread thread = new Thread() {
             public void run() {
                 mStationDao.setAlert(stationID, shortDesc, convertDateTime(beginDateTime));
@@ -297,7 +309,7 @@ public class StationRepository {
         }
     }
 
-    public void removeAlert(String stationID){
+    private void removeAlert(String stationID){
         Thread thread = new Thread() {
             public void run() {
                 mStationDao.removeAlert(stationID);
@@ -311,7 +323,7 @@ public class StationRepository {
         }
     }
 
-    private void buildStations(){
+    public void buildStations(){
         Thread thread = new Thread() {
             public void run() {
                 if (mStationDao.getStationCount() < 1) {
