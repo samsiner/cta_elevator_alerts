@@ -90,6 +90,7 @@
             android:textColor="@color/colorWhite"
             android:layout_gravity="center"
             android:textStyle="italic"
+            android:layout_marginBottom="10dp"
             />
 
     </LinearLayout>
