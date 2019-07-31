@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.os.*;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -167,7 +168,15 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
                 intent.putExtra("stationName", current.name);
                 intent.putExtra("stationID", current.stationID);
                 intent.putExtra("fromEdit", true);
+
                 context.startActivity(intent);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+                        holder.swipeLayout.close();
+                    }
+                }, 500);
             }
         });
 
