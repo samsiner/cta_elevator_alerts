@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.github.cta_elevator_alerts.R;
+import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
+import com.github.cta_elevator_alerts.activities.AllLinesActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.model.Station;
@@ -121,17 +123,29 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, holder.swipeLayout.findViewById(R.id.bottom_wrapper));
         holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener(){
             @Override
-            public void onClose(SwipeLayout layout){Log.d("onClose", "surface totally covers bottom view");}
+            public void onClose(SwipeLayout layout){
+                //totally closed
+            }
             @Override
-            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset){Log.d("onUpdate", "we are swiping");}
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset){
+                //swiping
+            }
             @Override
-            public void onStartOpen(SwipeLayout layout){Log.d("onStartOpen", "We started opening");}
+            public void onStartOpen(SwipeLayout layout){
+                //begin opening
+            }
             @Override
-            public void onOpen(SwipeLayout layout){Log.d("onOpen", "bottom view is totally shown");}
+            public void onOpen(SwipeLayout layout){
+                //completely open
+            }
             @Override
-            public void onStartClose(SwipeLayout layout){Log.d("onStartClose", "we began closing");}
+            public void onStartClose(SwipeLayout layout){
+                //begin closing
+            }
             @Override
-            public void onHandRelease(SwipeLayout layout, float xvel, float yvel){Log.d("onHandRelease", "users hand released");}
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel){
+                //hand released
+            }
 
         });
 
@@ -142,16 +156,29 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
             }
         });
 
-        holder.tvEdit.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){Log.d("tvEdit", "clicked on edit"); }
-        });
-
         holder.tvDelete.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){Log.d("tvDelete", "clicked on delete"); }
         });
 
+        holder.tvEdit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(context, AddFavoriteActivity.class);
+                intent.putExtra("nickname", current.nickname);
+                intent.putExtra("stationName", current.name);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.tvDelete.setOnClickListener(new View.OnClickListener(){
+           @Override
+           public void onClick(View view){
+               Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
+               mFavoritesViewModel.removeFavorite(s.stationID);
+               notifyDataSetChanged();
+           }
+        });
     }
 
     @Override
@@ -159,9 +186,9 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         return mFavoritesViewModel.getNumFavorites();
     }
 
-    public void onItemDismiss(int position){
-        Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
-        mFavoritesViewModel.removeFavorite(s.stationID);
-        notifyDataSetChanged();
-    }
+//    public void onItemDismiss(int position){
+//        Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
+//        mFavoritesViewModel.removeFavorite(s.stationID);
+//        notifyDataSetChanged();
+//    }
 }
