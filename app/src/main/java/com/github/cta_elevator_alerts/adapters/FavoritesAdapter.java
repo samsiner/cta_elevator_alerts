@@ -154,9 +154,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         holder.rl_delete.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
-                mFavoritesViewModel.removeFavorite(s.stationID);
-                notifyDataSetChanged();
+                removeFavoriteStation(position, holder);
             }
         });
 
@@ -175,6 +173,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
                     @Override
                     public void run(){
                         holder.swipeLayout.close();
+//                        removeFavoriteStation(position, holder);
                     }
                 }, 500);
             }
@@ -188,6 +187,12 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         return mFavoritesViewModel.getNumFavorites();
     }
 
+    private void removeFavoriteStation(int position, FavoritesAdapterViewHolder holder){
+        Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
+        mFavoritesViewModel.removeFavorite(s.stationID);
+        holder.swipeLayout.close(false);
+        notifyDataSetChanged();
+    }
 //    public void onItemDismiss(int position){
 //        Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
 //        mFavoritesViewModel.removeFavorite(s.stationID);

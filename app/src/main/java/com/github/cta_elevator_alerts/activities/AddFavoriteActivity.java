@@ -21,7 +21,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_favorite);
         TextView toolbarTextView = findViewById(R.id.txt_toolbar_title);
 
-        if (getIntent().getBooleanExtra("fromEdit", true)) {
+        if (getIntent().getBooleanExtra("fromEdit", false)) {
             toolbarTextView.setText(R.string.update_favorite);
 
             Button addFavorite = this.findViewById(R.id.add_favorite_button);

@@ -248,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
         startActivity(intent);
-        intent.putExtra("fromFavorites", false);
     }
 
     public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }
