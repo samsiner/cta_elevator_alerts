@@ -241,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toAddFavoriteActivity(View v){
         Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
+        intent.putExtra("fromEdit", false);
         startActivity(intent);
     }
 

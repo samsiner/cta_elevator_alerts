@@ -6,6 +6,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.cta_elevator_alerts.R;
@@ -19,7 +20,15 @@ public class AddFavoriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
         TextView toolbarTextView = findViewById(R.id.txt_toolbar_title);
-        toolbarTextView.setText(R.string.add_favorite);
+
+        if (getIntent().getBooleanExtra("fromEdit", true)) {
+            toolbarTextView.setText(R.string.update_favorite);
+
+            Button addFavorite = this.findViewById(R.id.add_favorite_button);
+            addFavorite.setText(R.string.update_favorite);
+        } else{
+            toolbarTextView.setText(R.string.add_favorite);
+        }
 
         //If system destroyed activity and recreated it
         if (savedInstanceState != null){

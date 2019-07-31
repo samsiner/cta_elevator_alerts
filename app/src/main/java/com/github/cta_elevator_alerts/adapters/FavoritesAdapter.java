@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
+import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
@@ -64,12 +65,14 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
     private final Context context;
     private final FavoritesViewModel mFavoritesViewModel;
     private final int[] lineColors;
+    private final SwipeItemRecyclerMangerImpl mItemManager;
 
     public FavoritesAdapter(Context context){
         mFavoritesViewModel = ((MainActivity)context).getFavoritesViewModel();
         mInflater = LayoutInflater.from(context);
         this.context = context;
         lineColors = context.getResources().getIntArray(R.array.lineColors);
+        mItemManager = new SwipeItemRecyclerMangerImpl(this);
     }
 
     @Override
@@ -163,9 +166,12 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
                 intent.putExtra("nickname", current.nickname);
                 intent.putExtra("stationName", current.name);
                 intent.putExtra("stationID", current.stationID);
+                intent.putExtra("fromEdit", true);
                 context.startActivity(intent);
             }
         });
+
+        mItemManager.bindView(holder.itemView, position);
     }
 
     @Override
