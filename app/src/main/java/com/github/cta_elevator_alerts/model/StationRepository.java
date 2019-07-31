@@ -1,6 +1,7 @@
 package com.github.cta_elevator_alerts.model;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -323,7 +324,9 @@ public class StationRepository {
         }
     }
 
-    public void buildStations(){
+    private String str = "";
+
+    public String buildStations(){
         Thread thread = new Thread() {
             public void run() {
                 if (mStationDao.getStationCount() < 1) {
@@ -381,7 +384,7 @@ public class StationRepository {
                             if (yellow) mStationDao.setYellowTrue(mapID);
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        str = "Internet issue";
                     }
                 }
             }
@@ -393,11 +396,12 @@ public class StationRepository {
         } catch (InterruptedException e){
             e.printStackTrace();
         }
+        return str;
     }
 
     public String buildAlerts(){
         String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-
+        if (JSONString.equals("")) return "";
         ArrayList<String> beforeStationsOut = new ArrayList<>();
 
         favoriteElevatorNewlyOut.clear();
@@ -483,7 +487,6 @@ public class StationRepository {
                     while (scan.hasNext()) sb.append(scan.nextLine());
                     scan.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
                     sb.append("");
                 }
             }

@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     //Sam:
     //TODO: Network availability: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring
     //TODO: More tests
-    //TODO: Observer instead of if statement for "No alerts" and "No stations"
 
     //Tyler:
     //TODO: Edit / Remove favorite functionality
@@ -70,13 +71,11 @@ public class MainActivity extends AppCompatActivity {
     private String updateAlertsTime;
     private TextView tv_alertsTime;
     private SharedPreferences sharedPref;
-    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        linearLayout = findViewById(R.id.LinearLayout);
         tv_alertsTime = findViewById(R.id.txt_update_alert_time);
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         tv_alertsTime.setText(sharedPref.getString("Updated Time", "No time found"));
@@ -87,25 +86,20 @@ public class MainActivity extends AppCompatActivity {
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
         tv_alertsTime.setText(updateAlertsTime);
-        if (isConnectedToInternet()) mStationAlertsViewModel.buildStations();
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+            if (updateAlertsTime.equals("") || !isConnectedToInternet()) showNoInternetPositiveDialog();
             tv_alertsTime.setText(updateAlertsTime);
             mSwipeRefreshLayout.setRefreshing(false);
         });
 
-        //For testing notifications:
-        Button b = new Button(this);
-        b.setText("Remove all alerts");
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mStationAlertsViewModel.removeAllAlerts();
-            }
-        });
-        linearLayout.addView(b);
+        String buildStationResult = mStationAlertsViewModel.buildStations();
+        if (buildStationResult.equals("Internet issue") || !isConnectedToInternet()){
+            showNoInternetPositiveDialog();
+            return;
+        }
 
         //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
@@ -151,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+        if (updateAlertsTime.equals("") || !isConnectedToInternet()) showNoInternetPositiveDialog();
 
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
             favoritesAdapter.notifyDataSetChanged();
@@ -184,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 .observe(this, info -> {
                     if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
                         if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
+                        if (updateAlertsTime.equals("") || !isConnectedToInternet()) showNoInternetPositiveDialog();
                         tv_alertsTime.setText(updateAlertsTime);
                     }
                 });
@@ -208,6 +204,14 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
+    }
+
+    private void showNoInternetPositiveDialog(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Not connected to internet");
+        alert.setMessage("You are not connected to the internet. Please refresh and try again.");
+        alert.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+        alert.show();
     }
 
     private void showNotification(int id, boolean isNewlyOut){
