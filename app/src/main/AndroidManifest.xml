@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="true">
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
         <activity
             android:name=".activities.SpecificLineActivity"
             android:label="@string/title_activity_specific_line"

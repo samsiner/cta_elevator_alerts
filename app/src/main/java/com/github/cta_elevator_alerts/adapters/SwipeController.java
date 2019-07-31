@@ -33,5 +33,4 @@ public class SwipeController extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isItemViewSwipeEnabled(){ return true; }
-
 }

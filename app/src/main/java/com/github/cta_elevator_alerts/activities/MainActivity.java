@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: More tests
 
     //Tyler:
-    //TODO: Edit / Remove favorite functionality
+    //TODO: Edit / Remove favorite functionality: https://www.learn2crack.com/2016/02/custom-swipe-recyclerview.html
     //TODO: Navigation - tabs? (FragmentPagerAdapter?)
     //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
 
