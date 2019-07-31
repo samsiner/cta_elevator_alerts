@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +17,6 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
-import com.github.cta_elevator_alerts.activities.AllLinesActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.model.Station;
@@ -33,8 +31,8 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
 
     class FavoritesAdapterViewHolder extends RecyclerView.ViewHolder {
         private final SwipeLayout swipeLayout;
-        private final TextView tvEdit;
-        private final TextView tvDelete;
+        private final RelativeLayout rl_edit;
+        private final RelativeLayout rl_delete;
         private final RelativeLayout favoritesLayout;
         private final ImageView favoritesImageView;
         private final TextView favoritesNicknameTextView;
@@ -44,8 +42,8 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         private FavoritesAdapterViewHolder(View itemView) {
             super(itemView);
             swipeLayout = itemView.findViewById(R.id.swipe);
-            tvEdit = itemView.findViewById(R.id.tvEdit);
-            tvDelete = itemView.findViewById(R.id.tvDelete);
+            rl_edit = itemView.findViewById(R.id.rl_edit);
+            rl_delete = itemView.findViewById(R.id.rl_delete);
             favoritesLayout = itemView.findViewById(R.id.relative_layout_favorites);
             favoritesImageView = itemView.findViewById(R.id.img_favorite_station);
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
@@ -156,12 +154,16 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
             }
         });
 
-        holder.tvDelete.setOnClickListener(new View.OnClickListener(){
+        holder.rl_delete.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){Log.d("tvDelete", "clicked on delete"); }
+            public void onClick(View view){
+                Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
+                mFavoritesViewModel.removeFavorite(s.stationID);
+                notifyDataSetChanged();
+            }
         });
 
-        holder.tvEdit.setOnClickListener(new View.OnClickListener(){
+        holder.rl_edit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(context, AddFavoriteActivity.class);
@@ -169,15 +171,6 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
                 intent.putExtra("stationName", current.name);
                 context.startActivity(intent);
             }
-        });
-
-        holder.tvDelete.setOnClickListener(new View.OnClickListener(){
-           @Override
-           public void onClick(View view){
-               Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
-               mFavoritesViewModel.removeFavorite(s.stationID);
-               notifyDataSetChanged();
-           }
         });
     }
 
