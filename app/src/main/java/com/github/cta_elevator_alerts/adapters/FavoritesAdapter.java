@@ -147,13 +147,6 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
 
         });
 
-        holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Log.d("getsurfaceview", "clicked it");
-            }
-        });
-
         holder.rl_delete.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -169,6 +162,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
                 Intent intent = new Intent(context, AddFavoriteActivity.class);
                 intent.putExtra("nickname", current.nickname);
                 intent.putExtra("stationName", current.name);
+                intent.putExtra("stationID", current.stationID);
                 context.startActivity(intent);
             }
         });
