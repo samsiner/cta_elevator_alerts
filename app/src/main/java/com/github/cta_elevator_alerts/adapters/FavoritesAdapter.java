@@ -9,19 +9,30 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
+public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
+
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe;
+    }
 
     class FavoritesAdapterViewHolder extends RecyclerView.ViewHolder {
+        private final SwipeLayout swipeLayout;
+        private final TextView tvEdit;
+        private final TextView tvDelete;
         private final RelativeLayout favoritesLayout;
         private final ImageView favoritesImageView;
         private final TextView favoritesNicknameTextView;
@@ -30,6 +41,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
         private FavoritesAdapterViewHolder(View itemView) {
             super(itemView);
+            swipeLayout = itemView.findViewById(R.id.swipe);
+            tvEdit = itemView.findViewById(R.id.tvEdit);
+            tvDelete = itemView.findViewById(R.id.tvDelete);
             favoritesLayout = itemView.findViewById(R.id.relative_layout_favorites);
             favoritesImageView = itemView.findViewById(R.id.img_favorite_station);
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
@@ -61,7 +75,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     @Override
     @NonNull
     public FavoritesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        View itemView = mInflater.inflate(R.layout.favorite_station, parent, false);
+        View itemView = mInflater.inflate(R.layout.swipe_layout, parent, false);
         itemView.setBackgroundColor(0x00000000);
         return new FavoritesAdapterViewHolder(itemView);
     }
@@ -101,6 +115,43 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             intent.putExtra("stationID", current.stationID);
             context.startActivity(intent);
         });
+
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+        //drag from right
+        holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, holder.swipeLayout.findViewById(R.id.bottom_wrapper));
+        holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener(){
+            @Override
+            public void onClose(SwipeLayout layout){Log.d("onClose", "surface totally covers bottom view");}
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset){Log.d("onUpdate", "we are swiping");}
+            @Override
+            public void onStartOpen(SwipeLayout layout){Log.d("onStartOpen", "We started opening");}
+            @Override
+            public void onOpen(SwipeLayout layout){Log.d("onOpen", "bottom view is totally shown");}
+            @Override
+            public void onStartClose(SwipeLayout layout){Log.d("onStartClose", "we began closing");}
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel){Log.d("onHandRelease", "users hand released");}
+
+        });
+
+        holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Log.d("getsurfaceview", "clicked it");
+            }
+        });
+
+        holder.tvEdit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){Log.d("tvEdit", "clicked on edit"); }
+        });
+
+        holder.tvDelete.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){Log.d("tvDelete", "clicked on delete"); }
+        });
+
     }
 
     @Override

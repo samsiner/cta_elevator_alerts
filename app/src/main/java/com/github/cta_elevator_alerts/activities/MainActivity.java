@@ -7,12 +7,14 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,7 +32,6 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
 import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
 import com.github.cta_elevator_alerts.adapters.SwipeController;
 import com.github.cta_elevator_alerts.model.APIWorker;
@@ -113,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
         favoritesRecyclerView.setAdapter(favoritesAdapter);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        SwipeController swipeController = new SwipeController(favoritesAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
-        itemTouchHelper.attachToRecyclerView(favoritesRecyclerView);
+//        SwipeController swipeController = new SwipeController(favoritesAdapter);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
+//        itemTouchHelper.attachToRecyclerView(favoritesRecyclerView);
 
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
             alertsAdapter.notifyDataSetChanged();
