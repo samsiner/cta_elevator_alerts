@@ -55,14 +55,23 @@
 
         </RelativeLayout>
 
+        <!--<Button-->
+            <!--android:id="@+id/add_favorite_button"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:onClick="toMainActivity"-->
+            <!--android:text="@string/add_favorite"-->
+            <!--/>-->
         <Button
             android:id="@+id/add_favorite_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/actionButton"
             android:layout_alignParentBottom="true"
-            android:onClick="toMainActivity"
             android:text="@string/add_favorite"
-            />
+            android:textColor="@color/colorGray"
+            android:background="@drawable/btn_outline"
+            android:onClick="toMainActivity"
+        />
     </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

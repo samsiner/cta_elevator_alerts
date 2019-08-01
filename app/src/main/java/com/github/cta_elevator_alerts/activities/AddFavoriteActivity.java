@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.cta_elevator_alerts.R;
@@ -17,18 +19,18 @@ import com.github.cta_elevator_alerts.R;
 public class AddFavoriteActivity extends AppCompatActivity {
 
     private String stationID = "", stationName = "", nickname = "";
+    private Button addFavoriteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
+        addFavoriteBtn = this.findViewById(R.id.add_favorite_button);
         TextView toolbarTextView = findViewById(R.id.txt_toolbar_title);
 
         if (getIntent().getBooleanExtra("fromEdit", false)) {
             toolbarTextView.setText(R.string.update_favorite);
-
-            Button addFavorite = this.findViewById(R.id.add_favorite_button);
-            addFavorite.setText(R.string.update_favorite);
+            addFavoriteBtn.setText(R.string.update_favorite);
         } else{
             toolbarTextView.setText(R.string.add_favorite);
         }
@@ -47,9 +49,35 @@ public class AddFavoriteActivity extends AppCompatActivity {
 
         TextView nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
         nicknameTextEdit.setText(nickname);
+        nicknameTextEdit.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                                actionId == EditorInfo.IME_ACTION_DONE ||
+                                event != null &&
+                                        event.getAction() == KeyEvent.ACTION_DOWN &&
+                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                            if (event == null || !event.isShiftPressed()) {
+                                // the user is done typing.
+                                if(nicknameTextEdit.getText().toString().equals("")){
+                                    removeClickableUI(addFavoriteBtn);
+                                } else{
+                                    addClickableUI(addFavoriteBtn);
+                                }
+                                return true; // consume.
+                            }
+                        }
+                        return false; // pass on to other listeners.
+                    }
+                }
+        );
+
 
         TextView addStation = findViewById(R.id.text_add_favorite_station);
         addStation.setText(stationName);
+
+        if(!stationName.equals("") && !stationID.equals("") && !nickname.equals("")){ addClickableUI(addFavoriteBtn); }
     }
 
     public void toAllLinesActivity(View v){
@@ -109,5 +137,16 @@ public class AddFavoriteActivity extends AppCompatActivity {
             intent.putExtra("stationID", getIntent().getStringExtra("stationID"));
             startActivity(intent);
         }
+    }
+
+    private void addClickableUI(Button b){
+        b.setBackgroundResource(0);
+        b.setBackgroundColor(getResources().getColor(R.color.colorAndroidGreen));
+        b.setTextColor(getResources().getColor(R.color.colorWhite));
+    }
+
+    private void removeClickableUI(Button b){
+        b.setBackground(getResources().getDrawable(R.drawable.btn_outline));
+        b.setTextColor(getResources().getColor(R.color.colorGray));
     }
 }
