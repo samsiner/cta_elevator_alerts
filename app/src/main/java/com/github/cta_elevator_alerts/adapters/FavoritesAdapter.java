@@ -40,7 +40,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         private final TextView favoritesNicknameTextView;
         private final TextView favoritesStationNameTextView;
         private final View[] lineViews;
-        private final ImageView hamburger;
+        private final RelativeLayout hamburger;
 
         private FavoritesAdapterViewHolder(View itemView) {
             super(itemView);
@@ -51,7 +51,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
             favoritesImageView = itemView.findViewById(R.id.img_favorite_station);
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
             favoritesStationNameTextView = itemView.findViewById(R.id.txt_name_favorite_station);
-            hamburger = itemView.findViewById(R.id.iv_hamburger);
+            hamburger = itemView.findViewById(R.id.rl_hamburger);
 
             View line_0 = itemView.findViewById(R.id.favorite_line_0);
             View line_1 = itemView.findViewById(R.id.favorite_line_1);
@@ -194,7 +194,6 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
                     holder.swipeLayout.close(true);
                 }
             }
-
         });
     }
 
