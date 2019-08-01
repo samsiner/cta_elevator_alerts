@@ -2,7 +2,6 @@ package com.github.cta_elevator_alerts.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +78,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
     @Override
     @NonNull
     public FavoritesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        View itemView = mInflater.inflate(R.layout.swipe_layout, parent, false);
+        View itemView = mInflater.inflate(R.layout.favorite_station, parent, false);
         itemView.setBackgroundColor(0x00000000);
         return new FavoritesAdapterViewHolder(itemView);
     }
