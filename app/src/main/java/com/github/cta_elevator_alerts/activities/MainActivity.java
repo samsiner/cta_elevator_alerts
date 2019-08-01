@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.ViewModelProviders;
@@ -109,10 +110,6 @@ public class MainActivity extends AppCompatActivity {
         final FavoritesAdapter favoritesAdapter = new FavoritesAdapter(this);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-//        SwipeController swipeController = new SwipeController(favoritesAdapter);
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
-//        itemTouchHelper.attachToRecyclerView(favoritesRecyclerView);
 
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
             alertsAdapter.notifyDataSetChanged();

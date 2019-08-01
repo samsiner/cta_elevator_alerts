@@ -86,7 +86,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         }
         else{
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-            String text = getNicknameText();
+            String text = getNicknameText().trim();
             String capText = text.substring(0,1).toUpperCase() + text.substring(1);
             intent.putExtra("nickname", capText);
             intent.putExtra("stationID", stationID);
