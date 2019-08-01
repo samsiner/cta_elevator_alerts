@@ -5,7 +5,11 @@ import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.cta_elevator_alerts.R;
@@ -19,7 +23,15 @@ public class AddFavoriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
         TextView toolbarTextView = findViewById(R.id.txt_toolbar_title);
-        toolbarTextView.setText(R.string.add_favorite);
+
+        if (getIntent().getBooleanExtra("fromEdit", false)) {
+            toolbarTextView.setText(R.string.update_favorite);
+
+            Button addFavorite = this.findViewById(R.id.add_favorite_button);
+            addFavorite.setText(R.string.update_favorite);
+        } else{
+            toolbarTextView.setText(R.string.add_favorite);
+        }
 
         //If system destroyed activity and recreated it
         if (savedInstanceState != null){
@@ -72,7 +84,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
             nicknameTextEdit.setText("");        }
         else{
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-            String text = getNicknameText();
+            String text = getNicknameText().trim();
             String capText = text.substring(0,1).toUpperCase() + text.substring(1);
             intent.putExtra("nickname", capText);
             intent.putExtra("stationID", stationID);
@@ -86,5 +98,16 @@ public class AddFavoriteActivity extends AppCompatActivity {
         savedInstanceState.putString("nickname", nickname);
         savedInstanceState.putString("stationID", stationID);
         savedInstanceState.putString("stationName", stationName);
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        if(getIntent().getBooleanExtra("fromEdit", false)){
+            Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
+            intent.putExtra("nickname", getIntent().getStringExtra("nickname"));
+            intent.putExtra("stationID", getIntent().getStringExtra("stationID"));
+            startActivity(intent);
+        }
     }
 }

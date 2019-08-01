@@ -8,19 +8,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.os.*;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
+import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 import com.github.cta_elevator_alerts.R;
+import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
+public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
+
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe;
+    }
 
     class FavoritesAdapterViewHolder extends RecyclerView.ViewHolder {
+        private final SwipeLayout swipeLayout;
+        private final RelativeLayout rl_edit;
+        private final RelativeLayout rl_delete;
         private final RelativeLayout favoritesLayout;
         private final ImageView favoritesImageView;
         private final TextView favoritesNicknameTextView;
@@ -29,6 +42,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
         private FavoritesAdapterViewHolder(View itemView) {
             super(itemView);
+            swipeLayout = itemView.findViewById(R.id.swipe);
+            rl_edit = itemView.findViewById(R.id.rl_edit);
+            rl_delete = itemView.findViewById(R.id.rl_delete);
             favoritesLayout = itemView.findViewById(R.id.relative_layout_favorites);
             favoritesImageView = itemView.findViewById(R.id.img_favorite_station);
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
@@ -49,12 +65,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     private final Context context;
     private final FavoritesViewModel mFavoritesViewModel;
     private final int[] lineColors;
+    private final SwipeItemRecyclerMangerImpl mItemManager;
 
     public FavoritesAdapter(Context context){
         mFavoritesViewModel = ((MainActivity)context).getFavoritesViewModel();
         mInflater = LayoutInflater.from(context);
         this.context = context;
         lineColors = context.getResources().getIntArray(R.array.lineColors);
+        mItemManager = new SwipeItemRecyclerMangerImpl(this);
     }
 
     @Override
@@ -100,6 +118,67 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             intent.putExtra("stationID", current.stationID);
             context.startActivity(intent);
         });
+
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+        //drag from right
+        holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, holder.swipeLayout.findViewById(R.id.bottom_wrapper));
+        holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener(){
+            @Override
+            public void onClose(SwipeLayout layout){
+                //totally closed
+            }
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset){
+                //swiping
+            }
+            @Override
+            public void onStartOpen(SwipeLayout layout){
+                //begin opening
+            }
+            @Override
+            public void onOpen(SwipeLayout layout){
+                //completely open
+            }
+            @Override
+            public void onStartClose(SwipeLayout layout){
+                //begin closing
+            }
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel){
+                //hand released
+            }
+
+        });
+
+        holder.rl_delete.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                removeFavoriteStation(position, holder);
+            }
+        });
+
+        holder.rl_edit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(context, AddFavoriteActivity.class);
+                intent.putExtra("nickname", current.nickname);
+                intent.putExtra("stationName", current.name);
+                intent.putExtra("stationID", current.stationID);
+                intent.putExtra("fromEdit", true);
+
+                context.startActivity(intent);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+//                        holder.swipeLayout.close();
+                        removeFavoriteStation(position, holder);
+                    }
+                }, 500);
+            }
+        });
+
+        mItemManager.bindView(holder.itemView, position);
     }
 
     @Override
@@ -107,9 +186,15 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         return mFavoritesViewModel.getNumFavorites();
     }
 
-    public void onItemDismiss(int position){
+    private void removeFavoriteStation(int position, FavoritesAdapterViewHolder holder){
         Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
         mFavoritesViewModel.removeFavorite(s.stationID);
+        holder.swipeLayout.close(false);
         notifyDataSetChanged();
     }
+//    public void onItemDismiss(int position){
+//        Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
+//        mFavoritesViewModel.removeFavorite(s.stationID);
+//        notifyDataSetChanged();
+//    }
 }

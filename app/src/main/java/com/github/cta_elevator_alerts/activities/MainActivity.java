@@ -23,10 +23,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -35,9 +35,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
 import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
-import com.github.cta_elevator_alerts.adapters.SwipeController;
 import com.github.cta_elevator_alerts.model.APIWorker;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
@@ -111,10 +109,6 @@ public class MainActivity extends AppCompatActivity {
         final FavoritesAdapter favoritesAdapter = new FavoritesAdapter(this);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        SwipeController swipeController = new SwipeController(favoritesAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
-        itemTouchHelper.attachToRecyclerView(favoritesRecyclerView);
 
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
             alertsAdapter.notifyDataSetChanged();
@@ -242,13 +236,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void toAddFavoriteActivity(View v){
         Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
+        intent.putExtra("fromEdit", false);
         startActivity(intent);
     }
 
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
         startActivity(intent);
-        intent.putExtra("fromFavorites", false);
     }
 
     public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }

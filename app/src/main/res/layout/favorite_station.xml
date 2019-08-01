@@ -1,8 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
 
+    <!-- bottom layout -->
+    <LinearLayout
+        android:id="@+id/bottom_wrapper"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+        android:id="@+id/rl_edit"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            style="@style/icon_edit_delete"
+            android:src="@drawable/edit"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_delete"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorRedLine"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            style="@style/icon_edit_delete"
+            android:src="@drawable/trash"
+            />
+    </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- top layout -->
     <RelativeLayout
         android:id="@+id/relative_layout_favorites"
         android:layout_width="match_parent"
@@ -101,4 +146,6 @@
 
     </RelativeLayout>
 
-</androidx.cardview.widget.CardView>
+
+
+</com.daimajia.swipe.SwipeLayout>

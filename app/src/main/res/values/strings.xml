@@ -5,6 +5,7 @@
     <string name="title_nickname">Nickname</string>
     <string name="title_station">Select station</string>
     <string name="add_favorite">Add Favorite</string>
+    <string name="update_favorite">Update Favorite</string>
     <string name="button_add_favorite">+</string>
     <string name="cancel">Cancel</string>
     <string name="all_lines">All Lines</string>
