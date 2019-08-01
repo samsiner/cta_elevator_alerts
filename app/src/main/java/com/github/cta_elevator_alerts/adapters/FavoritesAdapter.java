@@ -171,8 +171,8 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
                 handler.postDelayed(new Runnable(){
                     @Override
                     public void run(){
-                        holder.swipeLayout.close();
-//                        removeFavoriteStation(position, holder);
+//                        holder.swipeLayout.close();
+                        removeFavoriteStation(position, holder);
                     }
                 }, 500);
             }

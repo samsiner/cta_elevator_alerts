@@ -5,6 +5,9 @@ import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -100,5 +103,16 @@ public class AddFavoriteActivity extends AppCompatActivity {
         savedInstanceState.putString("nickname", nickname);
         savedInstanceState.putString("stationID", stationID);
         savedInstanceState.putString("stationName", stationName);
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        if(getIntent().getBooleanExtra("fromEdit", false)){
+            Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
+            intent.putExtra("nickname", getIntent().getStringExtra("nickname"));
+            intent.putExtra("stationID", getIntent().getStringExtra("stationID"));
+            startActivity(intent);
+        }
     }
 }
