@@ -110,7 +110,7 @@
     </style>
 
     <style name="icon_edit_delete">
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_height">25dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>

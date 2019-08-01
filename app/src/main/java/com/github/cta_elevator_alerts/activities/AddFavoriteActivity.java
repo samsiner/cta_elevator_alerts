@@ -6,6 +6,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -49,29 +51,25 @@ public class AddFavoriteActivity extends AppCompatActivity {
 
         TextView nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
         nicknameTextEdit.setText(nickname);
-        nicknameTextEdit.setOnEditorActionListener(
-                new EditText.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                                actionId == EditorInfo.IME_ACTION_DONE ||
-                                event != null &&
-                                        event.getAction() == KeyEvent.ACTION_DOWN &&
-                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                            if (event == null || !event.isShiftPressed()) {
-                                // the user is done typing.
-                                if(nicknameTextEdit.getText().toString().equals("")){
-                                    removeClickableUI(addFavoriteBtn);
-                                } else{
-                                    addClickableUI(addFavoriteBtn);
-                                }
-                                return true; // consume.
-                            }
-                        }
-                        return false; // pass on to other listeners.
-                    }
-                }
-        );
+
+        //change UI of button based on text edit input
+        nicknameTextEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(start == 0 && !stationName.equals("")){ removeClickableUI(addFavoriteBtn); }
+                if(before == 0 && start == 0 && !stationName.equals("")){ addClickableUI(addFavoriteBtn);}
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
         TextView addStation = findViewById(R.id.text_add_favorite_station);
