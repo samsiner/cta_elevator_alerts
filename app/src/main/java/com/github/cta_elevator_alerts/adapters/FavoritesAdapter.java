@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         private final TextView favoritesNicknameTextView;
         private final TextView favoritesStationNameTextView;
         private final View[] lineViews;
+        private final ImageView hamburger;
 
         private FavoritesAdapterViewHolder(View itemView) {
             super(itemView);
@@ -49,6 +51,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
             favoritesImageView = itemView.findViewById(R.id.img_favorite_station);
             favoritesNicknameTextView = itemView.findViewById(R.id.txt_nickname_favorite_station);
             favoritesStationNameTextView = itemView.findViewById(R.id.txt_name_favorite_station);
+            hamburger = itemView.findViewById(R.id.iv_hamburger);
 
             View line_0 = itemView.findViewById(R.id.favorite_line_0);
             View line_1 = itemView.findViewById(R.id.favorite_line_1);
@@ -120,6 +123,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         });
 
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+
         //drag from right
         holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, holder.swipeLayout.findViewById(R.id.bottom_wrapper));
         holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener(){
@@ -179,6 +183,19 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         });
 
         mItemManager.bindView(holder.itemView, position);
+
+        holder.hamburger.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(holder.swipeLayout.getOpenStatus() == SwipeLayout.Status.Close){
+                    holder.swipeLayout.open(true);
+                } else{
+                    holder.swipeLayout.close(true);
+                }
+            }
+
+        });
     }
 
     @Override
@@ -192,9 +209,4 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         holder.swipeLayout.close(false);
         notifyDataSetChanged();
     }
-//    public void onItemDismiss(int position){
-//        Station s = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
-//        mFavoritesViewModel.removeFavorite(s.stationID);
-//        notifyDataSetChanged();
-//    }
 }
