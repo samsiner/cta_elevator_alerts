@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.model.StationRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StationAlertsViewModel extends AndroidViewModel {
@@ -24,6 +25,7 @@ public class StationAlertsViewModel extends AndroidViewModel {
     public String rebuildAlerts(){return mRepository.buildAlerts();}
 
     public int getNumAlerts(){ return mRepository.getAlertsCount(); }
+    public ArrayList<Integer> getLineAlertsCount(){ return mRepository.getLineAlertsCount(); }
     public List<String> getStationElevatorsNewlyWorking(){ return mRepository.getFavoriteElevatorNewlyWorking(); }
     public List<String> getStationElevatorsNewlyOut(){ return mRepository.getFavoriteElevatorNewlyOut(); }
     public String getStationName(String stationID){ return mRepository.mGetStationName(stationID); }

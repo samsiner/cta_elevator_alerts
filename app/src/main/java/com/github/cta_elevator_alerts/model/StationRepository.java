@@ -2,6 +2,7 @@ package com.github.cta_elevator_alerts.model;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Switch;
 
 import androidx.lifecycle.LiveData;
 
@@ -14,6 +15,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -24,6 +27,7 @@ public class StationRepository {
     private final StationDao mStationDao;
     private final ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
     private final ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
+
 
     private static volatile StationRepository INSTANCE;
 
@@ -374,14 +378,14 @@ public class StationRepository {
 
                             //Set routes that come to this station
                             if (ada) mStationDao.setHasElevator(mapID);
-                            if (red) mStationDao.setRedTrue(mapID);
-                            if (blue) mStationDao.setBlueTrue(mapID);
-                            if (brown) mStationDao.setBrownTrue(mapID);
-                            if (green) mStationDao.setGreenTrue(mapID);
-                            if (orange) mStationDao.setOrangeTrue(mapID);
-                            if (pink) mStationDao.setPinkTrue(mapID);
-                            if (purple) mStationDao.setPurpleTrue(mapID);
-                            if (yellow) mStationDao.setYellowTrue(mapID);
+                            if (red){ mStationDao.setRedTrue(mapID); }
+                            if (blue){ mStationDao.setBlueTrue(mapID); }
+                            if (brown){ mStationDao.setBrownTrue(mapID); }
+                            if (green){ mStationDao.setGreenTrue(mapID); }
+                            if (orange){ mStationDao.setOrangeTrue(mapID); }
+                            if (pink){ mStationDao.setPinkTrue(mapID); }
+                            if (purple){ mStationDao.setPurpleTrue(mapID); }
+                            if (yellow){ mStationDao.setYellowTrue(mapID); }
                         }
                     } catch (JSONException e) {
                         str = "Internet issue";
@@ -398,6 +402,7 @@ public class StationRepository {
         }
         return str;
     }
+
 
     public String buildAlerts(){
         String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
@@ -499,5 +504,28 @@ public class StationRepository {
             e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    public ArrayList<Integer> getLineAlertsCount(){
+        ArrayList<Integer> lineAlerts = new ArrayList<>();
+        Thread thread = new Thread() {
+            public void run() {
+                lineAlerts.add(mStationDao.getRedAlertsCount());
+                lineAlerts.add(mStationDao.getBlueAlertsCount());
+                lineAlerts.add(mStationDao.getBrownAlertsCount());
+                lineAlerts.add(mStationDao.getGreenAlertsCount());
+                lineAlerts.add(mStationDao.getOrangeAlertsCount());
+                lineAlerts.add(mStationDao.getPinkAlertsCount());
+                lineAlerts.add(mStationDao.getPurpleAlertsCount());
+                lineAlerts.add(mStationDao.getYellowAlertsCount());
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return lineAlerts;
     }
 }

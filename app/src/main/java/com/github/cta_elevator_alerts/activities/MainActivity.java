@@ -42,6 +42,8 @@ import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 import com.github.cta_elevator_alerts.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     //TODO: More tests
 
     //Tyler:
-    //TODO: Edit / Remove favorite functionality: https://www.learn2crack.com/2016/02/custom-swipe-recyclerview.html
     //TODO: Navigation - tabs? (FragmentPagerAdapter?)
     //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
 
@@ -241,7 +242,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toAllLinesActivity(View v){
+        ArrayList<Integer> lineAlertsCount = mStationAlertsViewModel.getLineAlertsCount();
         Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
+        intent.putIntegerArrayListExtra("lineAlertsCount", lineAlertsCount);
         startActivity(intent);
     }
 

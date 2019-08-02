@@ -3,6 +3,7 @@ package com.github.cta_elevator_alerts.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +15,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
+import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
+import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
+
+import java.util.ArrayList;
 
 public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLinesViewHolder> {
 
     class AllLinesViewHolder extends RecyclerView.ViewHolder {
         private final TextView allLinesTextView;
         private final ImageView trainIconImageView;
+        private final ImageView alertIcon;
 
         private AllLinesViewHolder(View itemView) {
             super(itemView);
             allLinesTextView = itemView.findViewById(R.id.txt_all_lines);
             trainIconImageView = itemView.findViewById(R.id.img_train_icon);
+            alertIcon = itemView.findViewById(R.id.img_alert_icon);
         }
     }
 
@@ -33,11 +40,13 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
     private final String[] mLines = new String[] {"Red Line", "Blue Line", "Brown Line", "Green Line", "Orange Line", "Pink Line", "Purple Line", "Yellow Line"};
     private final Context context;
     private final TextView toolbarTextView;
+    private final ArrayList<Integer> lineAlertsCount;
 
     public AllLinesAdapter(Context context){
         mInflater = LayoutInflater.from(context);
         this.context = context;
         toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar_title);
+        lineAlertsCount = ((Activity)context).getIntent().getIntegerArrayListExtra("lineAlertsCount");
     }
 
     @Override
@@ -52,6 +61,7 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
         String current = mLines[position];
         holder.allLinesTextView.setText(current);
         setTrainIcon(holder.trainIconImageView, current);
+        setAlertIcon(holder.alertIcon, position);
 
         ((View)holder.allLinesTextView.getParent()).setOnClickListener(v -> {
             Intent intent = new Intent(context, SpecificLineActivity.class);
@@ -100,5 +110,9 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
             default:
                 Log.d("Train Icon", "Incorrect input from station lines array");
         }
+    }
+
+    private void setAlertIcon(ImageView image, int position){
+        if(lineAlertsCount.get(position) > 0){ image.setImageResource(R.drawable.status_red);}
     }
 }
