@@ -31,5 +31,4 @@ public class StationAlertsViewModel extends AndroidViewModel {
     public String getStationName(String stationID){ return mRepository.mGetStationName(stationID); }
     public boolean[] getAllRoutes(String stationID){ return mRepository.mGetAllRoutes(stationID);}
     public String buildStations(){ return mRepository.buildStations();}
-    public void removeAllAlerts(){ mRepository.removeAllAlerts();}
 }

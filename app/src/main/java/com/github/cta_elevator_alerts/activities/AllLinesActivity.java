@@ -1,12 +1,13 @@
 package com.github.cta_elevator_alerts.activities;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.cta_elevator_alerts.adapters.AllLinesAdapter;
 import com.github.cta_elevator_alerts.R;
+import com.github.cta_elevator_alerts.adapters.AllLinesAdapter;
 
 public class AllLinesActivity extends AppCompatActivity {
 

@@ -1,8 +1,6 @@
 package com.github.cta_elevator_alerts.model;
 
 import android.app.Application;
-import android.util.Log;
-import android.widget.Switch;
 
 import androidx.lifecycle.LiveData;
 
@@ -15,8 +13,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -173,19 +169,6 @@ public class StationRepository {
             e.printStackTrace();
         }
         return countAlerts;
-    }
-
-    public void removeAllAlerts() {
-        Thread thread = new Thread() {
-            public void run() {mStationDao.removeAllAlerts();
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
     }
 
     private boolean hasElevator = false;

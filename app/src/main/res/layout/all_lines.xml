@@ -11,6 +11,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="0dp"
             android:layout_marginLeft="0dp"
+            android:contentDescription="@string/content_status"
             />
 
         <ImageView

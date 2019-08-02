@@ -30,7 +30,10 @@
     <string name="content_description_train">Background image of CTA train</string>
     <string name="content_description_right_arrow">Right arrow</string>
     <string name="content_description_train_icon">Train icon</string>
-    <string name="content_description_edit_remove_icon">Edit or remove icon</string>
+    <string name="content_description_edit_icon">Edit favorite</string>
+    <string name="content_description_remove_icon">Remove favorite</string>
+    <string name="content_description_hamburger_icon">Remove or edit favorite</string>
     <string name="content_description_accessible_icon">Accessible station icon</string>
+    <string name="content_status">Elevator status</string>
     <string name="privacy_policy_link"><a href="https://sites.google.com/view/elevateappprivacypolicy/home">Privacy Policy</a></string>
 </resources>

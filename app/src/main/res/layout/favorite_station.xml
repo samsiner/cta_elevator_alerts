@@ -14,6 +14,7 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:weightSum="2"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -28,6 +29,7 @@
         <ImageView
             style="@style/icon_edit_delete"
             android:src="@drawable/edit"
+            android:contentDescription="@string/content_description_edit_icon"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -42,6 +44,7 @@
         <ImageView
             style="@style/icon_edit_delete"
             android:src="@drawable/trash"
+            android:contentDescription="@string/content_description_remove_icon"
             />
     </RelativeLayout>
 
@@ -78,7 +81,9 @@
             android:layout_marginTop="-2dp"
             android:layout_below="@+id/txt_nickname_favorite_station"
             android:layout_toEndOf="@id/img_favorite_station"
-            android:layout_toRightOf="@id/img_favorite_station" />
+            android:layout_toRightOf="@id/img_favorite_station"
+            android:layout_toLeftOf="@id/rl_hamburger"
+            android:layout_toStartOf="@id/rl_hamburger"/>
 
         <RelativeLayout
             android:id="@+id/rl_hamburger"
@@ -94,7 +99,7 @@
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@string/content_description_edit_remove_icon"
+                android:contentDescription="@string/content_description_hamburger_icon"
                 android:src="@drawable/icon_burger"
                 />
         </RelativeLayout>

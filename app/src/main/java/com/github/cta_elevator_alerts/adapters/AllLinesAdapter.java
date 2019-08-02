@@ -3,7 +3,6 @@ package com.github.cta_elevator_alerts.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
-import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
-import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 
 import java.util.ArrayList;
 

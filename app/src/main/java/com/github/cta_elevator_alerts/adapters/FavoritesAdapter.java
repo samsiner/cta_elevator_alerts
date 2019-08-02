@@ -2,14 +2,13 @@ package com.github.cta_elevator_alerts.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.os.*;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -154,45 +153,30 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
 
         });
 
-        holder.rl_delete.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                removeFavoriteStation(position, holder);
-            }
-        });
+        holder.rl_delete.setOnClickListener(view -> removeFavoriteStation(position, holder));
 
-        holder.rl_edit.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(context, AddFavoriteActivity.class);
-                intent.putExtra("nickname", current.nickname);
-                intent.putExtra("stationName", current.name);
-                intent.putExtra("stationID", current.stationID);
-                intent.putExtra("fromEdit", true);
+        holder.rl_edit.setOnClickListener(view -> {
+            Intent intent = new Intent(context, AddFavoriteActivity.class);
+            intent.putExtra("nickname", current.nickname);
+            intent.putExtra("stationName", current.name);
+            intent.putExtra("stationID", current.stationID);
+            intent.putExtra("fromEdit", true);
 
-                context.startActivity(intent);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable(){
-                    @Override
-                    public void run(){
+            context.startActivity(intent);
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
 //                        holder.swipeLayout.close();
-                        removeFavoriteStation(position, holder);
-                    }
-                }, 500);
-            }
+                removeFavoriteStation(position, holder);
+            }, 500);
         });
 
         mItemManager.bindView(holder.itemView, position);
 
-        holder.hamburger.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if(holder.swipeLayout.getOpenStatus() == SwipeLayout.Status.Close){
-                    holder.swipeLayout.open(true);
-                } else{
-                    holder.swipeLayout.close(true);
-                }
+        holder.hamburger.setOnClickListener(v -> {
+            if(holder.swipeLayout.getOpenStatus() == SwipeLayout.Status.Close){
+                holder.swipeLayout.open(true);
+            } else{
+                holder.swipeLayout.close(true);
             }
         });
     }

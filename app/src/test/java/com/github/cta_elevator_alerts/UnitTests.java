@@ -1,7 +1,8 @@
 package com.github.cta_elevator_alerts;
 
-import androidx.room.Room;
 import android.content.Context;
+
+import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.github.cta_elevator_alerts.model.Station;
@@ -14,9 +15,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for temp.

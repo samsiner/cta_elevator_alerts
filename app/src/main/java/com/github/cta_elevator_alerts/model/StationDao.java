@@ -94,9 +94,6 @@ public interface StationDao {
         @Query("UPDATE station_table SET hasElevatorAlert = 0, shortDescription = '', beginDateTime = '' WHERE stationID = :stationID")
         void removeAlert(String stationID);
 
-        @Query("UPDATE station_table SET hasElevatorAlert = 0, shortDescription = '', beginDateTime = ''")
-        void removeAllAlerts();
-
         @Query("SELECT hasElevatorAlert FROM station_table WHERE stationID = :stationID")
         boolean getHasElevatorAlert(String stationID);
 

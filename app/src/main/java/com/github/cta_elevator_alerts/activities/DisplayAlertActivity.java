@@ -2,14 +2,14 @@ package com.github.cta_elevator_alerts.activities;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.widget.TextView;
-
 import com.github.cta_elevator_alerts.R;
-import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
 import com.github.cta_elevator_alerts.viewmodelfactories.DisplayAlertViewModelFactory;
+import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
 
 public class DisplayAlertActivity extends AppCompatActivity {
 

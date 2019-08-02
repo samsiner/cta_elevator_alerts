@@ -5,27 +5,19 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.ViewModelProviders;
@@ -37,15 +29,15 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+
+import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
+import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
 import com.github.cta_elevator_alerts.model.APIWorker;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
-import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
-import com.github.cta_elevator_alerts.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,14 +46,12 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Network availability: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring
     //TODO: More tests
     //TODO: Fix worker
+    //TODO: improve UI performance - esp startup time
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
     //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
-
-    //To do before deployment:
-    //TODO: Reduce app size: https://developer.android.com/studio/build/shrink-code
-    //TODO: improve UI performance - esp startup time
+    //TODO: Remove unused resources (see Analyze -> Inspect Code -> Android -> Lint -> Performance)
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
@@ -70,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private String updateAlertsTime;
     private TextView tv_alertsTime;
     private SharedPreferences sharedPref;
-    ArrayList<Integer> lineAlertsCount;
+    private ArrayList<Integer> lineAlertsCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
             alertsAdapter.notifyDataSetChanged();
 
-//            //Display notification if elevator is newly out
-//            Log.d("Newly Out", mStationAlertsViewModel.getStationElevatorsNewlyOut().toString());
-//            Log.d("Newly Working", mStationAlertsViewModel.getStationElevatorsNewlyWorking().toString());
+            //Display notification if elevator is newly out
             if (mStationAlertsViewModel.getStationElevatorsNewlyOut() != null){
                 for (String s : mStationAlertsViewModel.getStationElevatorsNewlyOut()) {
                     showNotification(Integer.parseInt(s), true);
