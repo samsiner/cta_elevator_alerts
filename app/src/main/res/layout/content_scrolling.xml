@@ -112,8 +112,18 @@
             android:textColor="@color/colorWhite"
             android:layout_gravity="center"
             android:textStyle="italic"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="30dp"
             />
-
+        <TextView
+            android:id="@+id/txt_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy_policy_link"
+            android:textSize="20sp"
+            android:textColorLink="@color/colorWhite"
+            android:layout_gravity="start"
+            android:linksClickable="true"
+            android:layout_marginTop="50dp"
+            />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

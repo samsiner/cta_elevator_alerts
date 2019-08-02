@@ -32,4 +32,5 @@
     <string name="content_description_train_icon">Train icon</string>
     <string name="content_description_edit_remove_icon">Edit or remove icon</string>
     <string name="content_description_accessible_icon">Accessible station icon</string>
+    <string name="privacy_policy_link"><a href="https://sites.google.com/view/elevateappprivacypolicy/home">Privacy Policy</a></string>
 </resources>

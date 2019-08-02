@@ -13,6 +13,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -51,17 +53,15 @@ public class MainActivity extends AppCompatActivity {
     //Sam:
     //TODO: Network availability: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring
     //TODO: More tests
+    //TODO: Fix worker
 
     //Tyler:
-    //TODO: Navigation - tabs? (FragmentPagerAdapter?)
+    //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
     //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
 
     //To do before deployment:
     //TODO: Reduce app size: https://developer.android.com/studio/build/shrink-code
-    //TODO: improve UI performance
-
-    //Possible future features:
-    //Firebase - cloud database
+    //TODO: improve UI performance - esp startup time
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
         tv_alertsTime.setText(sharedPref.getString("Updated Time", "No time found"));
 
         buildNotification();
+
+        TextView t2 = findViewById(R.id.txt_privacy);
+        t2.setMovementMethod(LinkMovementMethod.getInstance());
 
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
