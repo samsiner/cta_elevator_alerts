@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private String updateAlertsTime;
     private TextView tv_alertsTime;
     private SharedPreferences sharedPref;
+    ArrayList<Integer> lineAlertsCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
             showNoInternetPositiveDialog();
             return;
         }
+
+        lineAlertsCount = mStationAlertsViewModel.getLineAlertsCount();
 
         //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
@@ -242,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toAllLinesActivity(View v){
-        ArrayList<Integer> lineAlertsCount = mStationAlertsViewModel.getLineAlertsCount();
         Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
         intent.putIntegerArrayListExtra("lineAlertsCount", lineAlertsCount);
         startActivity(intent);
