@@ -61,7 +61,9 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
         String current = mLines[position];
         holder.allLinesTextView.setText(current);
         setTrainIcon(holder.trainIconImageView, current);
-        setAlertIcon(holder.alertIcon, position);
+        if(lineAlertsCount != null){
+            setAlertIcon(holder.alertIcon, position);
+        }
 
         ((View)holder.allLinesTextView.getParent()).setOnClickListener(v -> {
             Intent intent = new Intent(context, SpecificLineActivity.class);
