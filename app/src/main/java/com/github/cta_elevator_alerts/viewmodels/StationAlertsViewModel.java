@@ -4,12 +4,20 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
+import com.github.cta_elevator_alerts.model.APIWorker;
 import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.model.StationRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class StationAlertsViewModel extends AndroidViewModel {
 
