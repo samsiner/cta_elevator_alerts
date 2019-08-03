@@ -31,6 +31,30 @@ public interface StationDao {
         @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1")
         List<String> getAllAlertStationIDs();
 
+        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND red = 1")
+        List<Station> getAllRedLineAlerts();
+
+        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND blue = 1")
+        List<Station> getAllBlueLineAlerts();
+
+        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND brown = 1")
+        List<Station> getAllBrownLineAlerts();
+
+        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND green = 1")
+        List<Station> getAllGreenLineAlerts();
+
+        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND orange = 1")
+        List<Station> getAllOrangeLineAlerts();
+
+        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND pink = 1")
+        List<Station> getAllPinkLineAlerts();
+
+        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND purple = 1")
+        List<Station> getAllPurpleLineAlerts();
+
+        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND yellow = 1")
+        List<Station> getAllYellowLineAlerts();
+
         @Query("SELECT * FROM station_table WHERE stationID = :stationID")
         Station getStation(String stationID);
 
@@ -49,29 +73,29 @@ public interface StationDao {
         @Query("SELECT COUNT(*) FROM station_table")
         int getStationCount();
 
-        @Query("SELECT COUNT(red) FROM station_table WHERE red = 1 AND hasElevatorAlert = 1")
-        int getRedAlertsCount();
-
-        @Query("SELECT COUNT(blue) FROM station_table WHERE blue = 1 AND hasElevatorAlert = 1")
-        int getBlueAlertsCount();
-
-        @Query("SELECT COUNT(brown) FROM station_table WHERE brown = 1 AND hasElevatorAlert = 1")
-        int getBrownAlertsCount();
-
-        @Query("SELECT COUNT(green) FROM station_table WHERE green = 1 AND hasElevatorAlert = 1")
-        int getGreenAlertsCount();
-
-        @Query("SELECT COUNT(orange) FROM station_table WHERE orange = 1 AND hasElevatorAlert = 1")
-        int getOrangeAlertsCount();
-
-        @Query("SELECT COUNT(pink) FROM station_table WHERE pink = 1 AND hasElevatorAlert = 1")
-        int getPinkAlertsCount();
-
-        @Query("SELECT COUNT(purple) FROM station_table WHERE purple = 1 AND hasElevatorAlert = 1")
-        int getPurpleAlertsCount();
-
-        @Query("SELECT COUNT(yellow) FROM station_table WHERE yellow = 1 AND hasElevatorAlert = 1")
-        int getYellowAlertsCount();
+//        @Query("SELECT COUNT(red) FROM station_table WHERE red = 1 AND hasElevatorAlert = 1")
+//        int getRedAlertsCount();
+//
+//        @Query("SELECT COUNT(blue) FROM station_table WHERE blue = 1 AND hasElevatorAlert = 1")
+//        int getBlueAlertsCount();
+//
+//        @Query("SELECT COUNT(brown) FROM station_table WHERE brown = 1 AND hasElevatorAlert = 1")
+//        int getBrownAlertsCount();
+//
+//        @Query("SELECT COUNT(green) FROM station_table WHERE green = 1 AND hasElevatorAlert = 1")
+//        int getGreenAlertsCount();
+//
+//        @Query("SELECT COUNT(orange) FROM station_table WHERE orange = 1 AND hasElevatorAlert = 1")
+//        int getOrangeAlertsCount();
+//
+//        @Query("SELECT COUNT(pink) FROM station_table WHERE pink = 1 AND hasElevatorAlert = 1")
+//        int getPinkAlertsCount();
+//
+//        @Query("SELECT COUNT(purple) FROM station_table WHERE purple = 1 AND hasElevatorAlert = 1")
+//        int getPurpleAlertsCount();
+//
+//        @Query("SELECT COUNT(yellow) FROM station_table WHERE yellow = 1 AND hasElevatorAlert = 1")
+//        int getYellowAlertsCount();
 
         @Query("SELECT name FROM station_table WHERE stationID = :stationID")
         String getName(String stationID);

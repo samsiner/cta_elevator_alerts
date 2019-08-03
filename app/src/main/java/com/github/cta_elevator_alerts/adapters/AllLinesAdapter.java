@@ -14,7 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
+import com.github.cta_elevator_alerts.activities.AllLinesActivity;
+import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
+import com.github.cta_elevator_alerts.viewmodels.AllLinesViewModel;
 
 import java.util.ArrayList;
 
@@ -37,13 +40,13 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
     private final String[] mLines = new String[] {"Red Line", "Blue Line", "Brown Line", "Green Line", "Orange Line", "Pink Line", "Purple Line", "Yellow Line"};
     private final Context context;
     private final TextView toolbarTextView;
-    private final ArrayList<Integer> lineAlertsCount;
+    private final AllLinesViewModel mAllLinesViewModel;
 
     public AllLinesAdapter(Context context){
         mInflater = LayoutInflater.from(context);
         this.context = context;
         toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar_title);
-        lineAlertsCount = ((Activity)context).getIntent().getIntegerArrayListExtra("lineAlertsCount");
+        mAllLinesViewModel = ((AllLinesActivity)context).getAllLinesViewModel();
     }
 
     @Override
@@ -58,8 +61,9 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
         String current = mLines[position];
         holder.allLinesTextView.setText(current);
         setTrainIcon(holder.trainIconImageView, current);
-        if(lineAlertsCount != null){
-            setAlertIcon(holder.alertIcon, position);
+
+        if(mAllLinesViewModel.getAllLineAlerts(current).size() > 0){
+            holder.alertIcon.setImageResource(R.drawable.status_red);
         }
 
         ((View)holder.allLinesTextView.getParent()).setOnClickListener(v -> {
@@ -109,9 +113,5 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
             default:
                 Log.d("Train Icon", "Incorrect input from station lines array");
         }
-    }
-
-    private void setAlertIcon(ImageView image, int position){
-        if(lineAlertsCount.get(position) > 0){ image.setImageResource(R.drawable.status_red);}
     }
 }

@@ -1,0 +1,22 @@
+package com.github.cta_elevator_alerts.viewmodels;
+
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModel;
+
+import com.github.cta_elevator_alerts.model.Station;
+import com.github.cta_elevator_alerts.model.StationRepository;
+
+import java.util.List;
+
+public class AllLinesViewModel extends AndroidViewModel {
+    public final StationRepository mRepository;
+    public AllLinesViewModel(@NonNull Application application) {
+        super(application);
+        mRepository = StationRepository.getInstance(application);
+    }
+
+    public List<Station> getAllLineAlerts(String line){ return mRepository.getAllLineAlerts(line); }
+}

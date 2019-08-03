@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
+    android:id="@+id/sv_specific_alert_stations"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.SpecificLineActivity"
     tools:showIn="@layout/activity_specific_line">
 
     <LinearLayout
-        android:id="@+id/linear_all_lines"
+        android:id="@+id/linear_all_line_alert_stations"
         style="@style/ActivityStyle"
         android:background="@color/colorWhite"
         >
- 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/SubHeaderText"
+            android:text="@string/alerts"
+            android:textColor="@color/colorPrimaryDark"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_specific_line"
+            android:id="@+id/recycler_specific_line_alert_stations"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/SubHeaderText"
+            android:text="@string/all_stations"
+            android:textColor="@color/colorPrimaryDark"
+            />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

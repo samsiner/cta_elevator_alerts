@@ -1,8 +1,11 @@
 package com.github.cta_elevator_alerts.activities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +27,7 @@ public class SpecificLineActivity extends AppCompatActivity {
 
         RecyclerView specificLineRecyclerView = findViewById(R.id.recycler_specific_line);
         final SpecificLineAdapter specificLineAdapter = new SpecificLineAdapter(this, mSpecificLineViewModel.getLine());
+
         specificLineAdapter.setToolbar(getIntent().getStringExtra("line"));
         specificLineRecyclerView.setAdapter(specificLineAdapter);
         specificLineRecyclerView.setLayoutManager(new LinearLayoutManager(this));

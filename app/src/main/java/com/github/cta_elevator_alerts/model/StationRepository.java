@@ -1,6 +1,7 @@
 package com.github.cta_elevator_alerts.model;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -489,26 +490,47 @@ public class StationRepository {
         return sb.toString();
     }
 
-    public ArrayList<Integer> getLineAlertsCount(){
-        ArrayList<Integer> lineAlerts = new ArrayList<>();
+    private List<Station> lineAlertList;
+    public List<Station> getAllLineAlerts(String line){
         Thread thread = new Thread() {
             public void run() {
-                lineAlerts.add(mStationDao.getRedAlertsCount());
-                lineAlerts.add(mStationDao.getBlueAlertsCount());
-                lineAlerts.add(mStationDao.getBrownAlertsCount());
-                lineAlerts.add(mStationDao.getGreenAlertsCount());
-                lineAlerts.add(mStationDao.getOrangeAlertsCount());
-                lineAlerts.add(mStationDao.getPinkAlertsCount());
-                lineAlerts.add(mStationDao.getPurpleAlertsCount());
-                lineAlerts.add(mStationDao.getYellowAlertsCount());
+                switch(line){
+                    case "Red Line":
+                        lineAlertList = mStationDao.getAllRedLineAlerts();
+                        Log.d("red line alerts: ", lineAlertList.toString());
+                        break;
+                    case "Blue Line":
+                        lineAlertList = mStationDao.getAllBlueLineAlerts();
+                        break;
+                    case "Brown Line":
+                        lineAlertList = mStationDao.getAllBrownLineAlerts();
+                        break;
+                    case "Green Line":
+                        lineAlertList = mStationDao.getAllGreenLineAlerts();
+                        break;
+                    case "Orange Line":
+                        lineAlertList = mStationDao.getAllOrangeLineAlerts();
+                        break;
+                    case "Pink Line":
+                        lineAlertList = mStationDao.getAllPinkLineAlerts();
+                        break;
+                    case "Purple Line":
+                        lineAlertList = mStationDao.getAllPurpleLineAlerts();
+                        break;
+                    case "Yellow Line":
+                        lineAlertList = mStationDao.getAllYellowLineAlerts();
+                        break;
+                    default:
+                        break;
+                }
             }
         };
         thread.start();
         try{
             thread.join();
-        } catch (InterruptedException e){
+        } catch(InterruptedException e){
             e.printStackTrace();
         }
-        return lineAlerts;
+        return lineAlertList;
     }
 }
