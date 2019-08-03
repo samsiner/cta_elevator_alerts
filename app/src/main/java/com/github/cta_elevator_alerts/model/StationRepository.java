@@ -312,9 +312,10 @@ public class StationRepository {
         }
     }
 
-    private String str = "";
+    private String str;
 
     public String buildStations(){
+        str = "";
         Thread thread = new Thread() {
             public void run() {
                 if (mStationDao.getStationCount() < 1) {

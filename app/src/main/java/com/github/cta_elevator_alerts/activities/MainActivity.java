@@ -44,7 +44,6 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: Network availability: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring
     //TODO: More tests
     //TODO: Fix worker
     //TODO: improve UI performance - esp startup time
@@ -72,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
         buildNotification();
 
-//        TextView t2 = findViewById(R.id.txt_privacy);
-//        t2.setMovementMethod(LinkMovementMethod.getInstance());
+        TextView t2 = findViewById(R.id.txt_privacy);
+        t2.setMovementMethod(LinkMovementMethod.getInstance());
 
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
@@ -82,17 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
-            if (updateAlertsTime.equals("") || !isConnectedToInternet()) showNoInternetPositiveDialog();
-            tv_alertsTime.setText(updateAlertsTime);
+            rebuildAlerts();
             mSwipeRefreshLayout.setRefreshing(false);
         });
-
-        String buildStationResult = mStationAlertsViewModel.buildStations();
-        if (buildStationResult.equals("Internet issue") || !isConnectedToInternet()){
-            showNoInternetPositiveDialog();
-            return;
-        }
 
         //Create recyclerviews to display favorites and alerts
         RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
@@ -131,8 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
-        if (updateAlertsTime.equals("") || !isConnectedToInternet()) showNoInternetPositiveDialog();
+        rebuildAlerts();
 
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
             favoritesAdapter.notifyDataSetChanged();
@@ -167,9 +157,7 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
                 .observe(this, info -> {
                     if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-                        if (isConnectedToInternet()) updateAlertsTime = mStationAlertsViewModel.rebuildAlerts();
-                        if (updateAlertsTime.equals("") || !isConnectedToInternet()) showNoInternetPositiveDialog();
-                        tv_alertsTime.setText(updateAlertsTime);
+                        rebuildAlerts();
                     }
                 });
     }
@@ -189,10 +177,15 @@ public class MainActivity extends AppCompatActivity {
                 .setPriority(NotificationCompat.PRIORITY_MAX);
     }
 
-    private boolean isConnectedToInternet(){
-        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
+    private void rebuildAlerts(){
+        String buildStationResult = mStationAlertsViewModel.buildStations();
+        if (buildStationResult.equals("Internet issue")) showNoInternetPositiveDialog();
+        else {
+            String s = mStationAlertsViewModel.rebuildAlerts();
+            if (s.equals("")) showNoInternetPositiveDialog();
+            else updateAlertsTime = s;
+            tv_alertsTime.setText(updateAlertsTime);
+        }
     }
 
     private void showNoInternetPositiveDialog(){
