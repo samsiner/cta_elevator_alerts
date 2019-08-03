@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <include layout="@layout/toolbar_dynamic" />
-        <!--<include layout="@layout/content_specific_line_alert_stations"/>-->
+        <include layout="@layout/content_specific_line_alert_stations"/>
         <include layout="@layout/content_specific_line" />
 
     </LinearLayout>

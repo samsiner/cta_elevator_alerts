@@ -31,29 +31,29 @@ public interface StationDao {
         @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1")
         List<String> getAllAlertStationIDs();
 
-        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND red = 1")
-        List<Station> getAllRedLineAlerts();
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1 AND red = 1")
+        List<String> getAllRedLineAlertIDs();
 
-        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND blue = 1")
-        List<Station> getAllBlueLineAlerts();
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1 AND blue = 1")
+        List<String> getAllBlueLineAlertIDs();
 
-        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND brown = 1")
-        List<Station> getAllBrownLineAlerts();
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1 AND brown = 1")
+        List<String> getAllBrownLineAlertIDs();
 
-        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND green = 1")
-        List<Station> getAllGreenLineAlerts();
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1 AND green = 1")
+        List<String> getAllGreenLineAlertIDs();
 
-        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND orange = 1")
-        List<Station> getAllOrangeLineAlerts();
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1 AND orange = 1")
+        List<String> getAllOrangeLineAlertIDs();
 
-        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND pink = 1")
-        List<Station> getAllPinkLineAlerts();
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1 AND pink = 1")
+        List<String> getAllPinkLineAlertIDs();
 
-        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND purple = 1")
-        List<Station> getAllPurpleLineAlerts();
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1 AND purple = 1")
+        List<String> getAllPurpleLineAlertIDs();
 
-        @Query("SELECT* FROM station_table WHERE hasElevatorAlert = 1 AND yellow = 1")
-        List<Station> getAllYellowLineAlerts();
+        @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1 AND yellow = 1")
+        List<String> getAllYellowLineAlertIDs();
 
         @Query("SELECT * FROM station_table WHERE stationID = :stationID")
         Station getStation(String stationID);

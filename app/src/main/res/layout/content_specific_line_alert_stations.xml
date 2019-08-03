@@ -29,13 +29,14 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"/>
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/SubHeaderText"
             android:text="@string/all_stations"
+            android:paddingBottom="0dp"
             android:textColor="@color/colorPrimaryDark"
             />
     </LinearLayout>

@@ -490,35 +490,35 @@ public class StationRepository {
         return sb.toString();
     }
 
-    private List<Station> lineAlertList;
-    public List<Station> getAllLineAlerts(String line){
+    private List<String> lineAlertList;
+    public List<String> getAllLineAlerts(String line){
         Thread thread = new Thread() {
             public void run() {
                 switch(line){
                     case "Red Line":
-                        lineAlertList = mStationDao.getAllRedLineAlerts();
+                        lineAlertList = mStationDao.getAllRedLineAlertIDs();
                         Log.d("red line alerts: ", lineAlertList.toString());
                         break;
                     case "Blue Line":
-                        lineAlertList = mStationDao.getAllBlueLineAlerts();
+                        lineAlertList = mStationDao.getAllBlueLineAlertIDs();
                         break;
                     case "Brown Line":
-                        lineAlertList = mStationDao.getAllBrownLineAlerts();
+                        lineAlertList = mStationDao.getAllBrownLineAlertIDs();
                         break;
                     case "Green Line":
-                        lineAlertList = mStationDao.getAllGreenLineAlerts();
+                        lineAlertList = mStationDao.getAllGreenLineAlertIDs();
                         break;
                     case "Orange Line":
-                        lineAlertList = mStationDao.getAllOrangeLineAlerts();
+                        lineAlertList = mStationDao.getAllOrangeLineAlertIDs();
                         break;
                     case "Pink Line":
-                        lineAlertList = mStationDao.getAllPinkLineAlerts();
+                        lineAlertList = mStationDao.getAllPinkLineAlertIDs();
                         break;
                     case "Purple Line":
-                        lineAlertList = mStationDao.getAllPurpleLineAlerts();
+                        lineAlertList = mStationDao.getAllPurpleLineAlertIDs();
                         break;
                     case "Yellow Line":
-                        lineAlertList = mStationDao.getAllYellowLineAlerts();
+                        lineAlertList = mStationDao.getAllYellowLineAlertIDs();
                         break;
                     default:
                         break;

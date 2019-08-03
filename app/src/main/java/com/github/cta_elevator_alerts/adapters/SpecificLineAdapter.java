@@ -21,6 +21,9 @@ import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
 
+import java.util.Collection;
+import java.util.List;
+
 public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapter.SpecificLineAdapterViewHolder> {
 
     class SpecificLineAdapterViewHolder extends RecyclerView.ViewHolder {
@@ -93,11 +96,11 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     private final LayoutInflater mInflater;
     private final Context context;
-    private final String[] lineStations;
+    private final List<String> lineStations;
     private final Toolbar toolbar;
     private final TextView toolbarTextView;
 
-    public SpecificLineAdapter(Context context, String[] lineStations){
+    public SpecificLineAdapter(Context context, List<String> lineStations){
         mInflater = LayoutInflater.from(context);
         this.context = context;
         this.lineStations = lineStations;
@@ -114,7 +117,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SpecificLineAdapter.SpecificLineAdapterViewHolder holder, int position){
-        String currStationID = lineStations[position];
+        String currStationID = lineStations.get(position);
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
         int transparentColor = context.getResources().getColor(R.color.colorTransparent);
         boolean hasElevator = ((SpecificLineActivity)context).getHasElevator(currStationID);
@@ -130,7 +133,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         if(position == 0){
             holder.verticalBarTop.setBackgroundColor(transparentColor);
         }
-        if(position == lineStations.length - 1){
+        if(position == lineStations.size() - 1){
             holder.verticalBarBottom.setBackgroundColor(transparentColor);
         }
 
@@ -169,7 +172,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
     @Override
     public int getItemCount(){
-        if (lineStations != null) return lineStations.length;
+        if (lineStations != null) return lineStations.size();
         else return 0;
     }
 

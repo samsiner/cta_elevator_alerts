@@ -18,5 +18,5 @@ public class AllLinesViewModel extends AndroidViewModel {
         mRepository = StationRepository.getInstance(application);
     }
 
-    public List<Station> getAllLineAlerts(String line){ return mRepository.getAllLineAlerts(line); }
+    public List<String> getAllLineAlerts(String line){ return mRepository.getAllLineAlerts(line); }
 }
