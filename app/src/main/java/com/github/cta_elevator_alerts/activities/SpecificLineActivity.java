@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.SpecificLineAdapter;
+import com.github.cta_elevator_alerts.adapters.SpecificLineAlertsAdapter;
 import com.github.cta_elevator_alerts.viewmodelfactories.SpecificLineViewModelFactory;
 import com.github.cta_elevator_alerts.viewmodels.AllLinesViewModel;
 import com.github.cta_elevator_alerts.viewmodels.SpecificLineViewModel;
@@ -32,7 +33,7 @@ public class SpecificLineActivity extends AppCompatActivity {
 
         if(lineAlertIDs.size() > 0){
             RecyclerView lineAlertsRecyclerView = findViewById(R.id.recycler_specific_line_alert_stations);
-            final SpecificLineAdapter lineAlertsAdapter = new SpecificLineAdapter(this, lineAlertIDs);
+            final SpecificLineAlertsAdapter lineAlertsAdapter = new SpecificLineAlertsAdapter(this, lineAlertIDs);
             lineAlertsRecyclerView.setAdapter(lineAlertsAdapter);
             lineAlertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         } else{

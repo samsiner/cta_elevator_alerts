@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/SubHeaderText"
-            android:text="@string/alerts"
+            android:text="@string/elevator_alerts"
             android:textColor="@color/colorPrimaryDark"
             />
 
