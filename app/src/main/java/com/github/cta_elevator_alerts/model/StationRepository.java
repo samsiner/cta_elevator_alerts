@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,13 +19,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class StationRepository {
 
     private final StationDao mStationDao;
+    private final ThreadPoolExecutor executor;
+    private MutableLiveData<Boolean> connectionStatusLD;
+    private boolean connectionStatus;
+    private MutableLiveData<String> updateAlertsTime;
     private final ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
     private final ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
-
 
     private static volatile StationRepository INSTANCE;
 
@@ -42,6 +48,10 @@ public class StationRepository {
     private StationRepository(Application application) {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
+        updateAlertsTime = new MutableLiveData<>();
+        connectionStatusLD = new MutableLiveData<>();
+        connectionStatus = true;
+        executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
     }
 
     public LiveData<List<Station>> mGetAllAlertStations() {
@@ -312,14 +322,35 @@ public class StationRepository {
         }
     }
 
-    private String str;
+    public LiveData<Boolean> getConnectionStatus(){
+        return connectionStatusLD;
+    }
 
-    public String buildStations(){
-        str = "";
+    private void setConnectionStatus(){
+        connectionStatusLD.setValue(connectionStatus);
+    }
+
+    private int stationCount;
+
+    public void buildAlertsCheckforStationsFirst(){
         Thread thread = new Thread() {
             public void run() {
-                if (mStationDao.getStationCount() < 1) {
+                stationCount = mStationDao.getStationCount();
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
+        if (stationCount > 0) buildAlerts();
+        else{
+            Thread thread2 = new Thread() {
+                public void run() {
                     String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
+
                     try {
                         JSONArray arr = new JSONArray(JSONString);
 
@@ -372,26 +403,32 @@ public class StationRepository {
                             if (purple){ mStationDao.setPurpleTrue(mapID); }
                             if (yellow){ mStationDao.setYellowTrue(mapID); }
                         }
+                        connectionStatus = true;
                     } catch (JSONException e) {
-                        str = "Internet issue";
+                        connectionStatus = false;
                     }
                 }
+            };
+            thread2.start();
+            try{
+                thread2.join();
+            } catch (InterruptedException e){
+                e.printStackTrace();
             }
-        };
-        thread.start();
-
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
         }
-        return str;
+        setConnectionStatus();
     }
 
-
-    public String buildAlerts(){
+    private void buildAlerts(){
         String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
-        if (JSONString.equals("")) return "";
+
+        //Set internet connection status
+        if (JSONString.equals("NO INTERNET")){
+            connectionStatus = false;
+            return;
+        }
+        else connectionStatus = true;
+
         ArrayList<String> beforeStationsOut = new ArrayList<>();
 
         favoriteElevatorNewlyOut.clear();
@@ -454,13 +491,19 @@ public class StationRepository {
             removeAlert(id);
             if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
         }
-//        Log.d("Newly Before3", beforeStationsOut.toString());
-//        Log.d("Newly working3", favoriteElevatorNewlyWorking.toString());
-//        Log.d("Newly out3", favoriteElevatorNewlyOut.toString());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated: 'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
         Date date = new Date(System.currentTimeMillis());
-        return dateFormat.format(date);
+        setUpdateAlertsTime(dateFormat.format(date));
+    }
+
+
+    public LiveData<String> getUpdateAlertsTime(){
+        return updateAlertsTime;
+    }
+
+    private void setUpdateAlertsTime(String s){
+        updateAlertsTime.setValue(s);
     }
 
     public List<String> getFavoriteElevatorNewlyWorking(){ return favoriteElevatorNewlyWorking; }
@@ -477,7 +520,8 @@ public class StationRepository {
                     while (scan.hasNext()) sb.append(scan.nextLine());
                     scan.close();
                 } catch (IOException e) {
-                    sb.append("");
+                    sb.delete(0, sb.length());
+                    sb.append("NO INTERNET");
                 }
             }
         };

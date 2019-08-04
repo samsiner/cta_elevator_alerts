@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private String updateAlertsTime;
     private TextView tv_alertsTime;
     private SharedPreferences sharedPref;
 
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv_alertsTime = findViewById(R.id.txt_update_alert_time);
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        tv_alertsTime.setText(sharedPref.getString("Updated Time", "No time found"));
+        tv_alertsTime.setText(sharedPref.getString("Updated Time", ""));
 
         buildNotification();
 
@@ -77,11 +76,10 @@ public class MainActivity extends AppCompatActivity {
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
-        tv_alertsTime.setText(updateAlertsTime);
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            rebuildAlerts();
+            mStationAlertsViewModel.rebuildAlerts();
             mSwipeRefreshLayout.setRefreshing(false);
         });
 
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        rebuildAlerts();
+        mStationAlertsViewModel.rebuildAlerts();
 
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
             favoritesAdapter.notifyDataSetChanged();
@@ -134,6 +132,21 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 tv.setVisibility(View.GONE);
             }
+        });
+
+        mStationAlertsViewModel.getUpdateAlertsTime().observe(this, time -> {
+            tv_alertsTime.setText(time);
+        });
+
+        if (getIntent().getStringExtra("nickname") != null){
+            String nickname = getIntent().getStringExtra("nickname");
+            String stationID = getIntent().getStringExtra("stationID");
+            Log.d("Adding favorite", nickname);
+            mFavoritesViewModel.addFavorite(stationID, nickname);
+        }
+
+        mStationAlertsViewModel.getConnectionStatus().observe(this, isConnected -> {
+            if (!isConnected) showNoInternetPositiveDialog();
         });
 
         if (getIntent().getStringExtra("nickname") != null){
@@ -157,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
                 .observe(this, info -> {
                     if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-                        rebuildAlerts();
+                        mStationAlertsViewModel.rebuildAlerts();
                     }
                 });
     }
@@ -175,17 +188,6 @@ public class MainActivity extends AppCompatActivity {
         builder = new NotificationCompat.Builder(this,"CHANNEL_ID")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
-    }
-
-    private void rebuildAlerts(){
-        String buildStationResult = mStationAlertsViewModel.buildStations();
-        if (buildStationResult.equals("Internet issue")) showNoInternetPositiveDialog();
-        else {
-            String s = mStationAlertsViewModel.rebuildAlerts();
-            if (s.equals("")) showNoInternetPositiveDialog();
-            else updateAlertsTime = s;
-            tv_alertsTime.setText(updateAlertsTime);
-        }
     }
 
     private void showNoInternetPositiveDialog(){
@@ -236,12 +238,4 @@ public class MainActivity extends AppCompatActivity {
     public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }
 
     public StationAlertsViewModel getStationAlertsViewModel(){ return mStationAlertsViewModel; }
-
-    @Override
-    public void onSaveInstanceState(Bundle bundle){
-        super.onSaveInstanceState(bundle);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("Updated Time", updateAlertsTime);
-        editor.apply();
-    }
 }
