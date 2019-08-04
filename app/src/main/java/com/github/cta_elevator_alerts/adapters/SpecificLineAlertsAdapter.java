@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
-import com.github.cta_elevator_alerts.model.Station;
 
 import java.util.List;
 

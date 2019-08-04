@@ -19,16 +19,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class StationRepository {
 
     private final StationDao mStationDao;
-    private final ThreadPoolExecutor executor;
+//    private final ThreadPoolExecutor executor;
     private MutableLiveData<Boolean> connectionStatusLD;
     private boolean connectionStatus;
-    private MutableLiveData<String> updateAlertsTime;
+    private MutableLiveData<String> updateAlertsTimeLD;
+    private String updateAlertsTime;
+    private MutableLiveData<Integer> stationCountLD;
+    private int stationCount;
     private final ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
     private final ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
 
@@ -48,10 +49,12 @@ public class StationRepository {
     private StationRepository(Application application) {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
-        updateAlertsTime = new MutableLiveData<>();
+        updateAlertsTimeLD = new MutableLiveData<>();
+        updateAlertsTime = "";
         connectionStatusLD = new MutableLiveData<>();
         connectionStatus = true;
-        executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
+        stationCountLD = new MutableLiveData<>();
+//        executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
     }
 
     public LiveData<List<Station>> mGetAllAlertStations() {
@@ -326,13 +329,11 @@ public class StationRepository {
         return connectionStatusLD;
     }
 
-    private void setConnectionStatus(){
+    public void updateConnectionStatus(){
         connectionStatusLD.setValue(connectionStatus);
     }
 
-    private int stationCount;
-
-    public void buildAlertsCheckforStationsFirst(){
+    public void updateStationCount(){
         Thread thread = new Thread() {
             public void run() {
                 stationCount = mStationDao.getStationCount();
@@ -344,82 +345,74 @@ public class StationRepository {
         } catch (InterruptedException e){
             e.printStackTrace();
         }
-
-        if (stationCount > 0) buildAlerts();
-        else{
-            Thread thread2 = new Thread() {
-                public void run() {
-                    String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
-
-                    try {
-                        JSONArray arr = new JSONArray(JSONString);
-
-                        for (int i = 0; i < arr.length(); i++) {
-                            JSONObject obj = (JSONObject) arr.get(i);
-                            String mapID = obj.getString("map_id");
-                            boolean ada = Boolean.parseBoolean(obj.getString("ada"));
-
-                            //fix incorrect data for Quincy/Wells
-                            if(mapID.equals("40040")){ ada = true; }
-
-                            boolean red = Boolean.parseBoolean(obj.getString("red"));
-                            boolean blue = Boolean.parseBoolean(obj.getString("blue"));
-                            boolean brown = Boolean.parseBoolean(obj.getString("brn"));
-                            boolean green = Boolean.parseBoolean(obj.getString("g"));
-                            boolean orange = Boolean.parseBoolean(obj.getString("o"));
-                            boolean pink = Boolean.parseBoolean(obj.getString("pnk"));
-                            boolean purple = Boolean.parseBoolean(obj.getString("p")) || Boolean.parseBoolean(obj.getString("pexp"));
-                            boolean yellow = Boolean.parseBoolean(obj.getString("y"));
-
-                            Station station = mStationDao.getStation(mapID);
-
-                            if (station == null) { //If station already exists but routes need to be updated
-                                Station newStation = new Station(mapID);
-                                String stationName;
-                                try {
-                                    stationName = obj.getString("station_name");
-                                } catch (JSONException e) {
-                                    stationName = "";
-                                }
-
-                                //name length is too long for this station
-                                if (stationName.equals("Harold Washington Library-State/Van Buren")) {
-                                    stationName = "Harold Washington Library";
-                                }
-
-                                insert(newStation);
-
-                                mStationDao.updateName(mapID, stationName);
-                            }
-
-                            //Set routes that come to this station
-                            if (ada) mStationDao.setHasElevator(mapID);
-                            if (red){ mStationDao.setRedTrue(mapID); }
-                            if (blue){ mStationDao.setBlueTrue(mapID); }
-                            if (brown){ mStationDao.setBrownTrue(mapID); }
-                            if (green){ mStationDao.setGreenTrue(mapID); }
-                            if (orange){ mStationDao.setOrangeTrue(mapID); }
-                            if (pink){ mStationDao.setPinkTrue(mapID); }
-                            if (purple){ mStationDao.setPurpleTrue(mapID); }
-                            if (yellow){ mStationDao.setYellowTrue(mapID); }
-                        }
-                        connectionStatus = true;
-                    } catch (JSONException e) {
-                        connectionStatus = false;
-                    }
-                }
-            };
-            thread2.start();
-            try{
-                thread2.join();
-            } catch (InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-        setConnectionStatus();
+        stationCountLD.setValue(stationCount);
     }
 
-    private void buildAlerts(){
+    public LiveData<Integer> getStationCount(){
+        return stationCountLD;
+    }
+
+    public void buildStations(){
+        String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
+
+        try {
+            JSONArray arr = new JSONArray(JSONString);
+
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = (JSONObject) arr.get(i);
+                String mapID = obj.getString("map_id");
+                boolean ada = Boolean.parseBoolean(obj.getString("ada"));
+
+                //fix incorrect data for Quincy/Wells
+                if(mapID.equals("40040")){ ada = true; }
+
+                boolean red = Boolean.parseBoolean(obj.getString("red"));
+                boolean blue = Boolean.parseBoolean(obj.getString("blue"));
+                boolean brown = Boolean.parseBoolean(obj.getString("brn"));
+                boolean green = Boolean.parseBoolean(obj.getString("g"));
+                boolean orange = Boolean.parseBoolean(obj.getString("o"));
+                boolean pink = Boolean.parseBoolean(obj.getString("pnk"));
+                boolean purple = Boolean.parseBoolean(obj.getString("p")) || Boolean.parseBoolean(obj.getString("pexp"));
+                boolean yellow = Boolean.parseBoolean(obj.getString("y"));
+
+                Station station = mStationDao.getStation(mapID);
+
+                if (station == null) { //If station already exists but routes need to be updated
+                    Station newStation = new Station(mapID);
+                    String stationName;
+                    try {
+                        stationName = obj.getString("station_name");
+                    } catch (JSONException e) {
+                        stationName = "";
+                    }
+
+                    //name length is too long for this station
+                    if (stationName.equals("Harold Washington Library-State/Van Buren")) {
+                        stationName = "Harold Washington Library";
+                    }
+
+                    insert(newStation);
+                    mStationDao.updateName(mapID, stationName);
+                }
+
+                //Set routes that come to this station
+                if (ada) mStationDao.setHasElevator(mapID);
+                if (red){ mStationDao.setRedTrue(mapID); }
+                if (blue){ mStationDao.setBlueTrue(mapID); }
+                if (brown){ mStationDao.setBrownTrue(mapID); }
+                if (green){ mStationDao.setGreenTrue(mapID); }
+                if (orange){ mStationDao.setOrangeTrue(mapID); }
+                if (pink){ mStationDao.setPinkTrue(mapID); }
+                if (purple){ mStationDao.setPurpleTrue(mapID); }
+                if (yellow){ mStationDao.setYellowTrue(mapID); }
+            }
+            connectionStatus = true;
+        } catch (JSONException e) {
+            connectionStatus = false;
+        }
+    }
+
+    public void buildAlerts(){
         String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
 
         //Set internet connection status
@@ -435,17 +428,7 @@ public class StationRepository {
         favoriteElevatorNewlyWorking.clear();
         beforeStationsOut.clear();
 
-        Thread thread = new Thread() {
-            public void run() {
-                beforeStationsOut.addAll(mStationDao.getAllAlertStationIDs());
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        beforeStationsOut.addAll(mStationDao.getAllAlertStationIDs());
 
         try {
             JSONObject outer = new JSONObject(JSONString);
@@ -494,43 +477,30 @@ public class StationRepository {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated: 'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
         Date date = new Date(System.currentTimeMillis());
-        setUpdateAlertsTime(dateFormat.format(date));
+        updateAlertsTime = dateFormat.format(date);
     }
 
-
-    public LiveData<String> getUpdateAlertsTime(){
-        return updateAlertsTime;
+    public LiveData<String> getUpdatedAlertsTime(){
+        return updateAlertsTimeLD;
     }
 
-    private void setUpdateAlertsTime(String s){
-        updateAlertsTime.setValue(s);
+    public void updateUpdatedAlertsTime(){
+        updateAlertsTimeLD.setValue(updateAlertsTime);
     }
 
     public List<String> getFavoriteElevatorNewlyWorking(){ return favoriteElevatorNewlyWorking; }
     public List<String> getFavoriteElevatorNewlyOut(){ return favoriteElevatorNewlyOut; }
 
     private String pullJSONFromWebService(String url){
-        final StringBuilder sb = new StringBuilder();
-
-        Thread thread = new Thread() {
-            public void run() {
-                try {
-                    URL urlStations = new URL(url);
-                    Scanner scan = new Scanner(urlStations.openStream());
-                    while (scan.hasNext()) sb.append(scan.nextLine());
-                    scan.close();
-                } catch (IOException e) {
-                    sb.delete(0, sb.length());
-                    sb.append("NO INTERNET");
-                }
-            }
-        };
-
-        thread.start();
+        StringBuilder sb = new StringBuilder();
         try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
+            URL urlStations = new URL(url);
+            Scanner scan = new Scanner(urlStations.openStream());
+            while (scan.hasNext()) sb.append(scan.nextLine());
+            scan.close();
+        } catch (IOException e) {
+            sb.delete(0, sb.length());
+            sb.append("NO INTERNET");
         }
         return sb.toString();
     }

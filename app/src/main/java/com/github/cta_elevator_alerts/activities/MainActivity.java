@@ -7,14 +7,14 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +38,7 @@ import com.github.cta_elevator_alerts.model.APIWorker;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 
-import java.util.ArrayList;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView tv_alertsTime;
     private SharedPreferences sharedPref;
+    private int stationCount;
+    private boolean isConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            mStationAlertsViewModel.rebuildAlerts();
+            new BuildStationsAndAlerts(this).execute();
             mSwipeRefreshLayout.setRefreshing(false);
         });
 
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mStationAlertsViewModel.rebuildAlerts();
+        new BuildStationsAndAlerts(this).execute();
 
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
             favoritesAdapter.notifyDataSetChanged();
@@ -146,7 +148,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mStationAlertsViewModel.getConnectionStatus().observe(this, isConnected -> {
+            this.isConnected = isConnected;
             if (!isConnected) showNoInternetPositiveDialog();
+        });
+
+        mStationAlertsViewModel.getStationCount().observe(this, stationCount -> {
+            this.stationCount = stationCount;
         });
 
         if (getIntent().getStringExtra("nickname") != null){
@@ -170,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
                 .observe(this, info -> {
                     if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-                        mStationAlertsViewModel.rebuildAlerts();
+                        new BuildStationsAndAlerts(this).execute();
                     }
                 });
     }
@@ -222,6 +229,68 @@ public class MainActivity extends AppCompatActivity {
         }
 
         notificationManager.notify(id, builder.build());
+    }
+
+    private static class BuildStationsAndAlerts extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<MainActivity> mainActivity;
+
+        BuildStationsAndAlerts(MainActivity activity) {
+            mainActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected void onPreExecute(){
+            MainActivity activity = mainActivity.get();
+            Toast toast = Toast.makeText(activity, "Updating Stations", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            MainActivity activity = mainActivity.get();
+            if (activity.stationCount <= 0) activity.mStationAlertsViewModel.buildStations();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void results) {
+            MainActivity activity = mainActivity.get();
+            activity.mStationAlertsViewModel.updateStationCount();
+            activity.mStationAlertsViewModel.updateConnectionStatus();
+            if (activity.stationCount > 0 && activity.isConnected) new UpdateAlerts(activity).execute();
+        }
+    }
+
+    private static class UpdateAlerts extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<MainActivity> mainActivity;
+
+        UpdateAlerts(MainActivity activity) {
+            mainActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected void onPreExecute(){
+            MainActivity activity = mainActivity.get();
+            Toast toast = Toast.makeText(activity, "Updating Alerts", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            MainActivity activity = mainActivity.get();
+            activity.mStationAlertsViewModel.rebuildAlerts();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void results) {
+            MainActivity activity = mainActivity.get();
+            activity.mStationAlertsViewModel.updateUpdatedAlertsTime();
+            activity.mStationAlertsViewModel.updateConnectionStatus();
+        }
+
     }
 
     public void toAddFavoriteActivity(View v){

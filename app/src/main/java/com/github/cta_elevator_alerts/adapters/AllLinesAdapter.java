@@ -15,11 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.activities.AllLinesActivity;
-import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
 import com.github.cta_elevator_alerts.viewmodels.AllLinesViewModel;
-
-import java.util.ArrayList;
 
 public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLinesViewHolder> {
 

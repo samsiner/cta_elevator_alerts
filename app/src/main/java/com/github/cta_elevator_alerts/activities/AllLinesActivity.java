@@ -3,17 +3,13 @@ package com.github.cta_elevator_alerts.activities;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.AllLinesAdapter;
-import com.github.cta_elevator_alerts.viewmodelfactories.SpecificLineViewModelFactory;
 import com.github.cta_elevator_alerts.viewmodels.AllLinesViewModel;
-import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
-import com.github.cta_elevator_alerts.viewmodels.SpecificLineViewModel;
 
 public class AllLinesActivity extends AppCompatActivity {
     private AllLinesViewModel mAllLinesViewModel;

@@ -1,7 +1,6 @@
 package com.github.cta_elevator_alerts.activities;
 
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;

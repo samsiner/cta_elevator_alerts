@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.model.StationRepository;
 
 import java.util.Arrays;

@@ -4,20 +4,11 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 
-import com.github.cta_elevator_alerts.model.APIWorker;
 import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.model.StationRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class StationAlertsViewModel extends AndroidViewModel {
 
@@ -30,13 +21,18 @@ public class StationAlertsViewModel extends AndroidViewModel {
 
     public LiveData<List<Station>> getStationAlerts() { return mRepository.mGetAllAlertStations();}
     public List<Station> mGetStationAlertsNotLiveData(){ return mRepository.mGetStationAlertsNotLiveData(); }
-    public void rebuildAlerts(){ mRepository.buildAlertsCheckforStationsFirst(); }
+    public void rebuildAlerts(){ mRepository.buildAlerts(); }
+    public void buildStations(){ mRepository.buildStations();}
+    public LiveData<Integer> getStationCount(){ return mRepository.getStationCount(); }
+    public void updateStationCount(){ mRepository.updateStationCount(); }
+    public void updateConnectionStatus(){ mRepository.updateConnectionStatus();}
+    public void updateUpdatedAlertsTime(){ mRepository.updateUpdatedAlertsTime();}
 
     public int getNumAlerts(){ return mRepository.getAlertsCount(); }
     public List<String> getStationElevatorsNewlyWorking(){ return mRepository.getFavoriteElevatorNewlyWorking(); }
     public List<String> getStationElevatorsNewlyOut(){ return mRepository.getFavoriteElevatorNewlyOut(); }
     public String getStationName(String stationID){ return mRepository.mGetStationName(stationID); }
     public boolean[] getAllRoutes(String stationID){ return mRepository.mGetAllRoutes(stationID);}
-    public LiveData<String> getUpdateAlertsTime(){ return mRepository.getUpdateAlertsTime(); }
+    public LiveData<String> getUpdateAlertsTime(){ return mRepository.getUpdatedAlertsTime(); }
     public LiveData<Boolean> getConnectionStatus(){ return mRepository.getConnectionStatus(); }
 }

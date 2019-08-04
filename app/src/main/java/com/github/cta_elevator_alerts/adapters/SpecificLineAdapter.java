@@ -13,7 +13,6 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
@@ -21,7 +20,6 @@ import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
 
-import java.util.Collection;
 import java.util.List;
 
 public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapter.SpecificLineAdapterViewHolder> {
