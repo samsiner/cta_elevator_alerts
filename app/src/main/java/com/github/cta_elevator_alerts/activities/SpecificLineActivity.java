@@ -21,7 +21,6 @@ import java.util.List;
 public class SpecificLineActivity extends AppCompatActivity {
 
     private SpecificLineViewModel mSpecificLineViewModel;
-    private AllLinesViewModel mAllLinesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +35,10 @@ public class SpecificLineActivity extends AppCompatActivity {
             lineAlertsRecyclerView.setAdapter(lineAlertsAdapter);
             lineAlertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         } else{
-            NestedScrollView svLineAlerts = findViewById(R.id.sv_specific_alert_stations);
-            ((ViewGroup)svLineAlerts.getParent()).removeView(svLineAlerts);
+            View tvElevatorAlerts = findViewById(R.id.tv_elevator_alerts);
+            ((ViewGroup)tvElevatorAlerts.getParent()).removeView(findViewById(R.id.tv_all_stations));
+            ((ViewGroup)tvElevatorAlerts.getParent()).removeView(findViewById(R.id.recycler_specific_line_alert_stations));
+            ((ViewGroup)tvElevatorAlerts.getParent()).removeView(tvElevatorAlerts);
         }
 
         RecyclerView specificLineRecyclerView = findViewById(R.id.recycler_specific_line);

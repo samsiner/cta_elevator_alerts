@@ -14,13 +14,39 @@
         style="@style/ActivityStyle"
         android:background="@color/colorWhite"
         >
+
+        <TextView
+            android:id="@+id/tv_elevator_alerts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/SubHeaderText"
+            android:text="@string/elevator_alerts"
+            android:textColor="@color/colorPrimaryDark"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_specific_line_alert_stations"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/tv_all_stations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/SubHeaderText"
+            android:text="@string/all_stations"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="20dp"
+            />
  
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_specific_line"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"/>
+            />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
