@@ -35,10 +35,10 @@ public class SpecificLineActivity extends AppCompatActivity {
             lineAlertsRecyclerView.setAdapter(lineAlertsAdapter);
             lineAlertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         } else{
-            View tvElevatorAlerts = findViewById(R.id.tv_elevator_alerts);
-            ((ViewGroup)tvElevatorAlerts.getParent()).removeView(findViewById(R.id.tv_all_stations));
-            ((ViewGroup)tvElevatorAlerts.getParent()).removeView(findViewById(R.id.recycler_specific_line_alert_stations));
-            ((ViewGroup)tvElevatorAlerts.getParent()).removeView(tvElevatorAlerts);
+            ViewGroup alerts = (ViewGroup)findViewById(R.id.tv_elevator_alerts).getParent();
+            alerts.removeView(findViewById(R.id.tv_all_stations));
+            alerts.removeView(findViewById(R.id.recycler_specific_line_alert_stations));
+            alerts.removeView(findViewById(R.id.tv_elevator_alerts));
         }
 
         RecyclerView specificLineRecyclerView = findViewById(R.id.recycler_specific_line);
