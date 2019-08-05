@@ -11,12 +11,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -60,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_alertsTime;
     private SharedPreferences sharedPref;
     private int stationCount;
-    private boolean isConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,30 +133,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mStationAlertsViewModel.getUpdateAlertsTime().observe(this, time -> {
-            tv_alertsTime.setText(time);
-        });
+        mStationAlertsViewModel.getUpdateAlertsTime().observe(this, time -> tv_alertsTime.setText(time));
 
         if (getIntent().getStringExtra("nickname") != null){
             String nickname = getIntent().getStringExtra("nickname");
             String stationID = getIntent().getStringExtra("stationID");
-            Log.d("Adding favorite", nickname);
             mFavoritesViewModel.addFavorite(stationID, nickname);
         }
 
         mStationAlertsViewModel.getConnectionStatus().observe(this, isConnected -> {
-            this.isConnected = isConnected;
-            if (!isConnected) showNoInternetPositiveDialog();
+            if (!isConnected) {
+                Toast toast = Toast.makeText(this, "Not connected - please refresh!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         });
 
-        mStationAlertsViewModel.getStationCount().observe(this, stationCount -> {
-            this.stationCount = stationCount;
-        });
+        mStationAlertsViewModel.getStationCount().observe(this, stationCount -> this.stationCount = stationCount);
 
         if (getIntent().getStringExtra("nickname") != null){
             String nickname = getIntent().getStringExtra("nickname");
             String stationID = getIntent().getStringExtra("stationID");
-            Log.d("Adding favorite", nickname);
             mFavoritesViewModel.addFavorite(stationID, nickname);
         }
 
@@ -195,14 +188,6 @@ public class MainActivity extends AppCompatActivity {
         builder = new NotificationCompat.Builder(this,"CHANNEL_ID")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
-    }
-
-    private void showNoInternetPositiveDialog(){
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Not connected to internet");
-        alert.setMessage("You are not connected to the internet. Please refresh and try again.");
-        alert.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-        alert.show();
     }
 
     private void showNotification(int id, boolean isNewlyOut){
@@ -242,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute(){
             MainActivity activity = mainActivity.get();
-            Toast toast = Toast.makeText(activity, "Updating Stations", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(activity, "Updating Stations and Alerts", Toast.LENGTH_SHORT);
             toast.show();
         }
 
@@ -258,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
             MainActivity activity = mainActivity.get();
             activity.mStationAlertsViewModel.updateStationCount();
             activity.mStationAlertsViewModel.updateConnectionStatus();
-            if (activity.stationCount > 0 && activity.isConnected) new UpdateAlerts(activity).execute();
+            if (activity.stationCount > 0) new UpdateAlerts(activity).execute();
         }
     }
 
@@ -268,13 +253,6 @@ public class MainActivity extends AppCompatActivity {
 
         UpdateAlerts(MainActivity activity) {
             mainActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        protected void onPreExecute(){
-            MainActivity activity = mainActivity.get();
-            Toast toast = Toast.makeText(activity, "Updating Alerts", Toast.LENGTH_SHORT);
-            toast.show();
         }
 
         @Override

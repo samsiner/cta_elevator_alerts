@@ -19,11 +19,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class StationRepository {
 
     private final StationDao mStationDao;
-//    private final ThreadPoolExecutor executor;
+    private final ExecutorService executor;
     private MutableLiveData<Boolean> connectionStatusLD;
     private boolean connectionStatus;
     private MutableLiveData<String> updateAlertsTimeLD;
@@ -54,7 +56,7 @@ public class StationRepository {
         connectionStatusLD = new MutableLiveData<>();
         connectionStatus = true;
         stationCountLD = new MutableLiveData<>();
-//        executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
+        executor = Executors.newFixedThreadPool(4);
     }
 
     public LiveData<List<Station>> mGetAllAlertStations() {
@@ -254,17 +256,7 @@ public class StationRepository {
     }
 
     public void addFavorite(String stationID, String nickname){
-        Thread thread = new Thread() {
-            public void run() {
-                mStationDao.addFavorite(stationID, nickname);
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        executor.execute(() -> mStationDao.addFavorite(stationID, nickname));
     }
 
     public void removeFavorite(String stationID){

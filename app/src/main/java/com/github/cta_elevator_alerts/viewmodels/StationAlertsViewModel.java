@@ -19,15 +19,16 @@ public class StationAlertsViewModel extends AndroidViewModel {
         mRepository = StationRepository.getInstance(application);
     }
 
-    public LiveData<List<Station>> getStationAlerts() { return mRepository.mGetAllAlertStations();}
-    public List<Station> mGetStationAlertsNotLiveData(){ return mRepository.mGetStationAlertsNotLiveData(); }
     public void rebuildAlerts(){ mRepository.buildAlerts(); }
     public void buildStations(){ mRepository.buildStations();}
-    public LiveData<Integer> getStationCount(){ return mRepository.getStationCount(); }
+
     public void updateStationCount(){ mRepository.updateStationCount(); }
     public void updateConnectionStatus(){ mRepository.updateConnectionStatus();}
     public void updateUpdatedAlertsTime(){ mRepository.updateUpdatedAlertsTime();}
 
+    public LiveData<List<Station>> getStationAlerts() { return mRepository.mGetAllAlertStations();}
+    public List<Station> mGetStationAlertsNotLiveData(){ return mRepository.mGetStationAlertsNotLiveData(); }
+    public LiveData<Integer> getStationCount(){ return mRepository.getStationCount(); }
     public int getNumAlerts(){ return mRepository.getAlertsCount(); }
     public List<String> getStationElevatorsNewlyWorking(){ return mRepository.getFavoriteElevatorNewlyWorking(); }
     public List<String> getStationElevatorsNewlyOut(){ return mRepository.getFavoriteElevatorNewlyOut(); }

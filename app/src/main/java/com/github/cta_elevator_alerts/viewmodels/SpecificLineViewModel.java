@@ -40,7 +40,7 @@ public class SpecificLineViewModel extends AndroidViewModel {
             case "Yellow Line":
                 return Arrays.asList("40140", "41680", "40900");
             default:
-                return Arrays.asList("Incorrect Line");
+                return Arrays.asList("", "", "");
         }
     }
 
