@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,8 +58,13 @@ public class AddFavoriteActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(start == 0 && !stationName.equals("")){ removeClickableUI(addFavoriteBtn); }
-                if(before == 0 && start == 0 && !stationName.equals("")){ addClickableUI(addFavoriteBtn);}
+                if(s.toString().trim().length() == 0){
+                    removeClickableUI(addFavoriteBtn);
+                } else{
+                    if(!stationName.equals("")){
+                        addClickableUI(addFavoriteBtn);
+                    }
+                }
             }
 
             @Override
