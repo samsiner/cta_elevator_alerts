@@ -97,4 +97,9 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     public int getItemCount(){
         return mStationAlertsViewModel.getNumAlerts();
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

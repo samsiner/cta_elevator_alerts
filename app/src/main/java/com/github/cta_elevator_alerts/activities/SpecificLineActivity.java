@@ -29,7 +29,7 @@ public class SpecificLineActivity extends AppCompatActivity {
         mSpecificLineViewModel = ViewModelProviders.of(this, new SpecificLineViewModelFactory(this.getApplication(), getIntent().getStringExtra("line"))).get(SpecificLineViewModel.class);
         List<String> lineAlertIDs = mSpecificLineViewModel.getAllLineAlerts();
 
-        if(lineAlertIDs.size() > 0){
+        if(lineAlertIDs.size() > 0 && !getIntent().getBooleanExtra("fromFavorites", false)){
             RecyclerView lineAlertsRecyclerView = findViewById(R.id.recycler_specific_line_alert_stations);
             final SpecificLineAlertsAdapter lineAlertsAdapter = new SpecificLineAlertsAdapter(this, lineAlertIDs);
             lineAlertsRecyclerView.setAdapter(lineAlertsAdapter);

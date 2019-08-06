@@ -192,4 +192,9 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         holder.swipeLayout.close(false);
         notifyDataSetChanged();
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }
