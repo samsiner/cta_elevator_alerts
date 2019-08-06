@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
-    //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
+    //TODO: Place chicago train image into correct folders
+    //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21 (try ActionBar)
     //TODO: Remove unused resources (see Analyze -> Inspect Code -> Android -> Lint -> Performance)
 
     private StationAlertsViewModel mStationAlertsViewModel;
