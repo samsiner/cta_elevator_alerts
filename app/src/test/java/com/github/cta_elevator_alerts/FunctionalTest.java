@@ -137,7 +137,7 @@ public class FunctionalTest {
                 expectedIntent.putExtra("line", "Red Line");
                 specificlineActivity = Robolectric.buildActivity(SpecificLineActivity.class, expectedIntent).create().start().visible().get();
 
-                TextView tv = specificlineActivity.findViewById(R.id.txt_toolbar_title);
+                TextView tv = specificlineActivity.findViewById(R.id.txt_toolbar);
                 assertEquals(tv.getText(), "Red Line");
             }
         });

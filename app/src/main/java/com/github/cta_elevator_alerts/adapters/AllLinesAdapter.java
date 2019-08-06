@@ -42,7 +42,7 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLin
     public AllLinesAdapter(Context context){
         mInflater = LayoutInflater.from(context);
         this.context = context;
-        toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar_title);
+        toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar);
         mAllLinesViewModel = ((AllLinesActivity)context).getAllLinesViewModel();
     }
 

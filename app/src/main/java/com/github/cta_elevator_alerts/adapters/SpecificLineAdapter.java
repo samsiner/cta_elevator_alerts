@@ -95,15 +95,15 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     private final LayoutInflater mInflater;
     private final Context context;
     private final List<String> lineStations;
-    private final Toolbar toolbar;
+    private final androidx.appcompat.widget.Toolbar toolbar;
     private final TextView toolbarTextView;
 
     public SpecificLineAdapter(Context context, List<String> lineStations){
         mInflater = LayoutInflater.from(context);
         this.context = context;
         this.lineStations = lineStations;
-        toolbar = ((Activity)context).findViewById(R.id.toolbar_dynamic);
-        toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar_title);
+        toolbar = ((Activity)context).findViewById(R.id.toolbar);
+        toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar);
     }
 
     @Override
@@ -200,9 +200,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
                 toolbar.setBackgroundResource(R.color.colorPurpleLine);
                 break;
             case("Yellow Line"):
-                TextView cancelText = ((Activity)context).findViewById(R.id.txt_cancel);
                 colorID = context.getResources().getColor(R.color.colorPrimaryDark);
-                cancelText.setTextColor(colorID);
                 toolbar.setBackgroundResource(R.color.colorYellowLine);
                 toolbarTextView.setTextColor(colorID);
                 break;
