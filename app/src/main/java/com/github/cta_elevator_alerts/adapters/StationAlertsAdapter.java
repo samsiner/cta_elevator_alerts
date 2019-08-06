@@ -67,6 +67,8 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         Station current = mStationAlertsViewModel.mGetStationAlertsNotLiveData().get(position);
         boolean[] currentRoutes = mStationAlertsViewModel.getAllRoutes(current.stationID);
         holder.stationAlertTextView.setText(current.name);
+        RelativeLayout rl = (RelativeLayout) holder.stationAlertTextView.getParent();
+        rl.setContentDescription(Integer.toString(position));
 
         //populate line bars to show colors of each route under station name
         int viewPosition = 0;
