@@ -2,6 +2,7 @@ package com.github.cta_elevator_alerts.model;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -12,6 +13,9 @@ public interface StationDao {
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         void insert(Station station);
+
+        @Query("DELETE FROM station_table")
+        void nukeTable();
 
         @Query("UPDATE station_table SET isFavorite = 1, nickname = :nickname WHERE stationID = :id")
         void addFavorite(String id, String nickname);
@@ -72,30 +76,6 @@ public interface StationDao {
 
         @Query("SELECT COUNT(*) FROM station_table")
         int getStationCount();
-
-//        @Query("SELECT COUNT(red) FROM station_table WHERE red = 1 AND hasElevatorAlert = 1")
-//        int getRedAlertsCount();
-//
-//        @Query("SELECT COUNT(blue) FROM station_table WHERE blue = 1 AND hasElevatorAlert = 1")
-//        int getBlueAlertsCount();
-//
-//        @Query("SELECT COUNT(brown) FROM station_table WHERE brown = 1 AND hasElevatorAlert = 1")
-//        int getBrownAlertsCount();
-//
-//        @Query("SELECT COUNT(green) FROM station_table WHERE green = 1 AND hasElevatorAlert = 1")
-//        int getGreenAlertsCount();
-//
-//        @Query("SELECT COUNT(orange) FROM station_table WHERE orange = 1 AND hasElevatorAlert = 1")
-//        int getOrangeAlertsCount();
-//
-//        @Query("SELECT COUNT(pink) FROM station_table WHERE pink = 1 AND hasElevatorAlert = 1")
-//        int getPinkAlertsCount();
-//
-//        @Query("SELECT COUNT(purple) FROM station_table WHERE purple = 1 AND hasElevatorAlert = 1")
-//        int getPurpleAlertsCount();
-//
-//        @Query("SELECT COUNT(yellow) FROM station_table WHERE yellow = 1 AND hasElevatorAlert = 1")
-//        int getYellowAlertsCount();
 
         @Query("SELECT name FROM station_table WHERE stationID = :stationID")
         String getName(String stationID);
