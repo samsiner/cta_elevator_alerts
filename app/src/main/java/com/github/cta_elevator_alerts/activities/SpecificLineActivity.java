@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +12,6 @@ import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.SpecificLineAdapter;
 import com.github.cta_elevator_alerts.adapters.SpecificLineAlertsAdapter;
 import com.github.cta_elevator_alerts.viewmodelfactories.SpecificLineViewModelFactory;
-import com.github.cta_elevator_alerts.viewmodels.AllLinesViewModel;
 import com.github.cta_elevator_alerts.viewmodels.SpecificLineViewModel;
 
 import java.util.List;

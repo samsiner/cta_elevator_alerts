@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,21 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
-import com.github.cta_elevator_alerts.model.Station;
 
 import java.util.List;
 
 public class SpecificLineAlertsAdapter extends RecyclerView.Adapter<SpecificLineAlertsAdapter.SpecificLineAlertsViewHolder>  {
 
     class SpecificLineAlertsViewHolder extends RecyclerView.ViewHolder {
-        private final RelativeLayout specificLineAlertsRelativeLayout;
         private final TextView stationAlertTextView;
-        private final View itemView;
 
         private SpecificLineAlertsViewHolder(View itemView) {
             super(itemView);
-            this.itemView = itemView;
-            specificLineAlertsRelativeLayout = itemView.findViewById(R.id.rl_specific_line_alerts);
             stationAlertTextView = itemView.findViewById(R.id.txt_specific_line_alert_station);
         }
     }
