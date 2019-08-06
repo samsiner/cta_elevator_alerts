@@ -26,27 +26,28 @@
         android:orientation="vertical"
         >
 
-        <ImageView
-            style="@style/icon_edit_delete"
-            android:src="@drawable/edit"
-            android:contentDescription="@string/content_description_edit_icon"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/rl_delete"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/colorRedLine"
-        android:orientation="vertical"
-        >
+            <ImageView
+                style="@style/icon_edit_delete"
+                android:src="@drawable/edit"
+                android:contentDescription="@string/content_description_edit_icon"
+                />
+        </RelativeLayout>
 
-        <ImageView
-            style="@style/icon_edit_delete"
-            android:src="@drawable/trash"
-            android:contentDescription="@string/content_description_remove_icon"
-            />
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorRedLine"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                style="@style/icon_edit_delete"
+                android:src="@drawable/trash"
+                android:contentDescription="@string/content_description_remove_icon"
+                />
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -54,8 +55,9 @@
     <RelativeLayout
         android:id="@+id/relative_layout_favorites"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/border_bottom"
+        android:paddingBottom="6dp"
         >
 
         <ImageView
@@ -88,9 +90,10 @@
         <RelativeLayout
             android:id="@+id/rl_hamburger"
             android:layout_width="60dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:clickable="true"
             android:focusable="true"
             >
@@ -104,54 +107,48 @@
                 />
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/txt_name_favorite_station"
+            android:layout_toRightOf="@id/img_favorite_station"
+            android:layout_toEndOf="@+id/img_favorite_station"
+            android:layout_toLeftOf="@id/rl_hamburger"
+            android:layout_toStartOf="@id/rl_hamburger"
+            android:weightSum="6"
+            android:layout_marginTop="6dp"
+            >
         <View
             android:id="@+id/favorite_line_0"
-            android:layout_below="@id/txt_name_favorite_station"
-            android:layout_toEndOf="@id/img_favorite_station"
-            android:layout_toRightOf="@+id/img_favorite_station"
-            style="@style/FavoriteLineBar"
+            style="@style/LineBar"
             />
 
         <View
             android:id="@+id/favorite_line_1"
-            android:layout_below="@id/txt_name_favorite_station"
-            android:layout_toEndOf="@id/favorite_line_0"
-            android:layout_toRightOf="@id/favorite_line_0"
-            style="@style/FavoriteLineBar"
+            style="@style/LineBar"
             />
 
         <View
             android:id="@+id/favorite_line_2"
-            android:layout_below="@id/txt_name_favorite_station"
-            android:layout_toEndOf="@id/favorite_line_1"
-            android:layout_toRightOf="@+id/favorite_line_1"
-            style="@style/FavoriteLineBar"
+            style="@style/LineBar"
             />
 
         <View
             android:id="@+id/favorite_line_3"
-            android:layout_below="@id/txt_name_favorite_station"
-            android:layout_toEndOf="@id/favorite_line_2"
-            android:layout_toRightOf="@+id/favorite_line_2"
-            style="@style/FavoriteLineBar"
+            style="@style/LineBar"
             />
 
         <View
             android:id="@+id/favorite_line_4"
-            android:layout_below="@id/txt_name_favorite_station"
-            android:layout_toEndOf="@id/favorite_line_3"
-            android:layout_toRightOf="@+id/favorite_line_3"
-            style="@style/FavoriteLineBar"
+            style="@style/LineBar"
             />
 
         <View
             android:id="@+id/favorite_line_5"
-            android:layout_below="@id/txt_name_favorite_station"
-            android:layout_toEndOf="@id/favorite_line_4"
-            android:layout_toRightOf="@+id/favorite_line_4"
-            style="@style/FavoriteLineBar"
+            style="@style/LineBar"
             />
-
+        </LinearLayout>
     </RelativeLayout>
 
 

@@ -43,6 +43,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginEnd="20dp"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 />
         </RelativeLayout>
 

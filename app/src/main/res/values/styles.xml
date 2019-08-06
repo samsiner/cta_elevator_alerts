@@ -118,16 +118,11 @@
 
     <!-- line color bar -->
     <style name="LineBar">
-        <item name="android:layout_width">45dp</item>
-        <item name="android:layout_height">3dp</item>
-        <item name="android:layout_below">@id/txt_alert_station</item>
-        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginRight">1dp</item>
         <item name="android:background">@color/colorTransparent</item>
-    </style>
-
-    <style name="FavoriteLineBar" parent="LineBar">
-        <item name="android:layout_marginTop">3dp</item>
     </style>
 
     <!-- specific line graphic -->

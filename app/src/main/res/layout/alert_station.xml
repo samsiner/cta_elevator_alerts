@@ -31,52 +31,48 @@
             style="@style/rightArrow"
             android:contentDescription="@string/content_description_right_arrow"/>
 
-        <View
-            android:id="@+id/line_0"
-            android:layout_toEndOf="@id/img_alert_station"
-            android:layout_toRightOf="@+id/img_alert_station"
-            style="@style/LineBar"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/txt_alert_station"
+            android:layout_toRightOf="@id/img_alert_station"
+            android:layout_toEndOf="@+id/img_alert_station"
+            android:layout_toLeftOf="@id/img_right_arrow"
+            android:layout_toStartOf="@id/img_right_arrow"
+            android:weightSum="6"
+            android:layout_marginTop="6dp"
+            >
+            <View
+                android:id="@+id/line_0"
+                style="@style/LineBar"
+                />
 
-        <View
-            android:id="@+id/line_1"
-            android:layout_toEndOf="@id/line_0"
-            android:layout_toRightOf="@id/line_0"
-            style="@style/LineBar"
-            />
+            <View
+                android:id="@+id/line_1"
+                style="@style/LineBar"
+                />
 
-        <View
-            android:id="@+id/line_2"
-            android:layout_below="@id/txt_alert_station"
-            android:layout_toEndOf="@id/line_1"
-            android:layout_toRightOf="@+id/line_1"
-            style="@style/LineBar"
-            />
+            <View
+                android:id="@+id/line_2"
+                style="@style/LineBar"
+                />
 
-        <View
-            android:id="@+id/line_3"
-            android:layout_below="@id/txt_alert_station"
-            android:layout_toEndOf="@id/line_2"
-            android:layout_toRightOf="@+id/line_2"
-            style="@style/LineBar"
-            />
+            <View
+                android:id="@+id/line_3"
+                style="@style/LineBar"
+                />
 
-        <View
-            android:id="@+id/line_4"
-            android:layout_below="@id/txt_alert_station"
-            android:layout_toEndOf="@id/line_3"
-            android:layout_toRightOf="@+id/line_3"
-            style="@style/LineBar"
-            />
+            <View
+                android:id="@+id/line_4"
+                style="@style/LineBar"
+                />
 
-        <View
-            android:id="@+id/line_5"
-            android:layout_below="@id/txt_alert_station"
-            android:layout_toEndOf="@id/line_4"
-            android:layout_toRightOf="@+id/line_4"
-            style="@style/LineBar"
-            />
-
+            <View
+                android:id="@+id/line_5"
+                style="@style/LineBar"
+                />
+        </LinearLayout>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
