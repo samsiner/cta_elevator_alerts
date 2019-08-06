@@ -10,7 +10,7 @@ import com.github.cta_elevator_alerts.model.StationRepository;
 import java.util.List;
 
 public class AllLinesViewModel extends AndroidViewModel {
-    public final StationRepository mRepository;
+    private final StationRepository mRepository;
     public AllLinesViewModel(@NonNull Application application) {
         super(application);
         mRepository = StationRepository.getInstance(application);

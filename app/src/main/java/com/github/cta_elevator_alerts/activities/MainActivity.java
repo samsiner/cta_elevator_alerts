@@ -4,9 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -44,19 +41,17 @@ public class MainActivity extends AppCompatActivity {
     //Sam:
     //TODO: More tests
     //TODO: Fix worker
-    //TODO: improve UI performance - esp startup time
+    //TODO: Splash Screen & logo
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
     //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
-    //TODO: Remove unused resources (see Analyze -> Inspect Code -> Android -> Lint -> Performance)
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView tv_alertsTime;
-    private SharedPreferences sharedPref;
     private int stationCount;
 
     @Override
@@ -64,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv_alertsTime = findViewById(R.id.txt_update_alert_time);
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        tv_alertsTime.setText(sharedPref.getString("Updated Time", ""));
 
         buildNotification();
 
@@ -157,15 +150,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Build Alerts API work request
-        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
+        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
                 .addTag("UniqueAPIAlertsWork")
                 .setConstraints(new Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
+//                        .setRequiredNetworkType(NetworkType.CONNECTED)
                         .setRequiresBatteryNotLow(true)
                         .build())
                 .build();
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.KEEP, apiAlertsWorkRequest);
 
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
                 .observe(this, info -> {
@@ -218,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static class BuildStationsAndAlerts extends AsyncTask<Void, Void, Void> {
 
-        private WeakReference<MainActivity> mainActivity;
+        private final WeakReference<MainActivity> mainActivity;
 
         BuildStationsAndAlerts(MainActivity activity) {
             mainActivity = new WeakReference<>(activity);
@@ -249,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static class UpdateAlerts extends AsyncTask<Void, Void, Void> {
 
-        private WeakReference<MainActivity> mainActivity;
+        private final WeakReference<MainActivity> mainActivity;
 
         UpdateAlerts(MainActivity activity) {
             mainActivity = new WeakReference<>(activity);

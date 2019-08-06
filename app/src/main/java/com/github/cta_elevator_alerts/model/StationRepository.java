@@ -26,11 +26,11 @@ public class StationRepository {
 
     private final StationDao mStationDao;
     private final ExecutorService executor;
-    private MutableLiveData<Boolean> connectionStatusLD;
+    private final MutableLiveData<Boolean> connectionStatusLD;
     private boolean connectionStatus;
-    private MutableLiveData<String> updateAlertsTimeLD;
+    private final MutableLiveData<String> updateAlertsTimeLD;
     private String updateAlertsTime;
-    private MutableLiveData<Integer> stationCountLD;
+    private final MutableLiveData<Integer> stationCountLD;
     private int stationCount;
     private final ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
     private final ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
