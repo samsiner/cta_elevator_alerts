@@ -87,6 +87,7 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapterViewHolder holder, int position){
+        holder.setIsRecyclable(false);
         Station current = mFavoritesViewModel.getFavoritesNotLiveData().get(position);
         boolean[] currentRoutes = mFavoritesViewModel.getAllRoutes(current.stationID);
         holder.favoritesNicknameTextView.setText(current.nickname);
