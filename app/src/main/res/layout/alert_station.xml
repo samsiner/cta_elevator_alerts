@@ -29,7 +29,8 @@
         <ImageView
             android:id="@+id/img_right_arrow"
             style="@style/rightArrow"
-            android:contentDescription="@string/content_description_right_arrow"/>
+            android:contentDescription="@string/content_description_right_arrow"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"

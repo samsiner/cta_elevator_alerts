@@ -63,6 +63,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
 
     @Override
     public void onBindViewHolder(@NonNull StationAlertsViewHolder holder, int position){
+        holder.setIsRecyclable(false);
         Station current = mStationAlertsViewModel.mGetStationAlertsNotLiveData().get(position);
         boolean[] currentRoutes = mStationAlertsViewModel.getAllRoutes(current.stationID);
         holder.stationAlertTextView.setText(current.name);
