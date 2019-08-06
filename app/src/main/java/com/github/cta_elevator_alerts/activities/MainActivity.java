@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
-//            alertsAdapter.notifyDataSetChanged();
+            alertsAdapter.notifyDataSetChanged();
 
             //Display notification if elevator is newly out
             if (mStationAlertsViewModel.getStationElevatorsNewlyOut() != null){
