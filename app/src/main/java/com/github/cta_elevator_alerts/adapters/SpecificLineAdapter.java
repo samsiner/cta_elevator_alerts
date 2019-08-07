@@ -34,7 +34,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         private final TextView specificLineTextView;
         private final View verticalBarTop;
         private final View verticalBarBottom;
-        private final GradientDrawable circle;
+        private final GradientDrawable circleDrawable;
+        private final View circle;
         private final ImageView adaImageView;
         private final ImageView statusImageView;
         private final ImageView rightArrow;
@@ -45,7 +46,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             specificLineTextView = itemView.findViewById(R.id.txt_line_station);
             verticalBarTop = itemView.findViewById(R.id.view_vertical_bar_top);
             verticalBarBottom = itemView.findViewById(R.id.view_vertical_bar_bottom);
-            circle = (GradientDrawable)itemView.findViewById(R.id.view_circle).getBackground();
+            circleDrawable = (GradientDrawable)itemView.findViewById(R.id.view_circle).getBackground();
+            circle = itemView.findViewById(R.id.view_circle);
             adaImageView = itemView.findViewById(R.id.img_ada);
             statusImageView = itemView.findViewById(R.id.img_status);
             rightArrow = itemView.findViewById(R.id.img_right);
@@ -133,7 +135,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         } else{
             holder.icon_add.setVisibility(View.GONE);
         }
-        holder.setUI(toolbarTextView.getText().toString(), holder.verticalBarTop, holder.verticalBarBottom, holder.circle);
+        holder.setUI(toolbarTextView.getText().toString(), holder.verticalBarTop, holder.verticalBarBottom, holder.circleDrawable);
         if(position == 0){
             holder.verticalBarTop.setBackgroundColor(transparentColor);
         }
@@ -147,6 +149,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         }
         if(!((SpecificLineActivity) context).getHasElevatorAlert(currStationID)){
             holder.statusImageView.setImageResource(android.R.color.transparent);
+        } else{
+            holder.circle.setVisibility(View.GONE);
         }
 
         ((View)holder.specificLineTextView.getParent()).setOnClickListener(v -> {
