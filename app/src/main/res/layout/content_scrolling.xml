@@ -112,7 +112,7 @@
             android:id="@+id/txt_update_alert_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/colorWhite"
             android:textStyle="italic"
             />
@@ -121,12 +121,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/privacy_policy_link"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColorLink="@color/colorWhite"
             android:textStyle="italic"
             android:layout_gravity="start"
             android:linksClickable="true"
             android:layout_marginBottom="30dp"
+            android:layout_marginTop="15dp"
             />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
