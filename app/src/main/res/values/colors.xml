@@ -8,6 +8,7 @@
 
     <!-- Android colors -->
     <color name="colorAndroidGreen">#00C853</color>
+    <color name="colorAndroidRed">#D42A2A</color>
 
     <!-- station colors -->
     <color name="colorRedLine">#C6222F</color>

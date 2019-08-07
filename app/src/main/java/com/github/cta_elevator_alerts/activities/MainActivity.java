@@ -71,17 +71,6 @@ public class MainActivity extends AppCompatActivity {
         tv_alertsTime = findViewById(R.id.txt_update_alert_time);
 
         buildNotification();
-        Button b = new Button(this);
-        LinearLayout l = findViewById(R.id.LinearLayout);
-        b.setText("show navigation");
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showNotification(40380, true);
-                showNotification(40380, false);
-            }
-        });
-        l.addView(b);
 
         TextView t2 = findViewById(R.id.txt_privacy);
         t2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -225,11 +214,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (isNewlyOut){
             builder.setSmallIcon(R.drawable.status_red)
+                    .setColor(getResources().getColor(R.color.colorAndroidRed))
                     .setContentIntent(resultPendingIntent)
                     .setContentTitle("Elevator is down!")
                    .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is down");
         } else {
             builder.setSmallIcon(R.drawable.status_green)
+                    .setColor(getResources().getColor(R.color.colorAndroidGreen))
                     .setContentIntent(resultPendingIntent)
                     .setContentTitle("Elevator is back up!")
                     .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is back up and running");
