@@ -23,6 +23,13 @@ import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 
+/**
+ * Adapter for favorites in MainActivity (RecyclerView)
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.FavoritesAdapterViewHolder> {
 
     @Override

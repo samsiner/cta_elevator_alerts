@@ -7,6 +7,14 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
+
+/**
+ * Data Access Object for Room Database (station_table)
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 @Dao
 public interface StationDao {
 

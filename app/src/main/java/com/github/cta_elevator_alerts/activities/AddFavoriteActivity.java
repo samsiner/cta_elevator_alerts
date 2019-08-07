@@ -14,6 +14,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.cta_elevator_alerts.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+/**
+ * AddFavoriteActivity allows user to input a nickname
+ * and select a station to add a favorite station
+ * for easy viewing of alerts.
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 public class AddFavoriteActivity extends AppCompatActivity {
 
     private String stationID = "", stationName = "", nickname = "";

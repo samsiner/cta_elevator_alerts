@@ -21,6 +21,13 @@ import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
 
 import java.util.List;
 
+/**
+ * Adapter for all stations with SpecificLineActivity (RecyclerView)
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapter.SpecificLineAdapterViewHolder> {
 
     class SpecificLineAdapterViewHolder extends RecyclerView.ViewHolder {

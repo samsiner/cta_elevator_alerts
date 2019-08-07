@@ -9,6 +9,12 @@ import com.github.cta_elevator_alerts.model.StationRepository;
 
 import java.util.List;
 
+/**
+ * ViewModel between AllLinesActivity and StationRepository
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
+
 public class AllLinesViewModel extends AndroidViewModel {
     private final StationRepository mRepository;
     public AllLinesViewModel(@NonNull Application application) {

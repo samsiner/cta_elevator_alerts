@@ -9,6 +9,14 @@ import com.github.cta_elevator_alerts.model.StationRepository;
 
 import java.util.List;
 
+/**
+ * ViewModel between MainActivity and StationRepository
+ * to display favorites
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
+
+
 public class FavoritesViewModel extends AndroidViewModel {
 
     private final StationRepository mRepository;

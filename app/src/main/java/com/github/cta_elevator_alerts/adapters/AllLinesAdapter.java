@@ -18,6 +18,13 @@ import com.github.cta_elevator_alerts.activities.AllLinesActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
 import com.github.cta_elevator_alerts.viewmodels.AllLinesViewModel;
 
+/**
+ * Adapter for AllLinesActivity (RecyclerView)
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.AllLinesViewHolder> {
 
     class AllLinesViewHolder extends RecyclerView.ViewHolder {

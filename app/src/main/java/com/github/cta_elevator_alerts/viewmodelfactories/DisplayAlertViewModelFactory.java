@@ -8,6 +8,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
 
+/**
+ * Creates DisplayAlertViewModel instance
+ * from factory
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
+
 public class DisplayAlertViewModelFactory implements ViewModelProvider.Factory {
 
     private final Application mApplication;

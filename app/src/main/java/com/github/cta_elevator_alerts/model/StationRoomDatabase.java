@@ -6,6 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+/**
+ * Room database (station_table) for stations
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
+
 @Database(entities = {Station.class}, version = 1)
 public abstract class StationRoomDatabase extends RoomDatabase {
     public abstract StationDao stationDao();

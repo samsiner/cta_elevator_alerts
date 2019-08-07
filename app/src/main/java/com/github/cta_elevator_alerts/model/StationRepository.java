@@ -22,6 +22,13 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Repository to interact with Room database and
+ * pull data from external API (stations and alerts)
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
+
 public class StationRepository {
 
     private final StationDao mStationDao;

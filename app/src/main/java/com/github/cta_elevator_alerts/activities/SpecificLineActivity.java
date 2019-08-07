@@ -16,6 +16,16 @@ import com.github.cta_elevator_alerts.viewmodels.SpecificLineViewModel;
 
 import java.util.List;
 
+/**
+ * SpecificLineActivity displays all current elevator
+ * outages at the top, then all stations in the line,
+ * in order, with their accessibility status
+ * and any elevator outages.
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 public class SpecificLineActivity extends AppCompatActivity {
 
     private SpecificLineViewModel mSpecificLineViewModel;

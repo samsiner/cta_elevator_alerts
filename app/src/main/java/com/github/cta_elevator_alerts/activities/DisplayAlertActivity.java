@@ -11,6 +11,15 @@ import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.viewmodelfactories.DisplayAlertViewModelFactory;
 import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
 
+/**
+ * DisplayAlertActivity shows the details of a
+ * specific elevator outage alert
+ * (description and date/time it began).
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 public class DisplayAlertActivity extends AppCompatActivity {
 
     @Override

@@ -10,6 +10,13 @@ import com.github.cta_elevator_alerts.model.StationRepository;
 
 import java.util.List;
 
+/**
+ * ViewModel between MainActivity and StationRepository
+ * to display station alerts
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
+
 public class StationAlertsViewModel extends AndroidViewModel {
 
     private final StationRepository mRepository;

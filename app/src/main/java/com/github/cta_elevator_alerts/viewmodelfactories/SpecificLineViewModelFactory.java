@@ -8,6 +8,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.github.cta_elevator_alerts.viewmodels.SpecificLineViewModel;
 
+/**
+ * Creates SpecificLineViewModel instance
+ * from factory
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
+
 public class SpecificLineViewModelFactory implements ViewModelProvider.Factory {
 
     private final Application mApplication;

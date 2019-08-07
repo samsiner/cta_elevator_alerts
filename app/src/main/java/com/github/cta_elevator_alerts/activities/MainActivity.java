@@ -36,6 +36,14 @@ import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * MainActivity displays favorite stations and their
+ * elevator status, all current alerts,
+ * the most updated date/time, and the privacy policy.
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     //Sam:

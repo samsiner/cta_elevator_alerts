@@ -17,6 +17,13 @@ import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 
+/**
+ * Adapter for all alerts within MainActivity (RecyclerView)
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdapter.StationAlertsViewHolder> {
 
     class StationAlertsViewHolder extends RecyclerView.ViewHolder {

@@ -11,6 +11,14 @@ import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.AllLinesAdapter;
 import com.github.cta_elevator_alerts.viewmodels.AllLinesViewModel;
 
+/**
+ * AllLinesActivity displays all CTA L lines
+ * so user can click on them to go to a specific line.
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ *
+ */
+
 public class AllLinesActivity extends AppCompatActivity {
     private AllLinesViewModel mAllLinesViewModel;
 
