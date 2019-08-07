@@ -21,6 +21,15 @@
         android:fullBackupContent="true">
         <uses-library android:name="android.test.runner"
             android:required="false"/>
+
+        <activity android:name=".activities.SplashActivity" android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".activities.SpecificLineActivity"
             android:label="@string/title_activity_specific_line"
