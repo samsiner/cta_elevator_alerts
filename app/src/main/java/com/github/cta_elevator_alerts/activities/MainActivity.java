@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
-    //TODO: check notification UI
+    //TODO: Check notification UI
+    //TODO: Update app icon on google play console
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
@@ -63,10 +66,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         tv_alertsTime = findViewById(R.id.txt_update_alert_time);
 
         buildNotification();
+        Button b = new Button(this);
+        LinearLayout l = findViewById(R.id.LinearLayout);
+        b.setText("show navigation");
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNotification(40380, true);
+                showNotification(40380, false);
+            }
+        });
+        l.addView(b);
 
         TextView t2 = findViewById(R.id.txt_privacy);
         t2.setMovementMethod(LinkMovementMethod.getInstance());
