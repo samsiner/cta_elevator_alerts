@@ -28,4 +28,6 @@
     <string name="content_description_accessible_icon">Accessible station icon</string>
     <string name="content_status">Elevator status</string>
     <string name="privacy_policy_link"><a href="https://sites.google.com/view/elevateappprivacypolicy/home">Privacy Policy</a></string>
+    <string name="lines">lines</string>
+    <string name="info">info</string>
 </resources>

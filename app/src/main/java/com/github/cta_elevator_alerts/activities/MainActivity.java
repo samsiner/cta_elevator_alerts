@@ -47,12 +47,11 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: More tests
     //TODO: Fix worker/notifications
-    //TODO: JavaDoc
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
+    //TODO: check notification UI
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;

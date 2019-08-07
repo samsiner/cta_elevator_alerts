@@ -66,7 +66,8 @@ public class AddFavoriteActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().trim().length() == 0){
+                int length= s.toString().trim().length();
+                if(length == 0 || length >= 20){
                     removeClickableUI(addFavoriteBtn);
                 } else{
                     if(!stationName.equals("")){
