@@ -38,8 +38,8 @@
                 />
             <View
                 android:id="@+id/view_circle"
-                android:layout_height="18dp"
-                android:layout_width="18dp"
+                android:layout_height="16dp"
+                android:layout_width="16dp"
                 android:background="@drawable/circle"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
@@ -51,9 +51,9 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/status_red"
                 android:contentDescription="@string/image_elevator_out"
-                android:layout_height="19dp"
-                android:layout_width="19dp"
             />
+            <!--android:layout_height="19dp"-->
+            <!--android:layout_width="19dp"-->
 
         </RelativeLayout>
 

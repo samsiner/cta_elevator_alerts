@@ -10,15 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/border_bottom"
-        android:paddingLeft="30dp"
-        android:paddingStart="30dp"
         tools:ignore="RtlSymmetry">
+
+        <ImageView
+            android:id="@+id/img_ada"
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/accessible"
+            android:contentDescription="@string/content_description_accessible_icon" />
 
         <ImageView
             android:id="@+id/img_alert_station"
             style="@style/StatusImage"
             android:layout_centerVertical="true"
-            android:background="@drawable/status_red"
+            android:layout_toEndOf="@+id/img_ada"
+            android:layout_toRightOf="@+id/img_ada"
+            android:src="@drawable/status_red"
             android:contentDescription="@string/image_elevator_out"/>
 
         <TextView
