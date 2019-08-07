@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     //Sam:
     //TODO: More tests
     //TODO: Fix worker/notifications
-    //TODO: Splash Screen & logo
+    //TODO: JavaDoc
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack

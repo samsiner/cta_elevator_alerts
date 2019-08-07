@@ -12,21 +12,7 @@
         android:id="@+id/LinearLayout"
         style="@style/ActivityStyle"
         >
-        <RelativeLayout
-            android:id="@+id/btn_to_all_lines"
-            style="@style/actionButton"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:onClick="toAllLinesActivity">
-            <TextView
-                android:id="@+id/button_allLines"
-                style="@style/ActionButtonText"
-                android:text="@string/all_lines" />
-            <ImageView
-                android:src="@drawable/right_arrow"
-                style="@style/rightArrow"
-                android:contentDescription="@string/content_description_right_arrow"/>
-        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/relative_layout_main"
             android:layout_width="match_parent"
@@ -105,6 +91,22 @@
             android:layout_height="wrap_content"
             android:background="@drawable/main_activity_containers"
             />
+
+        <RelativeLayout
+            android:id="@+id/btn_to_all_lines"
+            style="@style/actionButton"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:onClick="toAllLinesActivity">
+            <TextView
+                android:id="@+id/button_allLines"
+                style="@style/ActionButtonText"
+                android:text="@string/all_lines" />
+            <ImageView
+                android:src="@drawable/right_arrow"
+                style="@style/rightArrow"
+                android:contentDescription="@string/content_description_right_arrow"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/txt_update_alert_time"
