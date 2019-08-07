@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
     //Sam:
     //TODO: Fix worker/notifications
+    //TODO: Splash screen
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
-    //TODO: Check notification UI
     //TODO: Update app icon on google play console
 
     private StationAlertsViewModel mStationAlertsViewModel;
