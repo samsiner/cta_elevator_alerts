@@ -40,12 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
     //Sam:
     //TODO: More tests
-    //TODO: Fix worker
+    //TODO: Fix worker/notifications
     //TODO: Splash Screen & logo
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
-    //TODO: Figure out alternative to Toolbar that can keep our minAPI lower than 21
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
@@ -87,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
-            alertsAdapter.notifyDataSetChanged();
+            try{
+                alertsAdapter.notifyDataSetChanged();
+            } catch (IllegalStateException e){
+                return;
+            }
 
             //Display notification if elevator is newly out
             if (mStationAlertsViewModel.getStationElevatorsNewlyOut() != null){
@@ -115,7 +118,11 @@ public class MainActivity extends AppCompatActivity {
         new BuildStationsAndAlerts(this).execute();
 
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
-            favoritesAdapter.notifyDataSetChanged();
+            try{
+                favoritesAdapter.notifyDataSetChanged();
+            } catch (IllegalStateException e){
+                return;
+            }
 
             //If no favorites
             TextView tv = findViewById(R.id.noFavoritesAdded);

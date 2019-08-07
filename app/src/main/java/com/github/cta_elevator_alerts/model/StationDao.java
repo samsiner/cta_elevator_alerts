@@ -13,9 +13,6 @@ public interface StationDao {
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         void insert(Station station);
 
-        @Query("DELETE FROM station_table")
-        void nukeTable();
-
         @Query("UPDATE station_table SET isFavorite = 1, nickname = :nickname WHERE stationID = :id")
         void addFavorite(String id, String nickname);
 
