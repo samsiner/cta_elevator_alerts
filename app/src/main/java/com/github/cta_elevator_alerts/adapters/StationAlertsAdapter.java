@@ -87,7 +87,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         }
 
         //remove bottom border styling from last element
-        if(position == mStationAlertsViewModel.getNumAlerts()-1){
+        if(position == mStationAlertsViewModel.mGetStationAlertsNotLiveData().size()-1){
             holder.stationAlertRelativeLayout.setBackgroundResource(0);
         } else{
             holder.stationAlertRelativeLayout.setBackgroundResource(R.drawable.border_bottom);
@@ -105,7 +105,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
 
     @Override
     public int getItemCount(){
-        return mStationAlertsViewModel.getNumAlerts();
+        return mStationAlertsViewModel.mGetStationAlertsNotLiveData().size();
     }
 
     @Override

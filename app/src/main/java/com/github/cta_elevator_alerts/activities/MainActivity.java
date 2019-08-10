@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
     private NotificationCompat.Builder builder;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView.Adapter alertsAdapter, favoritesAdapter;
-    private int stationCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,20 +84,21 @@ public class MainActivity extends AppCompatActivity {
         favoritesRecyclerView.setAdapter(favoritesAdapter);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        buildNotificationChannel();
-        setPrivacyPolicyLink();
-        createSwipeRefresh();
+        addNotificationChannel();
+        addPrivacyPolicyLink();
+        addSwipeRefresh();
         addAlertsObserver();
+
         buildStationsAndAlertsAsync();
+
         addFavoritesObserver();
         addLastUpdatedObserver();
         addConnectionStatusObserver();
-        addStationCountObserver();
-        buildNetworkWorker();
+        addNetworkWorker();
         addFavorite();
     }
 
-    private void buildNotificationChannel(){
+    private void addNotificationChannel(){
         //Create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel("CHANNEL_ID", "Channel", NotificationManager.IMPORTANCE_DEFAULT);
@@ -113,15 +113,15 @@ public class MainActivity extends AppCompatActivity {
                 .setPriority(NotificationCompat.PRIORITY_MAX);
     }
 
-    private void setPrivacyPolicyLink(){
+    private void addPrivacyPolicyLink(){
         TextView t2 = findViewById(R.id.txt_privacy);
         t2.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    private void createSwipeRefresh(){
+    private void addSwipeRefresh(){
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            new BuildStationsAndAlerts(this).execute();
+            buildStationsAndAlertsAsync();
             mSwipeRefreshLayout.setRefreshing(false);
         });
     }
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
             //If no alerts
             TextView tv = findViewById(R.id.noStationAlerts);
-            if (mStationAlertsViewModel.getNumAlerts() < 1) {
+            if (mStationAlertsViewModel.mGetStationAlertsNotLiveData().size() < 1) {
                 tv.setVisibility(View.VISIBLE);
             } else {
                 tv.setVisibility(View.GONE);
@@ -159,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buildStationsAndAlertsAsync(){
+        Toast toast = Toast.makeText(this, "Updating Stations and Alerts", Toast.LENGTH_SHORT);
+        toast.show();
         new BuildStationsAndAlerts(this).execute();
     }
 
@@ -194,11 +196,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addStationCountObserver(){
-        mStationAlertsViewModel.getStationCount().observe(this, stationCount -> this.stationCount = stationCount);
-    }
-
-    private void buildNetworkWorker(){
+    private void addNetworkWorker(){
         //Build Alerts API work request
         PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
                 .addTag("UniqueAPIAlertsWork")
@@ -256,25 +254,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPreExecute(){
-            MainActivity activity = mainActivity.get();
-            Toast toast = Toast.makeText(activity, "Updating Stations and Alerts", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
-        @Override
         protected Void doInBackground(Void... params) {
             MainActivity activity = mainActivity.get();
-            if (activity.stationCount <= 0) activity.mStationAlertsViewModel.buildStations();
+            activity.mStationAlertsViewModel.buildStations();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void results) {
             MainActivity activity = mainActivity.get();
-            activity.mStationAlertsViewModel.updateStationCount();
-            activity.mStationAlertsViewModel.updateConnectionStatus();
-            if (activity.stationCount > 0) new UpdateAlerts(activity).execute();
+            new UpdateAlerts(activity).execute();
         }
     }
 
@@ -292,14 +281,6 @@ public class MainActivity extends AppCompatActivity {
             activity.mStationAlertsViewModel.rebuildAlerts();
             return null;
         }
-
-        @Override
-        protected void onPostExecute(Void results) {
-            MainActivity activity = mainActivity.get();
-            activity.mStationAlertsViewModel.updateUpdatedAlertsTime();
-            activity.mStationAlertsViewModel.updateConnectionStatus();
-        }
-
     }
 
     public void toAddFavoriteActivity(View v){

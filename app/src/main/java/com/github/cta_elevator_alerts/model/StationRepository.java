@@ -34,11 +34,8 @@ public class StationRepository {
     private final StationDao mStationDao;
     private final ExecutorService executor;
     private final MutableLiveData<Boolean> connectionStatusLD;
-    private boolean connectionStatus;
     private final MutableLiveData<String> updateAlertsTimeLD;
-    private String updateAlertsTime;
     private final MutableLiveData<Integer> stationCountLD;
-    private int stationCount;
     private final ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
     private final ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
 
@@ -59,9 +56,7 @@ public class StationRepository {
         StationRoomDatabase db = StationRoomDatabase.getDatabase(application);
         mStationDao = db.stationDao();
         updateAlertsTimeLD = new MutableLiveData<>();
-        updateAlertsTime = "";
         connectionStatusLD = new MutableLiveData<>();
-        connectionStatus = true;
         stationCountLD = new MutableLiveData<>();
         executor = Executors.newFixedThreadPool(4);
     }
@@ -176,22 +171,6 @@ public class StationRepository {
         }
 
         return count;
-    }
-
-    private int countAlerts = 0;
-    public int getAlertsCount() {
-        Thread thread = new Thread() {
-            public void run() {
-                countAlerts = mStationDao.getAlertsCount();
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return countAlerts;
     }
 
     private boolean hasElevator = false;
@@ -324,34 +303,15 @@ public class StationRepository {
         }
     }
 
-    public LiveData<Boolean> getConnectionStatus(){
-        return connectionStatusLD;
-    }
-
-    public void updateConnectionStatus(){
-        connectionStatusLD.setValue(connectionStatus);
-    }
-
-    public void updateStationCount(){
-        Thread thread = new Thread() {
-            public void run() {
-                stationCount = mStationDao.getStationCount();
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        stationCountLD.setValue(stationCount);
-    }
-
-    public LiveData<Integer> getStationCount(){
-        return stationCountLD;
-    }
+    public LiveData<Boolean> getConnectionStatus(){ return connectionStatusLD;}
+    public LiveData<Integer> getStationCount(){ return stationCountLD;}
+    public LiveData<String> getUpdatedAlertsTime(){ return updateAlertsTimeLD;}
 
     public void buildStations(){
+        if (mStationDao.getStationCount() > 0) return;
+
+        boolean connectionStatus;
+
         String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
 
         try {
@@ -406,20 +366,18 @@ public class StationRepository {
                 if (yellow){ mStationDao.setYellowTrue(mapID); }
             }
             connectionStatus = true;
+            stationCountLD.postValue(mStationDao.getStationCount());
         } catch (JSONException e) {
             connectionStatus = false;
         }
+        connectionStatusLD.postValue(connectionStatus);
     }
 
     public void buildAlerts(){
         String JSONString = pullJSONFromWebService("https://lapi.transitchicago.com/api/1.0/alerts.aspx?outputType=JSON");
 
         //Set internet connection status
-        if (JSONString.equals("NO INTERNET")){
-            connectionStatus = false;
-            return;
-        }
-        else connectionStatus = true;
+        connectionStatusLD.postValue(!JSONString.equals("NO INTERNET"));
 
         ArrayList<String> beforeStationsOut = new ArrayList<>();
 
@@ -476,16 +434,7 @@ public class StationRepository {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated:\n'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
         Date date = new Date(System.currentTimeMillis());
-        updateAlertsTime = dateFormat.format(date);
-        updateAlertsTimeLD.postValue(updateAlertsTime);
-    }
-
-    public LiveData<String> getUpdatedAlertsTime(){
-        return updateAlertsTimeLD;
-    }
-
-    public void updateUpdatedAlertsTime(){
-        updateAlertsTimeLD.setValue(updateAlertsTime);
+        updateAlertsTimeLD.postValue(dateFormat.format(date));
     }
 
     public List<String> getFavoriteElevatorNewlyWorking(){ return favoriteElevatorNewlyWorking; }
