@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.SpecificLineAdapter;
 import com.github.cta_elevator_alerts.adapters.SpecificLineAlertsAdapter;
-import com.github.cta_elevator_alerts.viewmodelfactories.SpecificLineViewModelFactory;
 import com.github.cta_elevator_alerts.viewmodels.SpecificLineViewModel;
 
 import java.util.List;
@@ -34,7 +33,9 @@ public class SpecificLineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_line);
-        mSpecificLineViewModel = ViewModelProviders.of(this, new SpecificLineViewModelFactory(this.getApplication(), getIntent().getStringExtra("line"))).get(SpecificLineViewModel.class);
+        mSpecificLineViewModel = ViewModelProviders.of(this).get(SpecificLineViewModel.class);
+        String line = getIntent().getStringExtra("line");
+        mSpecificLineViewModel.setLine(line);
         List<String> lineAlertIDs = mSpecificLineViewModel.getAllLineAlerts();
 
         if(lineAlertIDs.size() > 0 && !getIntent().getBooleanExtra("fromFavorites", false)){

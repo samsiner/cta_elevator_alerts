@@ -18,17 +18,20 @@ import java.util.List;
 
 public class SpecificLineViewModel extends AndroidViewModel {
 
-    private final String mLine;
-    private final StationRepository mRepository;
+    private String line;
+    private final StationRepository repository;
 
     public SpecificLineViewModel(@NonNull Application application, String line) {
         super(application);
-        mRepository = StationRepository.getInstance(application);
-        mLine = line;
+        repository = StationRepository.getInstance(application);
+    }
+
+    public void setLine(String line){
+        this.line = line;
     }
 
     public List<String> getLine(){
-        switch(mLine){
+        switch(line){
             case "Red Line":
                 return Arrays.asList("40900", "41190", "40100", "41300", "40760", "40880", "41380", "40340", "41200", "40770", "40540", "40080", "41420", "41320", "41220", "40650", "40630", "41450", "40330", "41660", "41090", "40560", "41490", "41400", "41000", "40190", "41230", "41170", "40910", "40990", "40240", "41430", "40450");
             case "Blue Line":
@@ -51,16 +54,16 @@ public class SpecificLineViewModel extends AndroidViewModel {
     }
 
     public String getStationName(String stationID){
-        return mRepository.mGetStationName(stationID);
+        return repository.mGetStationName(stationID);
     }
 
     public boolean getHasElevator(String stationID){
-        return mRepository.mGetHasElevator(stationID);
+        return repository.mGetHasElevator(stationID);
     }
 
     public boolean getHasElevatorAlert(String stationID){
-        return mRepository.mGetHasElevatorAlert(stationID);
+        return repository.mGetHasElevatorAlert(stationID);
     }
 
-    public List<String> getAllLineAlerts(){ return mRepository.getAllLineAlerts(mLine); }
+    public List<String> getAllLineAlerts(){ return repository.getAllLineAlerts(line); }
 }

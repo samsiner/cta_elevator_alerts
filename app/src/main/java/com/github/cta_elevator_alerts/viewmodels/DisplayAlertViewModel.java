@@ -2,6 +2,7 @@ package com.github.cta_elevator_alerts.viewmodels;
 
 import android.app.Application;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.github.cta_elevator_alerts.model.StationRepository;
@@ -15,11 +16,16 @@ import java.util.List;
  */
 
 public class DisplayAlertViewModel extends AndroidViewModel {
-    private final String shortDesc, beginDateTime, stationName;
-    private final boolean hasElevator;
+    private String shortDesc, beginDateTime, stationName;
+    private boolean hasElevator;
+    private final Application application;
 
-    public DisplayAlertViewModel(Application application, String stationID){
+    public DisplayAlertViewModel(Application application){
         super(application);
+        this.application = application;
+    }
+
+    public void setStationID(String stationID){
         StationRepository mRepository = StationRepository.getInstance(application);
         List<String> arrList = mRepository.getAlertDetails(stationID);
 

@@ -39,7 +39,4 @@ public class FavoritesViewModel extends AndroidViewModel {
     public void removeFavorite(String stationID){ mRepository.removeFavorite(stationID);}
     public boolean getHasElevatorAlert(String stationID){ return mRepository.mGetHasElevatorAlert(stationID);}
     public boolean[] getAllRoutes(String stationID){ return mRepository.mGetAllRoutes(stationID);}
-
 }
-
-
