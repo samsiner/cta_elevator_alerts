@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     //Sam:
     //TODO: Fix worker/notifications
     //TODO: Splash screen
+    //TODO: Refactor with LiveData.postvalue
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack

@@ -21,7 +21,7 @@ public class SpecificLineViewModel extends AndroidViewModel {
     private String line;
     private final StationRepository repository;
 
-    public SpecificLineViewModel(@NonNull Application application, String line) {
+    public SpecificLineViewModel(@NonNull Application application) {
         super(application);
         repository = StationRepository.getInstance(application);
     }
