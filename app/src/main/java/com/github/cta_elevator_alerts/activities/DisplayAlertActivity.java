@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.cta_elevator_alerts.R;
-import com.github.cta_elevator_alerts.viewmodelfactories.DisplayAlertViewModelFactory;
 import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
 
 /**
@@ -33,7 +32,8 @@ public class DisplayAlertActivity extends AppCompatActivity {
         String stationID = getIntent().getStringExtra("stationID");
 
         //Get ViewModel
-        DisplayAlertViewModel mDisplayAlertViewModel = ViewModelProviders.of(this, new DisplayAlertViewModelFactory(this.getApplication(), stationID)).get(DisplayAlertViewModel.class);
+        DisplayAlertViewModel mDisplayAlertViewModel = ViewModelProviders.of(this).get(DisplayAlertViewModel.class);
+        mDisplayAlertViewModel.setStationID(stationID);
         String shortDesc = mDisplayAlertViewModel.getShortDesc();
         String beginDateTime = mDisplayAlertViewModel.getBeginDateTime();
         String stationName = mDisplayAlertViewModel.getStationName();

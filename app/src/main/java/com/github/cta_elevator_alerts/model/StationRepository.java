@@ -474,9 +474,10 @@ public class StationRepository {
             if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated: 'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated:\n'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
         Date date = new Date(System.currentTimeMillis());
         updateAlertsTime = dateFormat.format(date);
+        updateAlertsTimeLD.postValue(updateAlertsTime);
     }
 
     public LiveData<String> getUpdatedAlertsTime(){

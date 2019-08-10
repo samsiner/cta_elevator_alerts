@@ -9,9 +9,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +30,7 @@ import androidx.work.WorkManager;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
 import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
-import com.github.cta_elevator_alerts.model.APIWorker;
+import com.github.cta_elevator_alerts.workers.NetworkWorker;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private TextView tv_alertsTime;
+    private RecyclerView.Adapter alertsAdapter, favoritesAdapter;
     private int stationCount;
 
     @Override
@@ -68,34 +67,65 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        tv_alertsTime = findViewById(R.id.txt_update_alert_time);
-
-        buildNotification();
-
-        TextView t2 = findViewById(R.id.txt_privacy);
-        t2.setMovementMethod(LinkMovementMethod.getInstance());
 
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
 
+        //Create adapter to display alerts
+        RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
+        alertsAdapter = new StationAlertsAdapter(this);
+        alertsRecyclerView.setAdapter(alertsAdapter);
+        alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //Create adapter to display favorites
+        RecyclerView favoritesRecyclerView = findViewById(R.id.recycler_favorite_stations);
+        favoritesAdapter = new FavoritesAdapter(this);
+        favoritesRecyclerView.setAdapter(favoritesAdapter);
+        favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        buildNotificationChannel();
+        setPrivacyPolicyLink();
+        createSwipeRefresh();
+        addAlertsObserver();
+        buildStationsAndAlertsAsync();
+        addFavoritesObserver();
+        addLastUpdatedObserver();
+        addConnectionStatusObserver();
+        addStationCountObserver();
+        buildNetworkWorker();
+        addFavorite();
+    }
+
+    private void buildNotificationChannel(){
+        //Create notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", "Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("This is a channel");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        //Create notification builder
+        builder = new NotificationCompat.Builder(this,"CHANNEL_ID")
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_MAX);
+    }
+
+    private void setPrivacyPolicyLink(){
+        TextView t2 = findViewById(R.id.txt_privacy);
+        t2.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void createSwipeRefresh(){
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             new BuildStationsAndAlerts(this).execute();
             mSwipeRefreshLayout.setRefreshing(false);
         });
+    }
 
-        //Create recyclerviews to display favorites and alerts
-        RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
-        final StationAlertsAdapter alertsAdapter = new StationAlertsAdapter(this);
-        alertsRecyclerView.setAdapter(alertsAdapter);
-        alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        RecyclerView favoritesRecyclerView = findViewById(R.id.recycler_favorite_stations);
-        final FavoritesAdapter favoritesAdapter = new FavoritesAdapter(this);
-        favoritesRecyclerView.setAdapter(favoritesAdapter);
-        favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+    private void addAlertsObserver(){
         mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
             try{
                 alertsAdapter.notifyDataSetChanged();
@@ -125,9 +155,13 @@ public class MainActivity extends AppCompatActivity {
                 tv.setVisibility(View.GONE);
             }
         });
+    }
 
+    public void buildStationsAndAlertsAsync(){
         new BuildStationsAndAlerts(this).execute();
+    }
 
+    private void addFavoritesObserver(){
         mFavoritesViewModel.getFavorites().observe(this, stations -> {
             try{
                 favoritesAdapter.notifyDataSetChanged();
@@ -143,32 +177,29 @@ public class MainActivity extends AppCompatActivity {
                 tv.setVisibility(View.GONE);
             }
         });
+    }
 
-        mStationAlertsViewModel.getUpdateAlertsTime().observe(this, time -> tv_alertsTime.setText(time));
+    private void addLastUpdatedObserver(){
+        TextView tv_alertsTime = findViewById(R.id.txt_update_alert_time);
+        mStationAlertsViewModel.getUpdateAlertsTime().observe(this, tv_alertsTime::setText);
+    }
 
-        if (getIntent().getStringExtra("nickname") != null){
-            String nickname = getIntent().getStringExtra("nickname");
-            String stationID = getIntent().getStringExtra("stationID");
-            mFavoritesViewModel.addFavorite(stationID, nickname);
-        }
-
+    private void addConnectionStatusObserver(){
         mStationAlertsViewModel.getConnectionStatus().observe(this, isConnected -> {
             if (!isConnected) {
                 Toast toast = Toast.makeText(this, "Not connected - please refresh!", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
+    }
 
+    private void addStationCountObserver(){
         mStationAlertsViewModel.getStationCount().observe(this, stationCount -> this.stationCount = stationCount);
+    }
 
-        if (getIntent().getStringExtra("nickname") != null){
-            String nickname = getIntent().getStringExtra("nickname");
-            String stationID = getIntent().getStringExtra("stationID");
-            mFavoritesViewModel.addFavorite(stationID, nickname);
-        }
-
+    private void buildNetworkWorker(){
         //Build Alerts API work request
-        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
+        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
                 .addTag("UniqueAPIAlertsWork")
                 .setConstraints(new Constraints.Builder()
 //                        .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -176,29 +207,15 @@ public class MainActivity extends AppCompatActivity {
                         .build())
                 .build();
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.KEEP, apiAlertsWorkRequest);
-
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(apiAlertsWorkRequest.getId())
-                .observe(this, info -> {
-                    if (info != null && info.getState() == WorkInfo.State.ENQUEUED) {
-                        new BuildStationsAndAlerts(this).execute();
-                    }
-                });
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
     }
 
-    private void buildNotification(){
-        //Create notification channel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", "Channel", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("This is a channel");
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+    private void addFavorite(){
+        if (getIntent().getStringExtra("nickname") != null){
+            String nickname = getIntent().getStringExtra("nickname");
+            String stationID = getIntent().getStringExtra("stationID");
+            mFavoritesViewModel.addFavorite(stationID, nickname);
         }
-
-        //Create notification builder
-        builder = new NotificationCompat.Builder(this,"CHANNEL_ID")
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_MAX);
     }
 
     private void showNotification(int id, boolean isNewlyOut){
@@ -217,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                     .setColor(getResources().getColor(R.color.colorAndroidRed))
                     .setContentIntent(resultPendingIntent)
                     .setContentTitle("Elevator is down!")
-                   .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is down");
+                    .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is down");
         } else {
             builder.setSmallIcon(R.drawable.status_green)
                     .setColor(getResources().getColor(R.color.colorAndroidGreen))

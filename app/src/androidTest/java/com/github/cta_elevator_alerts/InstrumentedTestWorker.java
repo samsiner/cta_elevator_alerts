@@ -16,7 +16,7 @@ import androidx.work.testing.TestDriver;
 import androidx.work.testing.WorkManagerTestInitHelper;
 
 import com.github.cta_elevator_alerts.activities.MainActivity;
-import com.github.cta_elevator_alerts.model.APIWorker;
+import com.github.cta_elevator_alerts.workers.NetworkWorker;
 import com.github.cta_elevator_alerts.model.StationDao;
 import com.github.cta_elevator_alerts.model.StationRepository;
 import com.github.cta_elevator_alerts.model.StationRoomDatabase;
@@ -58,7 +58,7 @@ public class InstrumentedTestWorker {
 
     @Test
     public void testPeriodicWorkAPIWorker() throws Exception {
-        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(APIWorker.class, 15, TimeUnit.MINUTES)
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
                 .addTag("Test")
                 .build();
 
