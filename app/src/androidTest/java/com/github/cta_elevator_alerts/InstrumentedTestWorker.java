@@ -2,24 +2,20 @@ package com.github.cta_elevator_alerts;
 
 import android.util.Log;
 
+import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
 import androidx.work.Configuration;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
-import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
 import androidx.work.impl.utils.SynchronousExecutor;
 import androidx.work.testing.TestDriver;
 import androidx.work.testing.WorkManagerTestInitHelper;
 
 import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.workers.NetworkWorker;
-import com.github.cta_elevator_alerts.model.StationDao;
-import com.github.cta_elevator_alerts.model.StationRepository;
-import com.github.cta_elevator_alerts.model.StationRoomDatabase;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -38,12 +34,9 @@ import static org.junit.Assert.assertNull;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class InstrumentedTestWorker {
-    private StationDao stationDao;
-    private StationRoomDatabase db;
-    private StationRepository repository;
 
     @Rule
-    public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(
+    public final IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(
             MainActivity.class);
 
     @Before
@@ -71,6 +64,7 @@ public class InstrumentedTestWorker {
         mActivityRule.finishActivity();
         assertNull(mActivityRule.getActivity());
 
+        assert testDriver != null;
         testDriver.setPeriodDelayMet(request.getId());
         WorkInfo workInfo = workManager.getWorkInfoById(request.getId()).get();
         assertEquals(workInfo.getState(), WorkInfo.State.ENQUEUED);

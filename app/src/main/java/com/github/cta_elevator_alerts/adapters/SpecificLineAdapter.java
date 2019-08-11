@@ -46,8 +46,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             specificLineTextView = itemView.findViewById(R.id.txt_line_station);
             verticalBarTop = itemView.findViewById(R.id.view_vertical_bar_top);
             verticalBarBottom = itemView.findViewById(R.id.view_vertical_bar_bottom);
-            circleDrawable = (GradientDrawable)itemView.findViewById(R.id.view_circle).getBackground();
             circle = itemView.findViewById(R.id.view_circle);
+            circleDrawable = (GradientDrawable)circle.getBackground();
             adaImageView = itemView.findViewById(R.id.img_ada);
             statusImageView = itemView.findViewById(R.id.img_status);
             rightArrow = itemView.findViewById(R.id.img_right);

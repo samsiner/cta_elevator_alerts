@@ -46,7 +46,7 @@ public class InstrumentedTestMainActivity {
     private StationRepository repository;
 
     @Rule
-    public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(
+    public final IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(
             MainActivity.class);
 
     @Before

@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -275,43 +276,13 @@ public class StationRepository {
         return isFavorite;
     }
 
-    private void addAlert(String stationID, String shortDesc, String beginDateTime){
-        Thread thread = new Thread() {
-            public void run() {
-                mStationDao.setAlert(stationID, shortDesc, convertDateTime(beginDateTime));
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-
-    private void removeAlert(String stationID){
-        Thread thread = new Thread() {
-            public void run() {
-                mStationDao.removeAlert(stationID);
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-
     public LiveData<Boolean> getConnectionStatus(){ return connectionStatusLD;}
-    public LiveData<Integer> getStationCount(){ return stationCountLD;}
     public LiveData<String> getUpdatedAlertsTime(){ return updateAlertsTimeLD;}
 
     public void buildStations(){
         if (mStationDao.getStationCount() > 0) return;
 
         boolean connectionStatus;
-
         String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
 
         try {
@@ -379,14 +350,13 @@ public class StationRepository {
         //Set internet connection status
         connectionStatusLD.postValue(!JSONString.equals("NO INTERNET"));
 
+        //Deal with elevators newly out or newly working
         ArrayList<String> beforeStationsOut = new ArrayList<>();
-
         favoriteElevatorNewlyOut.clear();
         favoriteElevatorNewlyWorking.clear();
         beforeStationsOut.clear();
-
         beforeStationsOut.addAll(mStationDao.getAllAlertStationIDs());
-
+        
         try {
             JSONObject outer = new JSONObject(JSONString);
             JSONObject inner = outer.getJSONObject("CTAAlerts");
@@ -406,19 +376,17 @@ public class StationRepository {
                         String id = serviceInstance.getString("ServiceId");
                         String headline = alert.getString("Headline");
 
-                        if (headline.contains("Back in Service")) continue;
+                        if (headline.contains("Back in Service")) break;
 
-                        if (mGetHasElevatorAlert(id)){
+                        if (beforeStationsOut.contains(id)){
+                            Log.d("Repository alr. Alert", id);
                             beforeStationsOut.remove(id);
-                            continue;
+                        } else {
+                            Log.d("Repository fav new out", id);
+                            //TODO: Remove test
+                            if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
+                            mStationDao.setAlert(id, alert.getString("ShortDescription"), alert.getString("EventStart"));
                         }
-
-                        String shortDesc = alert.getString("ShortDescription");
-                        String beginDateTime = alert.getString("EventStart");
-
-                        if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
-                        addAlert(id, shortDesc, beginDateTime);
-
                         break;
                     }
                 }
@@ -428,8 +396,10 @@ public class StationRepository {
         }
 
         for (String id : beforeStationsOut){
-            removeAlert(id);
-            if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
+            mStationDao.removeAlert(id);
+            //TODO: Remove test
+//            if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
+            favoriteElevatorNewlyWorking.add(id);
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated:\n'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);

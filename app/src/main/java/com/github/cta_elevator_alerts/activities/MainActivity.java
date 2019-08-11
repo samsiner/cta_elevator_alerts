@@ -13,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +34,9 @@ import androidx.work.WorkManager;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
 import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
-import com.github.cta_elevator_alerts.workers.NetworkWorker;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
+import com.github.cta_elevator_alerts.workers.NetworkWorker;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
@@ -51,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Sam:
     //TODO: Fix notifications
-    //TODO: Refactor with LiveData.postvalue
-    //TODO: Before deployment, make worker less often, more restrictions (125 KB per download)
+    //TODO: Fix "updating"
+    //TODO: Multiple alerts for one station - King Drive!
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
@@ -101,8 +103,9 @@ public class MainActivity extends AppCompatActivity {
     private void addNotificationChannel(){
         //Create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", "Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", "Channel", NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("This is a channel");
+            channel.enableVibration(true);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void buildStationsAndAlertsAsync(){
+    private void buildStationsAndAlertsAsync(){
         Toast toast = Toast.makeText(this, "Updating Stations and Alerts", Toast.LENGTH_SHORT);
         toast.show();
         new BuildStationsAndAlerts(this).execute();
@@ -184,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addLastUpdatedObserver(){
         TextView tv_alertsTime = findViewById(R.id.txt_update_alert_time);
+        tv_alertsTime.setText("Updating...");
         mStationAlertsViewModel.getUpdateAlertsTime().observe(this, tv_alertsTime::setText);
     }
 
@@ -197,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addNetworkWorker(){
-        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
+        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 4, TimeUnit.HOURS)
                 .addTag("UniqueAPIAlertsWork")
                 .setConstraints(new Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -244,8 +248,11 @@ public class MainActivity extends AppCompatActivity {
                     .setColor(getResources().getColor(R.color.colorAndroidGreen))
                     .setContentIntent(resultPendingIntent)
                     .setContentTitle("Elevator is back up!")
-                    .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is back up and running");
+                    .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is working again");
         }
+
+        //Create different notifications for same station, depending on isNewlyOut
+        if (isNewlyOut) id *= 2;
 
         notificationManager.notify(id, builder.build());
     }

@@ -30,10 +30,7 @@ public class FavoritesViewModel extends AndroidViewModel {
         return mRepository.mGetAllFavorites();
     }
 
-    public List<Station> getFavoritesNotLiveData(){
-        return mRepository.mGetAllFavoritesNotLiveData();
-    }
-
+    public List<Station> getFavoritesNotLiveData(){ return mRepository.mGetAllFavoritesNotLiveData(); }
     public int getNumFavorites(){ return mRepository.getFavoritesCount();}
     public void addFavorite(String stationID, String nickname){ mRepository.addFavorite(stationID, nickname);}
     public void removeFavorite(String stationID){ mRepository.removeFavorite(stationID);}

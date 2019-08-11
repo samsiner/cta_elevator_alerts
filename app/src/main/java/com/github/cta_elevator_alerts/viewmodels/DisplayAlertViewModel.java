@@ -2,7 +2,6 @@ package com.github.cta_elevator_alerts.viewmodels;
 
 import android.app.Application;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.github.cta_elevator_alerts.model.StationRepository;

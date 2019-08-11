@@ -19,7 +19,7 @@ import com.github.cta_elevator_alerts.model.StationRepository;
 
 public class NetworkWorker extends Worker {
 
-    private StationRepository repository;
+    private final StationRepository repository;
 
     public NetworkWorker(@NonNull Context context, @NonNull WorkerParameters params){
         super(context, params);
