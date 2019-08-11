@@ -84,19 +84,16 @@ public interface StationDao {
         @Query("SELECT shortDescription FROM station_table WHERE stationID = :stationID")
         String getShortDescription(String stationID);
 
-        @Query("SELECT beginDateTime FROM station_table WHERE stationID = :stationID")
-        String getBeginDateTime(String stationID);
-
         @Query("SELECT hasElevator FROM station_table WHERE stationID = :stationID")
         boolean getHasElevator(String stationID);
 
         @Query("UPDATE station_table SET hasElevator = 1 WHERE stationID = :stationID")
         void setHasElevator(String stationID);
 
-        @Query("UPDATE station_table SET hasElevatorAlert = 1, shortDescription = :shortDesc, beginDateTime = :begin WHERE stationID = :stationID")
-        void setAlert(String stationID, String shortDesc, String begin);
+        @Query("UPDATE station_table SET hasElevatorAlert = 1, shortDescription = :shortDesc WHERE stationID = :stationID")
+        void setAlert(String stationID, String shortDesc);
 
-        @Query("UPDATE station_table SET hasElevatorAlert = 0, shortDescription = '', beginDateTime = '' WHERE stationID = :stationID")
+        @Query("UPDATE station_table SET hasElevatorAlert = 0, shortDescription = '' WHERE stationID = :stationID")
         void removeAlert(String stationID);
 
         @Query("SELECT hasElevatorAlert FROM station_table WHERE stationID = :stationID")

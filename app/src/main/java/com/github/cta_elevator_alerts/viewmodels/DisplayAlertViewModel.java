@@ -15,8 +15,8 @@ import java.util.List;
  */
 
 public class DisplayAlertViewModel extends AndroidViewModel {
-    private String shortDesc, beginDateTime, stationName;
-    private boolean hasElevator;
+    private String shortDesc, stationName;
+    private boolean hasElevator, hasAlert;
     private final Application application;
 
     public DisplayAlertViewModel(Application application){
@@ -30,12 +30,12 @@ public class DisplayAlertViewModel extends AndroidViewModel {
 
         stationName = arrList.get(0);
         shortDesc = arrList.get(1);
-        beginDateTime = arrList.get(2);
         hasElevator = mRepository.mGetHasElevator(stationID);
+        hasAlert = mRepository.mGetHasElevatorAlert(stationID);
     }
 
     public String getShortDesc(){ return shortDesc;}
-    public String getBeginDateTime(){ return beginDateTime;}
     public String getStationName(){ return stationName; }
     public boolean getHasElevator(){ return hasElevator; }
+    public boolean getHasAlert(){ return hasAlert; }
 }

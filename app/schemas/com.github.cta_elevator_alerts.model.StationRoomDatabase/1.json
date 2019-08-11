@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "67f5318c3cd4299fd0b88bb0593aa820",
+    "identityHash": "3175f04778784414b537df77e434de42",
     "entities": [
       {
         "tableName": "station_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`stationID` TEXT NOT NULL, `hasElevator` INTEGER NOT NULL, `hasElevatorAlert` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, `red` INTEGER NOT NULL, `blue` INTEGER NOT NULL, `brown` INTEGER NOT NULL, `green` INTEGER NOT NULL, `orange` INTEGER NOT NULL, `pink` INTEGER NOT NULL, `purple` INTEGER NOT NULL, `yellow` INTEGER NOT NULL, `name` TEXT, `shortDescription` TEXT, `beginDateTime` TEXT, `nickname` TEXT, PRIMARY KEY(`stationID`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`stationID` TEXT NOT NULL, `hasElevator` INTEGER NOT NULL, `hasElevatorAlert` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, `red` INTEGER NOT NULL, `blue` INTEGER NOT NULL, `brown` INTEGER NOT NULL, `green` INTEGER NOT NULL, `orange` INTEGER NOT NULL, `pink` INTEGER NOT NULL, `purple` INTEGER NOT NULL, `yellow` INTEGER NOT NULL, `name` TEXT, `shortDescription` TEXT, `nickname` TEXT, PRIMARY KEY(`stationID`))",
         "fields": [
           {
             "fieldPath": "stationID",
@@ -93,12 +93,6 @@
             "notNull": false
           },
           {
-            "fieldPath": "beginDateTime",
-            "columnName": "beginDateTime",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "nickname",
             "columnName": "nickname",
             "affinity": "TEXT",
@@ -118,7 +112,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '67f5318c3cd4299fd0b88bb0593aa820')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3175f04778784414b537df77e434de42')"
     ]
   }
 }

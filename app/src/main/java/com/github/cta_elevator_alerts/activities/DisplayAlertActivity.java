@@ -25,7 +25,6 @@ public class DisplayAlertActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_alert);
-        TextView tv_beginDateTime = findViewById(R.id.txt_alert_date_time);
         TextView tv_shortDesc = findViewById(R.id.txt_alert_shortDesc);
         TextView toolbarText = findViewById(R.id.txt_toolbar);
 
@@ -34,24 +33,12 @@ public class DisplayAlertActivity extends AppCompatActivity {
         //Get ViewModel
         DisplayAlertViewModel mDisplayAlertViewModel = ViewModelProviders.of(this).get(DisplayAlertViewModel.class);
         mDisplayAlertViewModel.setStationID(stationID);
-        String shortDesc = mDisplayAlertViewModel.getShortDesc();
-        String beginDateTime = mDisplayAlertViewModel.getBeginDateTime();
-        String stationName = mDisplayAlertViewModel.getStationName();
 
-        toolbarText.setText(stationName);
+        toolbarText.setText(mDisplayAlertViewModel.getStationName()); //Set Station Name
 
-        if (!beginDateTime.equals("")){
-            tv_beginDateTime.setText(beginDateTime);
-            tv_shortDesc.setText(shortDesc);
-        } else{
-            tv_beginDateTime.setBackgroundResource(0);
-            tv_beginDateTime.setTypeface(null, Typeface.NORMAL);
-            boolean hasElevator = mDisplayAlertViewModel.getHasElevator();
-            if(hasElevator){
-                tv_beginDateTime.setText(R.string.present_elevator);
-            } else{
-                tv_beginDateTime.setText(R.string.no_elevator);
-            }
-        }
+        //Set alert description
+        if (!mDisplayAlertViewModel.getHasElevator()) tv_shortDesc.setText(R.string.no_elevator);
+        else if (!mDisplayAlertViewModel.getHasAlert())  tv_shortDesc.setText(R.string.present_elevator);
+        else tv_shortDesc.setText(mDisplayAlertViewModel.getShortDesc());
     }
 }

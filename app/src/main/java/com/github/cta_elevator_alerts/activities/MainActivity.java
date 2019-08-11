@@ -52,13 +52,13 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: Fix notifications
+    //TODO: Test background notifications - maybe migrate to Firebase?
     //TODO: Fix "updating"
-    //TODO: Multiple alerts for one station - King Drive!
 
     //Tyler:
-    //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
-    //TODO: Update app icon files in manifest
+    //TODO: Bottom navigation; back button on DisplayAlertDetails, etc.?
+    //TODO: Update app icon files and add to manifest
+    //TODO: Notifications: Create small Elevate logo; add LargeLogo (green/red circle)
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
@@ -72,6 +72,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        Button b = new Button(this);
+        b.setText("Remove alert clark");
+        LinearLayout l = findViewById(R.id.LinearLayout);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStationAlertsViewModel.removeAlertClark();
+            }
+        });
+        l.addView(b);
 
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
@@ -93,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         addPrivacyPolicyLink();
         addSwipeRefresh();
         addAlertsObserver();
+        addNewlyOutObserver();
+        addNewlyWorkingObserver();
         addFavoritesObserver();
         addLastUpdatedObserver();
         addConnectionStatusObserver();
@@ -130,34 +143,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addAlertsObserver(){
-        mStationAlertsViewModel.getStationAlerts().observe(this, stations1 -> {
-            try{
+        mStationAlertsViewModel.getStationAlerts().observe(this, alerts -> {
                 alertsAdapter.notifyDataSetChanged();
-            } catch (IllegalStateException e){
-                return;
-            }
 
-            //Display notification if elevator is newly out
-            if (mStationAlertsViewModel.getStationElevatorsNewlyOut() != null){
-                for (String s : mStationAlertsViewModel.getStationElevatorsNewlyOut()) {
-                    showNotification(Integer.parseInt(s), true);
+                //If no alerts
+                TextView tv = findViewById(R.id.noStationAlerts);
+                if (alerts.size() < 1) {
+                    tv.setVisibility(View.VISIBLE);
+                } else {
+                    tv.setVisibility(View.GONE);
                 }
             }
-            //Display notification if elevator is newly working
-            if (mStationAlertsViewModel.getStationElevatorsNewlyWorking() != null) {
+        );
+    }
 
-                for (String s : mStationAlertsViewModel.getStationElevatorsNewlyWorking()) {
-                    showNotification(Integer.parseInt(s), false);
-                }
-            }
+    private void addNewlyOutObserver(){
+        mStationAlertsViewModel.getNewlyOut().observe(this, out -> {
+            showNotification(Integer.parseInt(out), true);
+        });
+    }
 
-            //If no alerts
-            TextView tv = findViewById(R.id.noStationAlerts);
-            if (mStationAlertsViewModel.mGetStationAlertsNotLiveData().size() < 1) {
-                tv.setVisibility(View.VISIBLE);
-            } else {
-                tv.setVisibility(View.GONE);
-            }
+    private void addNewlyWorkingObserver(){
+        mStationAlertsViewModel.getNewlyWorking().observe(this, working -> {
+            showNotification(Integer.parseInt(working), false);
         });
     }
 
@@ -237,22 +245,22 @@ public class MainActivity extends AppCompatActivity {
         stackBuilder.addNextIntentWithParentStack(intent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        builder.setContentIntent(resultPendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setAutoCancel(true);
+
         if (isNewlyOut){
             builder.setSmallIcon(R.drawable.status_red)
                     .setColor(getResources().getColor(R.color.colorAndroidRed))
-                    .setContentIntent(resultPendingIntent)
                     .setContentTitle("Elevator is down!")
                     .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is down");
         } else {
             builder.setSmallIcon(R.drawable.status_green)
                     .setColor(getResources().getColor(R.color.colorAndroidGreen))
-                    .setContentIntent(resultPendingIntent)
                     .setContentTitle("Elevator is back up!")
                     .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is working again");
         }
-
-        //Create different notifications for same station, depending on isNewlyOut
-        if (isNewlyOut) id *= 2;
 
         notificationManager.notify(id, builder.build());
     }

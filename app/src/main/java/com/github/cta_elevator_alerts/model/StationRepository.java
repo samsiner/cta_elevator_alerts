@@ -37,6 +37,9 @@ public class StationRepository {
     private final MutableLiveData<Boolean> connectionStatusLD;
     private final MutableLiveData<String> updateAlertsTimeLD;
     private final MutableLiveData<Integer> stationCountLD;
+    private final MutableLiveData<String> newlyOutLD;
+    private final MutableLiveData<String> newlyWorkingLD;
+
     private final ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
     private final ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
 
@@ -59,6 +62,8 @@ public class StationRepository {
         updateAlertsTimeLD = new MutableLiveData<>();
         connectionStatusLD = new MutableLiveData<>();
         stationCountLD = new MutableLiveData<>();
+        newlyOutLD = new MutableLiveData<>();
+        newlyWorkingLD = new MutableLiveData<>();
         executor = Executors.newFixedThreadPool(4);
     }
 
@@ -206,16 +211,16 @@ public class StationRepository {
         return hasElevatorAlert;
     }
 
-    private String convertDateTime(String s){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss", Locale.US);
-        try {
-            Date originalDate = dateFormat.parse(s);
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
-            return dateFormat2.format(originalDate);
-        } catch (ParseException e) {
-            return s;
-        }
-    }
+//    private String convertDateTime(String s){
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH:mm:ss", Locale.US);
+//        try {
+//            Date originalDate = dateFormat.parse(s);
+//            SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
+//            return dateFormat2.format(originalDate);
+//        } catch (ParseException e) {
+//            return s;
+//        }
+//    }
 
     public List<String> getAlertDetails(String stationID){
         final List<String> list2 = new ArrayList<>();
@@ -224,13 +229,9 @@ public class StationRepository {
             public void run() {
                 list2.add(0, mStationDao.getName(stationID));
                 String shortDesc = mStationDao.getShortDescription(stationID);
-                String beginDT = mStationDao.getBeginDateTime(stationID);
 
                 if (shortDesc != null) list2.add(1, mStationDao.getShortDescription(stationID));
                 else list2.add(1, "");
-
-                if (beginDT != null) list2.add(2, mStationDao.getBeginDateTime(stationID));
-                else list2.add(2, "");
             }
         };
         thread.start();
@@ -278,6 +279,8 @@ public class StationRepository {
 
     public LiveData<Boolean> getConnectionStatus(){ return connectionStatusLD;}
     public LiveData<String> getUpdatedAlertsTime(){ return updateAlertsTimeLD;}
+    public LiveData<String> getNewlyOut(){ return newlyOutLD; }
+    public LiveData<String> getNewlyWorking(){ return newlyWorkingLD; }
 
     public void buildStations(){
         if (mStationDao.getStationCount() > 0) return;
@@ -350,13 +353,9 @@ public class StationRepository {
         //Set internet connection status
         connectionStatusLD.postValue(!JSONString.equals("NO INTERNET"));
 
-        //Deal with elevators newly out or newly working
-        ArrayList<String> beforeStationsOut = new ArrayList<>();
-        favoriteElevatorNewlyOut.clear();
-        favoriteElevatorNewlyWorking.clear();
-        beforeStationsOut.clear();
-        beforeStationsOut.addAll(mStationDao.getAllAlertStationIDs());
-        
+        ArrayList<String> currentAlerts = new ArrayList<>(); //For multiple alerts
+        ArrayList<String> beforeStationsOut = new ArrayList<>(mStationDao.getAllAlertStationIDs());
+
         try {
             JSONObject outer = new JSONObject(JSONString);
             JSONObject inner = outer.getJSONObject("CTAAlerts");
@@ -370,7 +369,7 @@ public class StationRepository {
                 JSONObject impactedService = alert.getJSONObject("ImpactedService");
                 JSONArray service = impactedService.getJSONArray("Service");
 
-                for (int j=0;j<service.length();j++){
+                for (int j=0;j<service.length();j++) {
                     JSONObject serviceInstance = (JSONObject) service.get(j);
                     if (serviceInstance.getString("ServiceType").equals("T")) {
                         String id = serviceInstance.getString("ServiceId");
@@ -378,33 +377,60 @@ public class StationRepository {
 
                         if (headline.contains("Back in Service")) break;
 
-                        if (beforeStationsOut.contains(id)){
-                            Log.d("Repository alr. Alert", id);
+                        //End up with beforeStationsOut only containing alerts that no longer exist
+                        if (beforeStationsOut.contains(id)) {
                             beforeStationsOut.remove(id);
                         } else {
-                            Log.d("Repository fav new out", id);
-                            //TODO: Remove test
-                            if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
-                            mStationDao.setAlert(id, alert.getString("ShortDescription"), alert.getString("EventStart"));
+                            //TODO: Remove NO FAVORITES test
+                            //if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
+                            if (!currentAlerts.contains(id)) newlyOutLD.postValue(id);
                         }
+
+                        //Looking for multiple alerts for the same station.
+                        String shortDesc = alert.getString("ShortDescription");
+                        if (currentAlerts.contains(id)) {
+                            shortDesc += "\n\n";
+                            shortDesc += mStationDao.getShortDescription(id);
+                        } else {
+                            currentAlerts.add(id);
+                        }
+
+                        mStationDao.setAlert(id, shortDesc);
                         break;
                     }
                 }
             }
-        } catch (JSONException | NullPointerException e) {
+        }
+        catch (JSONException | NullPointerException e) {
             e.printStackTrace();
         }
 
         for (String id : beforeStationsOut){
             mStationDao.removeAlert(id);
-            //TODO: Remove test
+            //TODO: Remove NO FAVORITES test
 //            if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
-            favoriteElevatorNewlyWorking.add(id);
+            newlyWorkingLD.postValue(id);
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated:\n'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
         Date date = new Date(System.currentTimeMillis());
         updateAlertsTimeLD.postValue(dateFormat.format(date));
+    }
+
+    //Test method
+    public void removeAlertClark(){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.removeAlert("40630");
+                newlyWorkingLD.postValue("40630");
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
     public List<String> getFavoriteElevatorNewlyWorking(){ return favoriteElevatorNewlyWorking; }

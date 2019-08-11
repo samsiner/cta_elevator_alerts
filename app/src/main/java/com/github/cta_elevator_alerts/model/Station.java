@@ -19,7 +19,7 @@ public class Station {
     public final String stationID;
     public boolean hasElevator, hasElevatorAlert, isFavorite;
     public boolean red, blue, brown, green, orange, pink, purple, yellow;
-    public String name, shortDescription, beginDateTime, nickname;
+    public String name, shortDescription, nickname;
 
     public Station(@NonNull String stationID){
         this.stationID = stationID;
