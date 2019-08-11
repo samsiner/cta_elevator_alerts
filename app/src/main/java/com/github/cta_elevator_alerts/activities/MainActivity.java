@@ -4,12 +4,14 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.github.cta_elevator_alerts.R;
@@ -48,13 +50,13 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: Fix worker/notifications
-    //TODO: Splash screen
+    //TODO: Fix notifications
     //TODO: Refactor with LiveData.postvalue
+    //TODO: Before deployment, make worker less often, more restrictions (125 KB per download)
 
     //Tyler:
     //TODO: Navigation - tabs? (FragmentPagerAdapter?), back stack
-    //TODO: Update app icon on google play console
+    //TODO: Update app icon files in manifest
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -88,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
         addPrivacyPolicyLink();
         addSwipeRefresh();
         addAlertsObserver();
-
-        buildStationsAndAlertsAsync();
-
         addFavoritesObserver();
         addLastUpdatedObserver();
         addConnectionStatusObserver();
@@ -197,16 +197,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addNetworkWorker(){
-        //Build Alerts API work request
         PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
                 .addTag("UniqueAPIAlertsWork")
                 .setConstraints(new Constraints.Builder()
-//                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
                         .setRequiresBatteryNotLow(true)
+                        .setRequiresStorageNotLow(true)
                         .build())
                 .build();
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
+
+        //If not connected, update connection status to "Not Connected" because worker won't run
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork == null || !activeNetwork.isConnected()) buildStationsAndAlertsAsync();
     }
 
     private void addFavorite(){
