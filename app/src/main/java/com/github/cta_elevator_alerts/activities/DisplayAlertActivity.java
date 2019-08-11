@@ -1,6 +1,5 @@
 package com.github.cta_elevator_alerts.activities;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
 

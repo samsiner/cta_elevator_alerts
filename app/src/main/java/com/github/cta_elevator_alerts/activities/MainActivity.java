@@ -6,11 +6,13 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
@@ -52,19 +54,20 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: Test background notifications - maybe migrate to Firebase?
-    //TODO: Fix "updating"
+    //TODO: Make background notifications work - maybe migrate to Firebase?
 
     //Tyler:
     //TODO: Bottom navigation; back button on DisplayAlertDetails, etc.?
-    //TODO: Update app icon files and add to manifest
-    //TODO: Notifications: Create small Elevate logo; add LargeLogo (green/red circle)
+    //TODO: Update app icon files (under mipmap folder) and add to manifest
+    //TODO: For notifications: Create small Elevate logo; add LargeLogo (green/red circle)
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
     private NotificationCompat.Builder builder;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView.Adapter alertsAdapter, favoritesAdapter;
+    private SharedPreferences sharedPreferences;
+    private TextView tv_alertsTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +76,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        //TODO: Remove test button
         Button b = new Button(this);
         b.setText("Remove alert clark");
         LinearLayout l = findViewById(R.id.LinearLayout);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mStationAlertsViewModel.removeAlertClark();
-            }
-        });
+        b.setOnClickListener(v -> mStationAlertsViewModel.removeAlertClark());
         l.addView(b);
 
         //Create ViewModels for favorites and alerts
@@ -99,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
         favoritesAdapter = new FavoritesAdapter(this);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //Create SharedPreferences for last updated date/time
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        tv_alertsTime = findViewById(R.id.txt_update_alert_time);
+        String time = sharedPreferences.getString("LastUpdatedTime", "");
+        if (time != null && !time.equals("")) tv_alertsTime.setText(time);
 
         addNotificationChannel();
         addPrivacyPolicyLink();
@@ -158,19 +163,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addNewlyOutObserver(){
-        mStationAlertsViewModel.getNewlyOut().observe(this, out -> {
-            showNotification(Integer.parseInt(out), true);
-        });
+        mStationAlertsViewModel.getNewlyOut().observe(this, out -> showNotification(Integer.parseInt(out), true));
     }
 
     private void addNewlyWorkingObserver(){
-        mStationAlertsViewModel.getNewlyWorking().observe(this, working -> {
-            showNotification(Integer.parseInt(working), false);
-        });
+        mStationAlertsViewModel.getNewlyWorking().observe(this, working -> showNotification(Integer.parseInt(working), false));
     }
 
     private void buildStationsAndAlertsAsync(){
-        Toast toast = Toast.makeText(this, "Updating Stations and Alerts", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, "Updating...", Toast.LENGTH_SHORT);
         toast.show();
         new BuildStationsAndAlerts(this).execute();
     }
@@ -194,9 +195,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addLastUpdatedObserver(){
-        TextView tv_alertsTime = findViewById(R.id.txt_update_alert_time);
-        tv_alertsTime.setText("Updating...");
-        mStationAlertsViewModel.getUpdateAlertsTime().observe(this, tv_alertsTime::setText);
+        mStationAlertsViewModel.getUpdateAlertsTime().observe(this, text -> {
+            tv_alertsTime.setText(text);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("LastUpdatedTime", text);
+            editor.apply();
+        });
     }
 
     private void addConnectionStatusObserver(){
@@ -209,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addNetworkWorker(){
-        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 4, TimeUnit.HOURS)
+        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 1, TimeUnit.DAYS)
                 .addTag("UniqueAPIAlertsWork")
                 .setConstraints(new Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -317,4 +322,5 @@ public class MainActivity extends AppCompatActivity {
     public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }
 
     public StationAlertsViewModel getStationAlertsViewModel(){ return mStationAlertsViewModel; }
+
 }

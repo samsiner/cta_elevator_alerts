@@ -11,9 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -352,6 +350,7 @@ public class StationRepository {
 
         //Set internet connection status
         connectionStatusLD.postValue(!JSONString.equals("NO INTERNET"));
+        if (JSONString.equals("NO INTERNET")) return;
 
         ArrayList<String> currentAlerts = new ArrayList<>(); //For multiple alerts
         ArrayList<String> beforeStationsOut = new ArrayList<>(mStationDao.getAllAlertStationIDs());
