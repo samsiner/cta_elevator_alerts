@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -144,6 +146,9 @@ public class AddFavoriteActivity extends AppCompatActivity {
             Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
             intent.putExtra("nickname", getIntent().getStringExtra("nickname"));
             intent.putExtra("stationID", getIntent().getStringExtra("stationID"));
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
             startActivity(intent);
         }
     }
