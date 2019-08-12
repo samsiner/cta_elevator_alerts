@@ -256,12 +256,12 @@ public class MainActivity extends AppCompatActivity {
                 .setAutoCancel(true);
 
         if (isNewlyOut){
-            builder.setSmallIcon(R.drawable.status_red)
+            builder.setSmallIcon(R.drawable.elevate_logo_small)
                     .setColor(getResources().getColor(R.color.colorAndroidRed))
                     .setContentTitle("Elevator is down!")
                     .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is down");
         } else {
-            builder.setSmallIcon(R.drawable.status_green)
+            builder.setSmallIcon(R.drawable.elevate_logo_small)
                     .setColor(getResources().getColor(R.color.colorAndroidGreen))
                     .setContentTitle("Elevator is back up!")
                     .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is working again");
