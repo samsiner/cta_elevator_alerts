@@ -35,24 +35,29 @@ public class NotificationPusher {
 
         //Create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("alerts", "New & Removed Alerts", NotificationManager.IMPORTANCE_HIGH);
-            channel.enableVibration(true);
+            NotificationChannel channelOut = new NotificationChannel("out", "Elevators Out", NotificationManager.IMPORTANCE_HIGH);
+            channelOut.enableVibration(true);
+
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(channelOut);
 
             //Create notification builder
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "worker")
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "out")
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setPriority(NotificationCompat.PRIORITY_MAX);
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setAutoCancel(true);
 
+            //Elevators newly working
             for (String s : pastAlerts){
                 if (!currAlerts.contains(s)){
                     //Create notification tap action
                     Intent intent = new Intent(context, DisplayAlertActivity.class);
                     intent.putExtra("stationID", s);
+
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
                     stackBuilder.addNextIntentWithParentStack(intent);
-                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                    int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(uniqueInt, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     builder.setContentIntent(resultPendingIntent)
                             .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -66,24 +71,36 @@ public class NotificationPusher {
                 }
             }
 
-            for (String s : currAlerts){
-                if (!pastAlerts.contains(s)){
-                    //Create notification tap action
-                    Intent intent = new Intent(context, DisplayAlertActivity.class);
-                    intent.putExtra("stationID", s);
-                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                    stackBuilder.addNextIntentWithParentStack(intent);
-                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationChannel channelWork = new NotificationChannel("working", "Elevators Working", NotificationManager.IMPORTANCE_HIGH);
+            channelOut.enableVibration(true);
+            notificationManager.createNotificationChannel(channelWork);
 
-                    builder.setContentIntent(resultPendingIntent)
+            //Create notification builder
+            NotificationCompat.Builder builder2 = new NotificationCompat.Builder(context, "working")
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setPriority(NotificationCompat.PRIORITY_MAX);
+
+            //Elevators newly out
+            for (String s2 : currAlerts){
+                if (!pastAlerts.contains(s2)){
+                    //Create notification tap action
+                    Intent intent2 = new Intent(context, DisplayAlertActivity.class);
+                    intent2.putExtra("stationID", s2);
+                    TaskStackBuilder stackBuilder2 = TaskStackBuilder.create(context);
+                    stackBuilder2.addNextIntentWithParentStack(intent2);
+
+                    int uniqueInt2 = (int) (System.currentTimeMillis() & 0xfffffff);
+                    PendingIntent resultPendingIntent2 = stackBuilder2.getPendingIntent(uniqueInt2, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    builder2.setContentIntent(resultPendingIntent2)
                             .setPriority(NotificationCompat.PRIORITY_MAX)
                             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                             .setSmallIcon(R.drawable.elevate_logo_small)
                             .setColor(ContextCompat.getColor(context, R.color.colorAndroidRed))
                             .setContentTitle("Elevator is down!")
-                            .setContentText("Elevator at " + repository.mGetStationName(s) + " is down!");
+                            .setContentText("Elevator at " + repository.mGetStationName(s2) + " is down!");
 
-                    notificationManager.notify(Integer.parseInt(s), builder.build());
+                    notificationManager.notify(Integer.parseInt(s2), builder2.build());
                 }
             }
         }

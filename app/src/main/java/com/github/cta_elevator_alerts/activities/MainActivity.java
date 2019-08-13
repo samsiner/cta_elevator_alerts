@@ -1,11 +1,7 @@
 package com.github.cta_elevator_alerts.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
@@ -23,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -34,7 +31,6 @@ import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 import com.github.cta_elevator_alerts.utils.NetworkWorker;
 import com.github.cta_elevator_alerts.utils.NotificationPusher;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -58,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView.Adapter alertsAdapter, favoritesAdapter;
+    private RecyclerView.Adapter favoritesAdapter;
     private SharedPreferences sharedPreferences;
     private TextView tv_alertsTime;
 
@@ -72,12 +68,6 @@ public class MainActivity extends AppCompatActivity {
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
-
-        //Create adapter to display alerts
-        RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
-        alertsAdapter = new StationAlertsAdapter(this);
-        alertsRecyclerView.setAdapter(alertsAdapter);
-        alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Create adapter to display favorites
         RecyclerView favoritesRecyclerView = findViewById(R.id.recycler_favorite_stations);
@@ -97,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
         addFavoritesObserver();
         addLastUpdatedObserver();
         addConnectionStatusObserver();
-        addNetworkWorker();
+        addOneTimeWorker();
+        addPeriodicWorker();
 
         if (getIntent().getStringExtra("nickname") != null) addFavorite();
 
@@ -137,14 +128,20 @@ public class MainActivity extends AppCompatActivity {
     private void addSwipeRefresh(){
         mSwipeRefreshLayout = findViewById(R.id.swipe_main_activity);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            buildStationsAndAlertsAsync();
+            addOneTimeWorker();
             mSwipeRefreshLayout.setRefreshing(false);
         });
     }
 
     private void addAlertsObserver(){
+        //Create adapter to display alerts
+        RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
+        StationAlertsAdapter alertsAdapter = new StationAlertsAdapter(this);
+        alertsRecyclerView.setAdapter(alertsAdapter);
+        alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         mStationAlertsViewModel.getStationAlerts().observe(this, alerts -> {
-                alertsAdapter.notifyDataSetChanged();
+                alertsAdapter.updateAlerts(alerts);
 
                 //If no alerts
                 TextView tv = findViewById(R.id.noStationAlerts);
@@ -155,12 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         );
-    }
-
-    private void buildStationsAndAlertsAsync(){
-        Toast toast = Toast.makeText(this, "Updating...", Toast.LENGTH_SHORT);
-        toast.show();
-        new BuildStationsAndAlerts(this).execute();
     }
 
     private void addFavoritesObserver(){
@@ -191,18 +182,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addConnectionStatusObserver(){
+    private void addConnectionStatusObserver() {
         mStationAlertsViewModel.getConnectionStatus().observe(this, isConnected -> {
             if (!isConnected) {
                 Toast toast = Toast.makeText(this, "Not connected - please refresh!", Toast.LENGTH_SHORT);
                 toast.show();
             }
+            mStationAlertsViewModel.setConnectionStatus(true);
         });
     }
 
-    private void addNetworkWorker(){
-        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
-                .addTag("UniqueAPIAlertsWork")
+    private void addPeriodicWorker(){
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
+                .addTag("PeriodicWork")
                 .setConstraints(new Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
                         .setRequiresBatteryNotLow(true)
@@ -210,70 +202,25 @@ public class MainActivity extends AppCompatActivity {
                         .build())
                 .build();
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("UniqueAPIAlertsWork", ExistingPeriodicWorkPolicy.REPLACE, apiAlertsWorkRequest);
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicWork", ExistingPeriodicWorkPolicy.REPLACE, request);
+    }
 
-        //If not connected, update connection status to "Not Connected" because worker won't run
-        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork == null || !activeNetwork.isConnected()) buildStationsAndAlertsAsync();
+    private void addOneTimeWorker(){
+        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(NetworkWorker.class)
+                .addTag("OneTimeWork")
+                .setConstraints(new Constraints.Builder()
+                        .setRequiresBatteryNotLow(true)
+                        .setRequiresStorageNotLow(true)
+                        .build())
+                .build();
+
+        WorkManager.getInstance(this).enqueue(request);
     }
 
     private void addFavorite(){
         String nickname = getIntent().getStringExtra("nickname");
         String stationID = getIntent().getStringExtra("stationID");
         mFavoritesViewModel.addFavorite(stationID, nickname);
-    }
-
-    private static class BuildStationsAndAlerts extends AsyncTask<Void, Void, Void> {
-
-        private final WeakReference<MainActivity> mainActivity;
-
-        BuildStationsAndAlerts(MainActivity activity) {
-            mainActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            MainActivity activity = mainActivity.get();
-            activity.mStationAlertsViewModel.buildStations();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void results) {
-            MainActivity activity = mainActivity.get();
-            new UpdateAlerts(activity).execute();
-        }
-    }
-
-    private static class UpdateAlerts extends AsyncTask<Void, Void, Void> {
-
-        private final WeakReference<MainActivity> mainActivity;
-        private ArrayList<String> pastAlerts;
-
-        UpdateAlerts(MainActivity activity) {
-            mainActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        protected void onPreExecute(){
-            MainActivity activity = mainActivity.get();
-            pastAlerts = (ArrayList<String>)activity.mStationAlertsViewModel.mGetStationAlertIDs();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            MainActivity activity = mainActivity.get();
-            activity.mStationAlertsViewModel.rebuildAlerts();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void results){
-            MainActivity activity = mainActivity.get();
-            ArrayList<String> currentAlerts = (ArrayList<String>)activity.mStationAlertsViewModel.mGetStationAlertIDs();
-            NotificationPusher.createAlertNotifications(activity, pastAlerts, currentAlerts);
-        }
     }
 
     public void toAddFavoriteActivity(View v){

@@ -26,8 +26,7 @@ public class StationAlertsViewModel extends AndroidViewModel {
         mRepository = StationRepository.getInstance(application);
     }
 
-    public void rebuildAlerts(){ mRepository.buildAlerts(); }
-    public void buildStations(){ mRepository.buildStations();}
+    public void setConnectionStatus(boolean b){ mRepository.setConnectionStatus(b);}
 
     public LiveData<List<Station>> getStationAlerts() { return mRepository.mGetAllAlertStations();}
     public LiveData<String> getUpdateAlertsTime(){ return mRepository.getUpdatedAlertsTime(); }
@@ -38,6 +37,5 @@ public class StationAlertsViewModel extends AndroidViewModel {
     public void addAlertHoward(){ mRepository.addAlertHoward(); }
 
     public List<String> mGetStationAlertIDs(){ return mRepository.mGetStationAlertIDs(); }
-    public List<Station> mGetStationAlertsNotLiveData(){ return mRepository.mGetStationAlertsNotLiveData();}
     public boolean[] getAllRoutes(String stationID){ return mRepository.mGetAllRoutes(stationID);}
 }

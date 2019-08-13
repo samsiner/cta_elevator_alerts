@@ -117,6 +117,10 @@ public class StationRepository {
         return list2;
     }
 
+    public void setConnectionStatus(boolean b){
+        connectionStatusLD.postValue(b);
+    }
+
     public boolean[] mGetAllRoutes(String stationID){
         boolean[] b = new boolean[8];
         Thread thread = new Thread() {
@@ -291,7 +295,6 @@ public class StationRepository {
     public void buildStations(){
         if (mStationDao.getStationCount() > 0) return;
 
-        boolean connectionStatus;
         String JSONString = pullJSONFromWebService("https://data.cityofchicago.org/resource/8pix-ypme.json");
 
         try {
@@ -345,12 +348,10 @@ public class StationRepository {
                 if (purple){ mStationDao.setPurpleTrue(mapID); }
                 if (yellow){ mStationDao.setYellowTrue(mapID); }
             }
-            connectionStatus = true;
             stationCountLD.postValue(mStationDao.getStationCount());
         } catch (JSONException e) {
-            connectionStatus = false;
+            connectionStatusLD.postValue(false);
         }
-        connectionStatusLD.postValue(connectionStatus);
     }
 
     public void buildAlerts(){

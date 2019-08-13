@@ -17,6 +17,9 @@ import com.github.cta_elevator_alerts.activities.MainActivity;
 import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Adapter for all alerts within MainActivity (RecyclerView)
  *
@@ -53,12 +56,19 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     private final Context context;
     private final int[] lineColors;
     private final StationAlertsViewModel mStationAlertsViewModel;
+    private List<Station> alerts;
 
     public StationAlertsAdapter(Context context){
         mStationAlertsViewModel = ((MainActivity)context).getStationAlertsViewModel();
         mInflater = LayoutInflater.from(context);
         this.context = context;
+        alerts = new ArrayList<>();
         lineColors = context.getResources().getIntArray(R.array.lineColors);
+    }
+
+    public void updateAlerts(List<Station> alerts){
+        this.alerts = alerts;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -71,7 +81,8 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     @Override
     public void onBindViewHolder(@NonNull StationAlertsViewHolder holder, int position){
         holder.setIsRecyclable(false);
-        Station current = mStationAlertsViewModel.mGetStationAlertsNotLiveData().get(position);
+        //TODO: Issue with concurrency
+        Station current = alerts.get(position);
         boolean[] currentRoutes = mStationAlertsViewModel.getAllRoutes(current.stationID);
         holder.stationAlertTextView.setText(current.name);
         RelativeLayout rl = (RelativeLayout) holder.stationAlertTextView.getParent();
@@ -87,7 +98,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         }
 
         //remove bottom border styling from last element
-        if(position == mStationAlertsViewModel.mGetStationAlertsNotLiveData().size()-1){
+        if(position == alerts.size()-1){
             holder.stationAlertRelativeLayout.setBackgroundResource(0);
         } else{
             holder.stationAlertRelativeLayout.setBackgroundResource(R.drawable.border_bottom);
@@ -105,7 +116,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
 
     @Override
     public int getItemCount(){
-        return mStationAlertsViewModel.mGetStationAlertsNotLiveData().size();
+        return alerts.size();
     }
 
     @Override
