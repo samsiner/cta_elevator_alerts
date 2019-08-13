@@ -31,14 +31,13 @@ public class StationAlertsViewModel extends AndroidViewModel {
 
     public LiveData<List<Station>> getStationAlerts() { return mRepository.mGetAllAlertStations();}
     public LiveData<String> getUpdateAlertsTime(){ return mRepository.getUpdatedAlertsTime(); }
-    public LiveData<String> getNewlyOut(){ return mRepository.getNewlyOut(); }
-    public LiveData<String> getNewlyWorking(){ return mRepository.getNewlyWorking(); }
     public LiveData<Boolean> getConnectionStatus(){ return mRepository.getConnectionStatus(); }
 
     //TODO: Remove
-    public void removeAlertClark(){ mRepository.removeAlertClark();}
+    public void removeAlertQuincy(){ mRepository.removeAlertQuincy();}
+    public void addAlertHoward(){ mRepository.addAlertHoward(); }
 
-    public List<Station> mGetStationAlertsNotLiveData(){ return mRepository.mGetStationAlertsNotLiveData(); }
-    public String getStationName(String stationID){ return mRepository.mGetStationName(stationID); }
+    public List<String> mGetStationAlertIDs(){ return mRepository.mGetStationAlertIDs(); }
+    public List<Station> mGetStationAlertsNotLiveData(){ return mRepository.mGetStationAlertsNotLiveData();}
     public boolean[] getAllRoutes(String stationID){ return mRepository.mGetAllRoutes(stationID);}
 }

@@ -35,8 +35,6 @@ public class StationRepository {
     private final MutableLiveData<Boolean> connectionStatusLD;
     private final MutableLiveData<String> updateAlertsTimeLD;
     private final MutableLiveData<Integer> stationCountLD;
-    private final MutableLiveData<String> newlyOutLD;
-    private final MutableLiveData<String> newlyWorkingLD;
 
     private static volatile StationRepository INSTANCE;
 
@@ -57,8 +55,6 @@ public class StationRepository {
         updateAlertsTimeLD = new MutableLiveData<>();
         connectionStatusLD = new MutableLiveData<>();
         stationCountLD = new MutableLiveData<>();
-        newlyOutLD = new MutableLiveData<>();
-        newlyWorkingLD = new MutableLiveData<>();
         executor = Executors.newFixedThreadPool(4);
     }
 
@@ -76,6 +72,23 @@ public class StationRepository {
         Thread thread = new Thread() {
             public void run() {
                 list2.addAll(mStationDao.getAllFavoritesNotLiveData());
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return list2;
+    }
+
+    public List<String> mGetStationAlertIDs(){
+        final List<String> list2 = new ArrayList<>();
+
+        Thread thread = new Thread() {
+            public void run() {
+                list2.addAll(mStationDao.getAllAlertStationIDs());
             }
         };
         thread.start();
@@ -274,8 +287,6 @@ public class StationRepository {
 
     public LiveData<Boolean> getConnectionStatus(){ return connectionStatusLD;}
     public LiveData<String> getUpdatedAlertsTime(){ return updateAlertsTimeLD;}
-    public LiveData<String> getNewlyOut(){ return newlyOutLD; }
-    public LiveData<String> getNewlyWorking(){ return newlyWorkingLD; }
 
     public void buildStations(){
         if (mStationDao.getStationCount() > 0) return;
@@ -374,13 +385,7 @@ public class StationRepository {
                         if (headline.contains("Back in Service")) break;
 
                         //End up with beforeStationsOut only containing alerts that no longer exist
-                        if (beforeStationsOut.contains(id)) {
-                            beforeStationsOut.remove(id);
-                        } else {
-                            //TODO: Remove NO FAVORITES test
-                            //if (isFavorite(id)) favoriteElevatorNewlyOut.add(id);
-                            if (!currentAlerts.contains(id)) newlyOutLD.postValue(id);
-                        }
+                        beforeStationsOut.remove(id);
 
                         //Looking for multiple alerts for the same station.
                         String shortDesc = alert.getString("ShortDescription");
@@ -403,9 +408,6 @@ public class StationRepository {
 
         for (String id : beforeStationsOut){
             mStationDao.removeAlert(id);
-            //TODO: Remove NO FAVORITES test
-//            if (isFavorite(id)) favoriteElevatorNewlyWorking.add(id);
-            newlyWorkingLD.postValue(id);
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("'Last updated:\n'MMMM' 'dd', 'yyyy' at 'h:mm a", Locale.US);
@@ -413,12 +415,25 @@ public class StationRepository {
         updateAlertsTimeLD.postValue(dateFormat.format(date));
     }
 
-    //Test method
-    public void removeAlertClark(){
+    //TODO: Remove next two methods
+    public void removeAlertQuincy(){
         Thread thread = new Thread() {
             public void run() {
-                mStationDao.removeAlert("40630");
-                newlyWorkingLD.postValue("40630");
+                mStationDao.removeAlert("40040");
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addAlertHoward(){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.setAlert("40900", "Elevator is DOWN - TEST!");
             }
         };
         thread.start();

@@ -1,16 +1,11 @@
 package com.github.cta_elevator_alerts.activities;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
@@ -21,8 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,8 +32,10 @@ import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 import com.github.cta_elevator_alerts.workers.NetworkWorker;
+import com.github.cta_elevator_alerts.workers.NotificationPusher;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -54,16 +49,14 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: Make background notifications work - maybe migrate to Firebase?
+    //TODO: Change notifications to favorites only
 
     //Tyler:
-    //TODO: Bottom navigation; back button on DisplayAlertDetails, etc.?
-    //TODO: Notifications: app logo or green/red?
+    //TODO: Bottom navigation
     //TODO: Launcher icon silhouette (see Inspect Code)
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
-    private NotificationCompat.Builder builder;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView.Adapter alertsAdapter, favoritesAdapter;
     private SharedPreferences sharedPreferences;
@@ -75,13 +68,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-        //TODO: Remove test button
-        Button b = new Button(this);
-        b.setText("Remove alert clark");
-        LinearLayout l = findViewById(R.id.LinearLayout);
-        b.setOnClickListener(v -> mStationAlertsViewModel.removeAlertClark());
-        l.addView(b);
 
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
@@ -105,34 +91,42 @@ public class MainActivity extends AppCompatActivity {
         String time = sharedPreferences.getString("LastUpdatedTime", "");
         if (time != null && !time.equals("")) tv_alertsTime.setText(time);
 
-        addNotificationChannel();
         addPrivacyPolicyLink();
         addSwipeRefresh();
         addAlertsObserver();
-        addNewlyOutObserver();
-        addNewlyWorkingObserver();
         addFavoritesObserver();
         addLastUpdatedObserver();
         addConnectionStatusObserver();
         addNetworkWorker();
         addFavorite();
+
+        //TODO: Remove
+        addTestButtons();
     }
 
-    private void addNotificationChannel(){
-        //Create notification channel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", "Channel", NotificationManager.IMPORTANCE_HIGH);
-            channel.setDescription("This is a channel");
-            channel.enableVibration(true);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+    private void addTestButtons(){
+        Button b = new Button(this);
+        b.setText("Remove alert quincy");
+        LinearLayout l = findViewById(R.id.LinearLayout);
+        b.setOnClickListener(v -> {
+            ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
+            mStationAlertsViewModel.removeAlertQuincy();
+            ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
+            NotificationPusher.createAlertNotifications(this, past, curr);
+        });
+        l.addView(b);
 
-        //Create notification builder
-        builder = new NotificationCompat.Builder(this,"CHANNEL_ID")
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_MAX);
+        Button b1 = new Button(this);
+        b1.setText("Add alert Howard");
+        b1.setOnClickListener(v -> {
+            ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
+            mStationAlertsViewModel.addAlertHoward();
+            ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
+            NotificationPusher.createAlertNotifications(this, past, curr);
+        });
+        l.addView(b1);
     }
+
 
     private void addPrivacyPolicyLink(){
         TextView t2 = findViewById(R.id.txt_privacy);
@@ -160,14 +154,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         );
-    }
-
-    private void addNewlyOutObserver(){
-        mStationAlertsViewModel.getNewlyOut().observe(this, out -> showNotification(Integer.parseInt(out), true));
-    }
-
-    private void addNewlyWorkingObserver(){
-        mStationAlertsViewModel.getNewlyWorking().observe(this, working -> showNotification(Integer.parseInt(working), false));
     }
 
     private void buildStationsAndAlertsAsync(){
@@ -214,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addNetworkWorker(){
-        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 1, TimeUnit.DAYS)
+        PeriodicWorkRequest apiAlertsWorkRequest = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
                 .addTag("UniqueAPIAlertsWork")
                 .setConstraints(new Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -237,37 +223,6 @@ public class MainActivity extends AppCompatActivity {
             String stationID = getIntent().getStringExtra("stationID");
             mFavoritesViewModel.addFavorite(stationID, nickname);
         }
-    }
-
-    private void showNotification(int id, boolean isNewlyOut){
-        //Show notification
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        //Create notification tap action
-        Intent intent = new Intent(this, DisplayAlertActivity.class);
-        intent.putExtra("stationID", Integer.toString(id));
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(intent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        builder.setContentIntent(resultPendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setAutoCancel(true);
-
-        if (isNewlyOut){
-            builder.setSmallIcon(R.drawable.elevate_logo_small)
-                    .setColor(getResources().getColor(R.color.colorAndroidRed))
-                    .setContentTitle("Elevator is down!")
-                    .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is down");
-        } else {
-            builder.setSmallIcon(R.drawable.elevate_logo_small)
-                    .setColor(getResources().getColor(R.color.colorAndroidGreen))
-                    .setContentTitle("Elevator is back up!")
-                    .setContentText("Elevator at " + mStationAlertsViewModel.getStationName(Integer.toString(id)) + " is working again");
-        }
-
-        notificationManager.notify(id, builder.build());
     }
 
     private static class BuildStationsAndAlerts extends AsyncTask<Void, Void, Void> {
@@ -295,9 +250,16 @@ public class MainActivity extends AppCompatActivity {
     private static class UpdateAlerts extends AsyncTask<Void, Void, Void> {
 
         private final WeakReference<MainActivity> mainActivity;
+        private ArrayList<String> pastAlerts;
 
         UpdateAlerts(MainActivity activity) {
             mainActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected void onPreExecute(){
+            MainActivity activity = mainActivity.get();
+            pastAlerts = (ArrayList<String>)activity.mStationAlertsViewModel.mGetStationAlertIDs();
         }
 
         @Override
@@ -305,6 +267,13 @@ public class MainActivity extends AppCompatActivity {
             MainActivity activity = mainActivity.get();
             activity.mStationAlertsViewModel.rebuildAlerts();
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void results){
+            MainActivity activity = mainActivity.get();
+            ArrayList<String> currentAlerts = (ArrayList<String>)activity.mStationAlertsViewModel.mGetStationAlertIDs();
+            NotificationPusher.createAlertNotifications(activity, pastAlerts, currentAlerts);
         }
     }
 
