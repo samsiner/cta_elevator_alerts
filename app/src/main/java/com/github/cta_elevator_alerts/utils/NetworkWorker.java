@@ -1,4 +1,4 @@
-package com.github.cta_elevator_alerts.workers;
+package com.github.cta_elevator_alerts.utils;
 
 import android.app.Application;
 import android.content.Context;

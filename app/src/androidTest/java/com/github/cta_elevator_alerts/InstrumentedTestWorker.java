@@ -15,7 +15,7 @@ import androidx.work.testing.TestDriver;
 import androidx.work.testing.WorkManagerTestInitHelper;
 
 import com.github.cta_elevator_alerts.activities.MainActivity;
-import com.github.cta_elevator_alerts.workers.NetworkWorker;
+import com.github.cta_elevator_alerts.utils.NetworkWorker;
 
 import org.junit.Before;
 import org.junit.Rule;

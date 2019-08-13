@@ -1,4 +1,4 @@
-package com.github.cta_elevator_alerts.workers;
+package com.github.cta_elevator_alerts.utils;
 
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -18,6 +18,12 @@ import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.model.StationRepository;
 
 import java.util.ArrayList;
+
+/**
+ * Pushes notification when station goes up or down.
+ *
+ * @author Southport Developers (Sam Siner & Tyler Arndt)
+ */
 
 public class NotificationPusher {
 

@@ -31,8 +31,8 @@ import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
 import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
-import com.github.cta_elevator_alerts.workers.NetworkWorker;
-import com.github.cta_elevator_alerts.workers.NotificationPusher;
+import com.github.cta_elevator_alerts.utils.NetworkWorker;
+import com.github.cta_elevator_alerts.utils.NotificationPusher;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -98,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
         addLastUpdatedObserver();
         addConnectionStatusObserver();
         addNetworkWorker();
-        addFavorite();
+
+        if (getIntent().getStringExtra("nickname") != null) addFavorite();
 
         //TODO: Remove
         addTestButtons();
@@ -218,11 +219,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addFavorite(){
-        if (getIntent().getStringExtra("nickname") != null){
-            String nickname = getIntent().getStringExtra("nickname");
-            String stationID = getIntent().getStringExtra("stationID");
-            mFavoritesViewModel.addFavorite(stationID, nickname);
-        }
+        String nickname = getIntent().getStringExtra("nickname");
+        String stationID = getIntent().getStringExtra("stationID");
+        mFavoritesViewModel.addFavorite(stationID, nickname);
     }
 
     private static class BuildStationsAndAlerts extends AsyncTask<Void, Void, Void> {
