@@ -14,7 +14,6 @@
         >
 
         <RelativeLayout
-            android:id="@+id/relative_layout_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -69,7 +68,6 @@
             />
 
         <TextView
-            android:id="@+id/text_tempDown_header"
             android:text="@string/title_all_alerts"
             style="@style/SubHeaderText"/>
 
@@ -99,7 +97,6 @@
             android:layout_marginBottom="30dp"
             android:onClick="toAllLinesActivity">
             <TextView
-                android:id="@+id/button_allLines"
                 style="@style/ActionButtonText"
                 android:text="@string/all_lines" />
             <ImageView

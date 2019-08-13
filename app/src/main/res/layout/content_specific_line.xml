@@ -10,7 +10,6 @@
     tools:showIn="@layout/activity_specific_line">
 
     <LinearLayout
-        android:id="@+id/linear_all_lines"
         style="@style/ActivityStyle"
         android:background="@color/colorWhite"
         >

@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Tyler:
     //TODO: Bottom navigation; back button on DisplayAlertDetails, etc.?
-    //TODO: Update app icon files (under mipmap folder) and add to manifest
-    //TODO: For notifications: Create small Elevate logo; add LargeLogo (green/red circle)
+    //TODO: Notifications: app logo or green/red?
+    //TODO: Launcher icon silhouette (see Inspect Code)
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;

@@ -9,7 +9,6 @@
     tools:showIn="@layout/activity_display_alert">
 
     <LinearLayout
-        android:id="@+id/linearLayout_station_alert"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/ActivityStyle"
@@ -17,7 +16,6 @@
 
 
         <TextView
-            android:id="@+id/txt_elevator_subtitle"
             android:background="@drawable/border_bottom"
             android:text="@string/title_all_alerts"
             style="@style/StationAlertBold"

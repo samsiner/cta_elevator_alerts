@@ -9,7 +9,6 @@
     tools:showIn="@layout/activity_all_lines">
 
     <LinearLayout
-        android:id="@+id/linear_all_lines"
         style="@style/ActivityStyle"
         android:paddingTop="30dp">
 

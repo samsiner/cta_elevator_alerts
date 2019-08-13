@@ -38,9 +38,6 @@ public class StationRepository {
     private final MutableLiveData<String> newlyOutLD;
     private final MutableLiveData<String> newlyWorkingLD;
 
-    private final ArrayList<String> favoriteElevatorNewlyWorking = new ArrayList<>();
-    private final ArrayList<String> favoriteElevatorNewlyOut = new ArrayList<>();
-
     private static volatile StationRepository INSTANCE;
 
     public static StationRepository getInstance(Application application) {
@@ -431,9 +428,6 @@ public class StationRepository {
             e.printStackTrace();
         }
     }
-
-    public List<String> getFavoriteElevatorNewlyWorking(){ return favoriteElevatorNewlyWorking; }
-    public List<String> getFavoriteElevatorNewlyOut(){ return favoriteElevatorNewlyOut; }
 
     private String pullJSONFromWebService(String url){
         StringBuilder sb = new StringBuilder();
