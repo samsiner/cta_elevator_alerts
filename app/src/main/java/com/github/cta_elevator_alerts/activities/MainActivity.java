@@ -45,7 +45,6 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     //Sam:
-    //TODO: Change notifications to favorites only
 
     //Tyler:
     //TODO: Bottom navigation
@@ -193,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addPeriodicWorker(){
-        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(NetworkWorker.class, 15, TimeUnit.MINUTES)
+        //TODO: Change to less often
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(NetworkWorker.class, 30, TimeUnit.MINUTES)
                 .addTag("PeriodicWork")
                 .setConstraints(new Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)

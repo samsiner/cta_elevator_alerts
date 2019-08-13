@@ -81,7 +81,6 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
     @Override
     public void onBindViewHolder(@NonNull StationAlertsViewHolder holder, int position){
         holder.setIsRecyclable(false);
-        //TODO: Issue with concurrency
         Station current = alerts.get(position);
         boolean[] currentRoutes = mStationAlertsViewModel.getAllRoutes(current.stationID);
         holder.stationAlertTextView.setText(current.name);

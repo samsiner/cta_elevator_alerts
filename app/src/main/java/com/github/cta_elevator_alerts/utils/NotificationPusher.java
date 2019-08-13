@@ -26,6 +26,7 @@ import java.util.ArrayList;
  */
 
 public class NotificationPusher {
+    //TODO: Change notifications to favorites only
 
     public static void createAlertNotifications(Context context, ArrayList<String> pastAlerts, ArrayList<String> currAlerts){
         StationRepository repository = StationRepository.getInstance((Application)context.getApplicationContext());
