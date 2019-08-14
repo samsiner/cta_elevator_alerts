@@ -374,8 +374,14 @@ public class StationRepository {
                 String impact = alert.getString("Impact");
                 if (!impact.equals("Elevator Status")) continue;
 
-                JSONObject impactedService = alert.getJSONObject("ImpactedService");
-                JSONArray service = impactedService.getJSONArray("Service");
+                JSONArray service;
+                try {
+                    JSONObject impactedService = alert.getJSONObject("ImpactedService");
+                    service = impactedService.getJSONArray("Service");
+                } catch (JSONException e){
+                    e.printStackTrace();
+                    continue;
+                }
 
                 for (int j=0;j<service.length();j++) {
                     JSONObject serviceInstance = (JSONObject) service.get(j);
@@ -405,6 +411,7 @@ public class StationRepository {
         }
         catch (JSONException | NullPointerException e) {
             e.printStackTrace();
+            //TODO: Don't update time if it doesn't work!
         }
 
         for (String id : beforeStationsOut){
