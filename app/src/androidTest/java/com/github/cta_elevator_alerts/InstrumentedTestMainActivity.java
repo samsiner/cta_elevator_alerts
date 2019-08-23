@@ -65,7 +65,7 @@ public class InstrumentedTestMainActivity {
         stationDao.setYellowTrue("40900");
         stationDao.addFavorite("40900", "Home");
         stationDao.setHasElevator("40900");
-        stationDao.setAlert("40900", "short description", "begin date time");
+        stationDao.setAlert("40900", "short description");
     }
 
     @Test

@@ -8,7 +8,6 @@ import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for model - Station (entity) class.
@@ -22,7 +21,6 @@ public class UnitTests {
             Station station = new Station("40900");
             assertEquals(station.name, "");
             assertEquals(station.shortDescription, "");
-            assertEquals(station.beginDateTime, "");
             assertEquals(station.nickname, "");
             assertFalse(station.hasElevator);
             assertFalse(station.hasElevatorAlert);
@@ -32,14 +30,9 @@ public class UnitTests {
             station.name = "Howard";
             station.hasElevatorAlert = true;
             station.shortDescription = "short description";
-            station.beginDateTime = "begin date time";
 
             assertEquals(station.name, "Howard");
             assertEquals(station.shortDescription, "short description");
-            assertEquals(station.beginDateTime, "begin date time");
             assertEquals(station.nickname, "");
-            assertTrue(station.hasElevator);
-            assertTrue(station.hasElevatorAlert);
-            assertFalse(station.isFavorite);
         }
 }

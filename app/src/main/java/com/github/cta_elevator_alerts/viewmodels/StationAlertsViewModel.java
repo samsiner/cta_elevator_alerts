@@ -33,7 +33,7 @@ public class StationAlertsViewModel extends AndroidViewModel {
     public LiveData<Boolean> getConnectionStatus(){ return mRepository.getConnectionStatus(); }
 
     //TODO: Remove next two methods
-    public void removeAlertQuincy(){ mRepository.removeAlertQuincy();}
+    public void removeAlertKing(){ mRepository.removeAlertKing();}
     public void addAlertHoward(){ mRepository.addAlertHoward(); }
 
     public List<String> mGetStationAlertIDs(){ return mRepository.mGetStationAlertIDs(); }

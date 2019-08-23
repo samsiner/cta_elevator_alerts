@@ -58,7 +58,7 @@ public class InstrumentedTestWorker {
         WorkManager workManager = WorkManager.getInstance(mActivityRule.getActivity());
         TestDriver testDriver = WorkManagerTestInitHelper.getTestDriver(mActivityRule.getActivity());
 
-        workManager.enqueueUniquePeriodicWork("Test", ExistingPeriodicWorkPolicy.KEEP, request).getResult().get();
+        workManager.enqueueUniquePeriodicWork("Test", ExistingPeriodicWorkPolicy.REPLACE, request).getResult().get();
 
         //Test that worker works even when activity is destroyed
         mActivityRule.finishActivity();

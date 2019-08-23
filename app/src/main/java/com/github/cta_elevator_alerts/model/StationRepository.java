@@ -424,10 +424,10 @@ public class StationRepository {
     }
 
     //TODO: Remove next two methods
-    public void removeAlertQuincy(){
+    public void removeAlertKing(){
         Thread thread = new Thread() {
             public void run() {
-                mStationDao.removeAlert("40040");
+                mStationDao.removeAlert("41140");
             }
         };
         thread.start();

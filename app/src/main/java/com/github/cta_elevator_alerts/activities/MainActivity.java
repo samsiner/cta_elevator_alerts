@@ -97,11 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void addTestButtons(){
         Button b = new Button(this);
-        b.setText("Remove alert quincy");
+        b.setText("Remove alert King");
         LinearLayout l = findViewById(R.id.LinearLayout);
         b.setOnClickListener(v -> {
             ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-            mStationAlertsViewModel.removeAlertQuincy();
+            mStationAlertsViewModel.removeAlertKing();
             ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
             NotificationPusher.createAlertNotifications(this, past, curr);
         });
