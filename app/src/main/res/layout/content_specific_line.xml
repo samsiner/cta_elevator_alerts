@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/tv_elevator_alerts"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SubHeaderText"
             android:text="@string/elevator_alerts"
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/tv_all_stations"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SubHeaderText"
             android:text="@string/all_stations"
