@@ -18,6 +18,7 @@
             style="@style/actionButton"
             android:background="@drawable/btn_outline_white"
             android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
             android:onClick="toAllLinesActivity">
             <TextView
                 style="@style/ActionButtonText"
@@ -88,6 +89,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no_favorites_added"
             android:background="@drawable/main_activity_containers"
+            android:layout_marginBottom="30dp"
             />
 
         <TextView
