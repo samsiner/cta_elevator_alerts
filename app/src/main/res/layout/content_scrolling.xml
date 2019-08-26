@@ -14,6 +14,29 @@
         >
 
         <RelativeLayout
+            android:id="@+id/btn_to_all_lines"
+            style="@style/actionButton"
+            android:background="@drawable/btn_outline_white"
+            android:layout_marginTop="30dp"
+            android:onClick="toAllLinesActivity">
+            <TextView
+                style="@style/ActionButtonText"
+                android:text="@string/view_all_lines"
+                android:textColor="@color/colorWhite"/>
+        </RelativeLayout>
+
+<!--        <TextView-->
+<!--            android:id="@+id/btn_to_all_lines"-->
+<!--            android:text="@string/view_all_lines"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            style="@style/SubHeaderText"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:onClick="toAllLinesActivity"-->
+<!--            />-->
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -40,8 +63,8 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 />
@@ -90,20 +113,20 @@
             android:background="@drawable/main_activity_containers"
             />
 
-        <RelativeLayout
-            android:id="@+id/btn_to_all_lines"
-            style="@style/actionButton"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:onClick="toAllLinesActivity">
-            <TextView
-                style="@style/ActionButtonText"
-                android:text="@string/all_lines" />
-            <ImageView
-                android:src="@drawable/right_arrow"
-                style="@style/rightArrow"
-                android:contentDescription="@string/content_description_right_arrow"/>
-        </RelativeLayout>
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/btn_to_all_lines"-->
+<!--            style="@style/actionButton"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:layout_marginBottom="30dp"-->
+<!--            android:onClick="toAllLinesActivity">-->
+<!--            <TextView-->
+<!--                style="@style/ActionButtonText"-->
+<!--                android:text="@string/all_lines" />-->
+<!--            <ImageView-->
+<!--                android:src="@drawable/right_arrow"-->
+<!--                style="@style/rightArrow"-->
+<!--                android:contentDescription="@string/content_description_right_arrow"/>-->
+<!--        </RelativeLayout>-->
 
         <TextView
             android:id="@+id/txt_update_alert_time"

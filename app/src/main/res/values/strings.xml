@@ -9,6 +9,7 @@
     <string name="update_favorite">Update Favorite</string>
     <string name="button_add_favorite">+</string>
     <string name="all_lines">All Lines</string>
+    <string name="view_all_lines">View All Lines</string>
     <string name="no_favorites_added">No favorites added!</string>
     <string name="no_current_alerts">No current elevator alerts!</string>
     <string name="hint_nickname">Choose a station nickname</string>
