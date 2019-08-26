@@ -64,6 +64,7 @@
                 android:focusable="true"
                 android:onClick="toAddFavoriteActivity"
                 android:text="@string/button_add_favorite"
+                android:textColor="@color/colorGray"
                 android:textSize="20sp"
                 android:background="@drawable/favorite_button"
                 android:layout_centerVertical="true"
