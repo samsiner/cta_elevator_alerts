@@ -8,9 +8,7 @@
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout
-        android:id="@+id/LinearLayout"
-        style="@style/ActivityStyle"
+    <LinearLayout style="@style/ActivityStyle"
         >
 
         <RelativeLayout
@@ -18,7 +16,7 @@
             style="@style/actionButton"
             android:background="@drawable/btn_outline_white"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="15dp"
             android:onClick="toAllLinesActivity">
             <TextView
                 style="@style/ActionButtonText"
@@ -95,7 +93,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no_favorites_added"
             android:background="@drawable/main_activity_containers"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="15dp"
             />
 
         <TextView
@@ -143,19 +141,6 @@
             android:textSize="16sp"
             android:textColor="@color/colorWhite"
             android:textStyle="italic"
-            />
-        <TextView
-            android:id="@+id/txt_privacy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/privacy_policy_link"
-            android:textSize="16sp"
-            android:textColorLink="@color/colorWhite"
-            android:textStyle="italic"
-            android:layout_gravity="start"
-            android:linksClickable="true"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="15dp"
             />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

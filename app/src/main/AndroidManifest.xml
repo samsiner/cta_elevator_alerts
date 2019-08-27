@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.github.cta_elevator_alerts"
     tools:ignore="GoogleAppIndexingWarning">
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -12,11 +14,6 @@
         android:roundIcon="@drawable/ic_launcher_custom_circle"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity
-            android:name=".activities.AboutActivity"
-            android:label="@string/title_activity_about"
-            android:theme="@style/NoActionBar"></activity>
-
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
@@ -28,6 +25,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activities.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:theme="@style/NoActionBar"/>
         <activity
             android:name=".activities.SpecificLineActivity"
             android:label="@string/title_activity_specific_line"
@@ -49,9 +50,4 @@
             android:name="android.test.runner"
             android:required="false" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
 </manifest>

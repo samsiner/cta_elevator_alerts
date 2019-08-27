@@ -100,23 +100,6 @@ public class StationRepository {
         return list2;
     }
 
-    public List<Station> mGetStationAlertsNotLiveData(){
-        final List<Station> list2 = new ArrayList<>();
-
-        Thread thread = new Thread() {
-            public void run() {
-                list2.addAll(mStationDao.getAllAlertStationsNotLiveData());
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return list2;
-    }
-
     public void setConnectionStatus(boolean b){
         connectionStatusLD.postValue(b);
     }

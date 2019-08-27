@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +25,9 @@ import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
 import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
 import com.github.cta_elevator_alerts.utils.NetworkWorker;
-import com.github.cta_elevator_alerts.utils.NotificationPusher;
 import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
 import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -82,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         String time = sharedPreferences.getString("LastUpdatedTime", "");
         if (time != null && !time.equals("")) tv_alertsTime.setText(time);
 
-        addPrivacyPolicyLink();
         addSwipeRefresh();
         addAlertsObserver();
         addFavoritesObserver();
@@ -93,37 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (getIntent().getStringExtra("nickname") != null) addFavorite();
 
-        //TODO: Remove
-        addTestButtons();
-    }
-
-    private void addTestButtons(){
-        Button b = new Button(this);
-        b.setText("Remove alert King");
-        LinearLayout l = findViewById(R.id.LinearLayout);
-        b.setOnClickListener(v -> {
-            ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-            mStationAlertsViewModel.removeAlertKing();
-            ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-            NotificationPusher.createAlertNotifications(this, past, curr);
-        });
-        l.addView(b);
-
-        Button b1 = new Button(this);
-        b1.setText("Add alert Howard");
-        b1.setOnClickListener(v -> {
-            ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-            mStationAlertsViewModel.addAlertHoward();
-            ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-            NotificationPusher.createAlertNotifications(this, past, curr);
-        });
-        l.addView(b1);
-    }
-
-
-    private void addPrivacyPolicyLink(){
-        TextView t2 = findViewById(R.id.txt_privacy);
-        t2.setMovementMethod(LinkMovementMethod.getInstance());
+//        addTestButtons();
     }
 
     private void addSwipeRefresh(){
@@ -245,4 +209,27 @@ public class MainActivity extends AppCompatActivity {
 
     public StationAlertsViewModel getStationAlertsViewModel(){ return mStationAlertsViewModel; }
 
+
+//    private void addTestButtons(){
+//        Button b = new Button(this);
+//        b.setText("Remove alert King");
+//        LinearLayout l = findViewById(R.id.LinearLayout);
+//        b.setOnClickListener(v -> {
+//            ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
+//            mStationAlertsViewModel.removeAlertKing();
+//            ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
+//            NotificationPusher.createAlertNotifications(this, past, curr);
+//        });
+//        l.addView(b);
+//
+//        Button b1 = new Button(this);
+//        b1.setText("Add alert Howard");
+//        b1.setOnClickListener(v -> {
+//            ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
+//            mStationAlertsViewModel.addAlertHoward();
+//            ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
+//            NotificationPusher.createAlertNotifications(this, past, curr);
+//        });
+//        l.addView(b1);
+//    }
 }
