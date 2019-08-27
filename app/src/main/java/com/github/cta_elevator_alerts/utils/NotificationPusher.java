@@ -50,7 +50,7 @@ public class NotificationPusher {
 
             //Elevators newly working
             for (String s : pastAlerts){
-                if (!currAlerts.contains(s)){
+                if (!currAlerts.contains(s) && repository.isFavorite(s)){
                     //Create notification tap action
                     Intent intent = new Intent(context, DisplayAlertActivity.class);
                     intent.putExtra("stationID", s);
@@ -83,7 +83,7 @@ public class NotificationPusher {
 
             //Elevators newly out
             for (String s2 : currAlerts){
-                if (!pastAlerts.contains(s2)){
+                if (!pastAlerts.contains(s2) && repository.isFavorite(s2)){
                     //Create notification tap action
                     Intent intent2 = new Intent(context, DisplayAlertActivity.class);
                     intent2.putExtra("stationID", s2);

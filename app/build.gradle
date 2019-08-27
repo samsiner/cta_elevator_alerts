@@ -32,8 +32,8 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
-    testOptions{
-        unitTests{
+    testOptions {
+        unitTests {
             includeAndroidResources = true
         }
         unitTests.returnDefaultValues = true
@@ -66,7 +66,7 @@ dependencies {
     testImplementation 'androidx.test.ext:junit:1.1.1'
     annotationProcessor 'androidx.room:room-compiler:2.1.0'
 
-    androidTestImplementation'androidx.work:work-testing:2.2.0'
+    androidTestImplementation 'androidx.work:work-testing:2.2.0'
     // Core library
     androidTestImplementation 'androidx.test:core:1.2.0'
 
@@ -88,5 +88,3 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
 }
-
-

@@ -1,6 +1,7 @@
 package com.github.cta_elevator_alerts.activities;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,5 +68,9 @@ public class SpecificLineActivity extends AppCompatActivity {
 
     public Boolean getHasElevatorAlert(String stationID){
         return mSpecificLineViewModel.getHasElevatorAlert(stationID);
+    }
+
+    public void onBackPressed(View v){
+        finish();
     }
 }

@@ -4,35 +4,34 @@
     package="com.github.cta_elevator_alerts"
     tools:ignore="GoogleAppIndexingWarning">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!--add back into application below-->
-    <!--android:theme="@style/AppTheme"-->
-
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_launcher_custom_circle"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:fullBackupContent="true">
-        <uses-library android:name="android.test.runner"
-            android:required="false"/>
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity
+            android:name=".activities.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:theme="@style/NoActionBar"></activity>
+
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.SpecificLineActivity"
             android:label="@string/title_activity_specific_line"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.AllLinesActivity"
             android:label="@string/title_activity_all_lines"
@@ -43,9 +42,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.DisplayAlertActivity"
-            android:parentActivityName=".activities.MainActivity"
             android:label="@string/title_activity_display_alert"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <uses-library
+            android:name="android.test.runner"
+            android:required="false" />
     </application>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

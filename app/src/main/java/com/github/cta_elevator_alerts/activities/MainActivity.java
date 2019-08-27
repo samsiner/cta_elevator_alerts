@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +27,10 @@ import androidx.work.WorkManager;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
 import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
-import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
-import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 import com.github.cta_elevator_alerts.utils.NetworkWorker;
 import com.github.cta_elevator_alerts.utils.NotificationPusher;
+import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
+import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -44,11 +45,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Sam:
-
-    //Tyler:
-    //TODO: Bottom navigation
-    //TODO: Launcher icon silhouette (see Inspect Code)
+    //TODO: Check on simplifying layouts, use executor instead of threads in repository
 
     private StationAlertsViewModel mStationAlertsViewModel;
     private FavoritesViewModel mFavoritesViewModel;
@@ -63,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        ImageView about = findViewById(R.id.img_about);
+        about.setVisibility(View.VISIBLE);
+        ImageView backArrow = findViewById(R.id.img_back_arrow);
+        backArrow.setVisibility(View.INVISIBLE);
 
         //Create ViewModels for favorites and alerts
         mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
@@ -231,6 +233,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
+        startActivity(intent);
+    }
+
+    public void toAboutActivity(View v){
+        Intent intent = new Intent(MainActivity.this, AboutActivity.class);
         startActivity(intent);
     }
 

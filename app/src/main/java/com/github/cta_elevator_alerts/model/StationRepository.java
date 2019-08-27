@@ -274,7 +274,7 @@ public class StationRepository {
     }
 
     private boolean isFavorite = false;
-    private boolean isFavorite(String stationID){
+    public boolean isFavorite(String stationID){
         Thread thread = new Thread() {
             public void run() {
                 isFavorite = mStationDao.isFavoriteStation(stationID);

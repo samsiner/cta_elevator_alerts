@@ -1,6 +1,7 @@
 package com.github.cta_elevator_alerts.activities;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,5 +40,9 @@ public class DisplayAlertActivity extends AppCompatActivity {
         if (!mDisplayAlertViewModel.getHasElevator()) tv_shortDesc.setText(R.string.no_elevator);
         else if (!mDisplayAlertViewModel.getHasAlert())  tv_shortDesc.setText(R.string.present_elevator);
         else tv_shortDesc.setText(mDisplayAlertViewModel.getShortDesc());
+    }
+
+    public void onBackPressed(View v){
+        finish();
     }
 }

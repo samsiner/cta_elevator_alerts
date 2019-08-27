@@ -96,6 +96,10 @@ public class AddFavoriteActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onBackPressed(View v){
+        finish();
+    }
+
     private String getNicknameText(){
         TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
         if (nicknameTextEdit.getText() == null) return "";
