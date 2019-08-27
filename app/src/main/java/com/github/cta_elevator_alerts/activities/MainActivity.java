@@ -82,12 +82,15 @@ public class MainActivity extends AppCompatActivity {
         addFavoritesObserver();
         addLastUpdatedObserver();
         addConnectionStatusObserver();
-        addOneTimeWorker();
         addPeriodicWorker();
-
         if (getIntent().getStringExtra("nickname") != null) addFavorite();
-
 //        addTestButtons();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        addOneTimeWorker();
     }
 
     private void addSwipeRefresh(){
@@ -158,11 +161,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addPeriodicWorker(){
-        //TODO: Change to less often
-        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(NetworkWorker.class, 30, TimeUnit.MINUTES)
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(NetworkWorker.class, 4, TimeUnit.HOURS)
                 .addTag("PeriodicWork")
                 .setConstraints(new Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
                         .setRequiresBatteryNotLow(true)
                         .setRequiresStorageNotLow(true)
                         .build())

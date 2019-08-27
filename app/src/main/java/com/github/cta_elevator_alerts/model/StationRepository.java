@@ -394,7 +394,6 @@ public class StationRepository {
         }
         catch (JSONException | NullPointerException e) {
             e.printStackTrace();
-            //TODO: Don't update time if it doesn't work!
         }
 
         for (String id : beforeStationsOut){
@@ -406,34 +405,33 @@ public class StationRepository {
         updateAlertsTimeLD.postValue(dateFormat.format(date));
     }
 
-    //TODO: Remove next two methods
-    public void removeAlertKing(){
-        Thread thread = new Thread() {
-            public void run() {
-                mStationDao.removeAlert("41140");
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void addAlertHoward(){
-        Thread thread = new Thread() {
-            public void run() {
-                mStationDao.setAlert("40900", "Elevator is DOWN - TEST!");
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
+//    public void removeAlertKing(){
+//        Thread thread = new Thread() {
+//            public void run() {
+//                mStationDao.removeAlert("41140");
+//            }
+//        };
+//        thread.start();
+//        try{
+//            thread.join();
+//        } catch (InterruptedException e){
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public void addAlertHoward(){
+//        Thread thread = new Thread() {
+//            public void run() {
+//                mStationDao.setAlert("40900", "Elevator is DOWN - TEST!");
+//            }
+//        };
+//        thread.start();
+//        try{
+//            thread.join();
+//        } catch (InterruptedException e){
+//            e.printStackTrace();
+//        }
+//    }
 
     private String pullJSONFromWebService(String url){
         StringBuilder sb = new StringBuilder();
