@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                         .build())
                 .build();
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicWork", ExistingPeriodicWorkPolicy.REPLACE, request);
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicWork", ExistingPeriodicWorkPolicy.KEEP, request);
     }
 
     private void addOneTimeWorker(){
