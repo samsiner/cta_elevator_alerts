@@ -109,6 +109,7 @@ public class StationAlertsAdapter extends RecyclerView.Adapter<StationAlertsAdap
         ((View)holder.stationAlertTextView.getParent()).setOnClickListener(v -> {
             Intent intent = new Intent(context, DisplayAlertActivity.class);
             intent.putExtra("stationID", current.stationID);
+            intent.putExtra("fromMain", true);
             context.startActivity(intent);
         });
     }

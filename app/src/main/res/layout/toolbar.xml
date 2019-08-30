@@ -17,6 +17,8 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/back_arrow"
             android:onClick="onBackPressed"
+            android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/back_arrow"/>
 
         <TextView

@@ -126,11 +126,11 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
         ((View) holder.favoritesNicknameTextView.getParent()).setOnClickListener(v -> {
             Intent intent = new Intent(context, DisplayAlertActivity.class);
             intent.putExtra("stationID", current.stationID);
+            intent.putExtra("fromMain", true);
             context.startActivity(intent);
         });
 
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-
         //drag from right
         holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, holder.swipeLayout.findViewById(R.id.bottom_wrapper));
         holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener(){

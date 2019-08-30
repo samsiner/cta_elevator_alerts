@@ -96,10 +96,6 @@ public class AddFavoriteActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onBackPressed(View v){
-        finish();
-    }
-
     private String getNicknameText(){
         TextInputEditText nicknameTextEdit = findViewById(R.id.inputNickname_textedit);
         if (nicknameTextEdit.getText() == null) return "";
@@ -141,18 +137,13 @@ public class AddFavoriteActivity extends AppCompatActivity {
         savedInstanceState.putString("stationName", stationName);
     }
 
+    public void onBackPressed(View v){ this.onBackPressed(); }
+
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        if(getIntent().getBooleanExtra("fromEdit", false)){
-            Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-            intent.putExtra("nickname", getIntent().getStringExtra("nickname"));
-            intent.putExtra("stationID", getIntent().getStringExtra("stationID"));
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(AddFavoriteActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void addClickableUI(Button b){

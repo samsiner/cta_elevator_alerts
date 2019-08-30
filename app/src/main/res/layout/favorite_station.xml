@@ -26,11 +26,11 @@
         android:orientation="vertical"
         >
 
-            <ImageView
-                style="@style/icon_edit_delete"
-                android:src="@drawable/edit"
-                android:contentDescription="@string/content_description_edit_icon"
-                />
+        <ImageView
+            style="@style/icon_edit_delete"
+            android:src="@drawable/edit"
+            android:contentDescription="@string/content_description_edit_icon"
+            />
         </RelativeLayout>
 
         <RelativeLayout

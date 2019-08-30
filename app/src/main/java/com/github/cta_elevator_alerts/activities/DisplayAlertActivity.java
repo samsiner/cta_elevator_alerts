@@ -1,5 +1,6 @@
 package com.github.cta_elevator_alerts.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -42,7 +43,14 @@ public class DisplayAlertActivity extends AppCompatActivity {
         else tv_shortDesc.setText(mDisplayAlertViewModel.getShortDesc());
     }
 
-    public void onBackPressed(View v){
-        finish();
+    public void onBackPressed(View v){ this.onBackPressed(); }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        if(getIntent().getBooleanExtra("fromMain", false)){
+            Intent intent = new Intent(DisplayAlertActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 }

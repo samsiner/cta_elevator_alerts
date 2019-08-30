@@ -1,5 +1,6 @@
 package com.github.cta_elevator_alerts.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -39,7 +40,14 @@ public class AllLinesActivity extends AppCompatActivity {
 
     public AllLinesViewModel getAllLinesViewModel(){ return mAllLinesViewModel; }
 
-    public void onBackPressed(View v){
-        finish();
+    public void onBackPressed(View v){ this.onBackPressed(); }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        if(!getIntent().getBooleanExtra("fromFavorites", false)){
+            Intent intent = new Intent(AllLinesActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 }

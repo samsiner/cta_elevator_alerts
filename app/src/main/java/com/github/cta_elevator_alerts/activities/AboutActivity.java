@@ -1,5 +1,6 @@
 package com.github.cta_elevator_alerts.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -29,9 +30,12 @@ public class AboutActivity extends AppCompatActivity {
         contactEmail.setMovementMethod((LinkMovementMethod.getInstance()));
     }
 
-    public void onBackPressed(View v){
-        finish();
+    public void onBackPressed(View v){ this.onBackPressed(); }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent intent = new Intent(AboutActivity.this, MainActivity.class);
+        startActivity(intent);
     }
-
-
 }
