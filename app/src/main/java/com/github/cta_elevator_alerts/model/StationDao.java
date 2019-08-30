@@ -33,9 +33,6 @@ public interface StationDao {
         @Query("SELECT * FROM station_table WHERE hasElevatorAlert = 1")
         LiveData<List<Station>> getAllAlertStations();
 
-        @Query("SELECT * FROM station_table WHERE hasElevatorAlert = 1")
-        List<Station> getAllAlertStationsNotLiveData();
-
         @Query("SELECT stationID FROM station_table WHERE hasElevatorAlert = 1")
         List<String> getAllAlertStationIDs();
 
