@@ -141,6 +141,8 @@
             android:textSize="16sp"
             android:textColor="@color/colorWhite"
             android:textStyle="italic"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

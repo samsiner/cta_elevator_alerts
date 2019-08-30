@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addPeriodicWorker(){
-        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(NetworkWorker.class, 4, TimeUnit.HOURS)
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(NetworkWorker.class, 1, TimeUnit.HOURS)
                 .addTag("PeriodicWork")
                 .setConstraints(new Constraints.Builder()
                         .setRequiresBatteryNotLow(true)

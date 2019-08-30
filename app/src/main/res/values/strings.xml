@@ -29,15 +29,14 @@
     <string name="content_description_accessible_icon">Accessible station icon</string>
     <string name="content_status">Elevator status</string>
     <string name="back_arrow">Back arrow</string>
-    <string name="about">About</string>
+    <string name="about">About the App</string>
     <string name="privacy_policy_link"><a href="https://sites.google.com/view/elevateappprivacypolicy/home">Privacy Policy</a></string>
     <string name="title_activity_about">AboutActivity</string>
-    <string name="about_text">Elevate displays the status of elevators at CTA train stations in Chicago,
-        providing alerts when elevators are down. The app will send you a notification when elevators
-        at your favorite stations go up or down.\n\nData provided by CTA.\n\nThis app is created
-        by Sam Siner and Tyler Arndt (Southport Developers). They are looking for software
-        development jobs - hire them please!\n\nYou can submit feature requests, bug reports,
-        and other comments to ssiner2@gmail.com.
+    <string name="about_text">Elevate was created by Loyola University graduate students Sam Siner and Tyler Arndt. They are looking for software
+        development jobs - hire them please!\n\nElevate displays the status of elevators at CTA train stations in Chicago,
+        providing alerts when elevators are out of service. The app will send you a notification when elevators
+        at your favorite stations out of service or back up and running.\n\nData provided by CTA.\n\nYou can submit feature requests, bug reports,
+        and other comments to southportdevelopers@gmail.com.
     </string>
 
     <!--<string name="lines">lines</string>-->

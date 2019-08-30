@@ -28,7 +28,7 @@
         <activity
             android:name=".activities.AboutActivity"
             android:label="@string/title_activity_about"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.SpecificLineActivity"
             android:label="@string/title_activity_specific_line"
