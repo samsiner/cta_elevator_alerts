@@ -171,11 +171,6 @@ public class FavoritesAdapter extends RecyclerSwipeAdapter<FavoritesAdapter.Favo
             intent.putExtra("fromEdit", true);
 
             context.startActivity(intent);
-//            Handler handler = new Handler();
-//            handler.postDelayed(() -> {
-////                        holder.swipeLayout.close();
-//                removeFavoriteStation(position, holder);
-//            }, 500);
         });
 
         mItemManager.bindView(holder.itemView, position);
