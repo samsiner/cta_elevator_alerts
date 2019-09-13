@@ -3,6 +3,7 @@ package com.github.cta_elevator_alerts.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,6 +106,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     private final List<String> lineStations;
     private final androidx.appcompat.widget.Toolbar toolbar;
     private final TextView toolbarTextView;
+    private final ImageView back_arrow;
 
     public SpecificLineAdapter(Context context, List<String> lineStations){
         mInflater = LayoutInflater.from(context);
@@ -112,6 +114,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         this.lineStations = lineStations;
         toolbar = ((Activity)context).findViewById(R.id.toolbar);
         toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar);
+        back_arrow = ((Activity)context).findViewById(R.id.img_back_arrow);
     }
 
     @Override
@@ -213,6 +216,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
                 colorID = context.getResources().getColor(R.color.colorPrimaryDark);
                 toolbar.setBackgroundResource(R.color.colorYellowLine);
                 toolbarTextView.setTextColor(colorID);
+                back_arrow.setColorFilter(colorID);
                 break;
         }
     }

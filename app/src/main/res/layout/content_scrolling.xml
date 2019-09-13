@@ -40,40 +40,12 @@
 <!--            android:onClick="toAllLinesActivity"-->
 <!--            />-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
             <TextView
                 android:id="@+id/text_favorites_header"
                 android:text="@string/title_favorites"
                 android:layout_width="wrap_content"
                 android:gravity="center_horizontal"
-                android:layout_centerHorizontal="true"
                 style="@style/SubHeaderText"/>
-
-            <Button
-                android:id="@+id/button_addFavorite"
-                android:layout_alignRight="@id/text_favorites_header"
-                android:layout_alignEnd="@id/text_favorites_header"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="toAddFavoriteActivity"
-                android:text="@string/button_add_favorite"
-                android:textColor="@color/colorGray"
-                android:textSize="20sp"
-                android:background="@drawable/favorite_button"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                />
-        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"

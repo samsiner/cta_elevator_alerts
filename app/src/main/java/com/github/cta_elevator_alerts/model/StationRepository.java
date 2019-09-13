@@ -302,7 +302,7 @@ public class StationRepository {
 
                 Station station = mStationDao.getStation(mapID);
 
-                if (station == null) { //If station already exists but routes need to be updated
+                if (station == null) {
                     Station newStation = new Station(mapID);
                     String stationName;
                     try {
@@ -312,9 +312,11 @@ public class StationRepository {
                     }
 
                     //name length is too long for this station
-                    if (stationName.equals("Harold Washington Library-State/Van Buren")) {
-                        stationName = "Harold Wash. Library";
-                    }
+                    if (mapID.equals("40850")){ stationName = "Harold Wash. Library"; }
+                    if (mapID.equals("40670")){ stationName = "Western (O'Hare Branch)"; }
+                    if (mapID.equals("40220")){ stationName = "Western (Forest Pk Branch)"; }
+                    if (mapID.equals("40750")){ stationName = "Harlem (O'Hare Branch)"; }
+                    if (mapID.equals("40980")){ stationName = "Harlem (Forest Pk Branch)"; }
 
                     insert(newStation);
                     mStationDao.updateName(mapID, stationName);
