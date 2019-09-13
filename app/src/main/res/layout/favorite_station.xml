@@ -104,6 +104,7 @@
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/content_description_hamburger_icon"
                 android:src="@drawable/icon_burger"
+                android:rotation="90"
                 />
         </RelativeLayout>
 

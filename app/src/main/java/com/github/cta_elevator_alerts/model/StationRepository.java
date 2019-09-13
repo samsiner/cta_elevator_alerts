@@ -313,7 +313,7 @@ public class StationRepository {
 
                     //name length is too long for this station
                     if (stationName.equals("Harold Washington Library-State/Van Buren")) {
-                        stationName = "Harold Washington Library";
+                        stationName = "Harold Wash. Library";
                     }
 
                     insert(newStation);
