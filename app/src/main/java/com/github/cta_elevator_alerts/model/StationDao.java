@@ -21,10 +21,10 @@ public interface StationDao {
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         void insert(Station station);
 
-        @Query("UPDATE station_table SET isFavorite = 1, nickname = :nickname WHERE stationID = :id")
-        void addFavorite(String id, String nickname);
+        @Query("UPDATE station_table SET isFavorite = 1, nickname = NULL WHERE stationID = :id")
+        void addFavorite(String id);
 
-        @Query("UPDATE station_table SET isFavorite = 0, nickname = '' WHERE stationID = :id")
+        @Query("UPDATE station_table SET isFavorite = 0 WHERE stationID = :id")
         void removeFavorite(String id);
 
         @Query("UPDATE station_table SET name = :name WHERE stationID = :stationID")

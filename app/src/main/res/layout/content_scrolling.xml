@@ -9,6 +9,7 @@
     tools:showIn="@layout/activity_main">
 
     <LinearLayout style="@style/ActivityStyle"
+        android:id="@+id/LinearLayout"
         >
 
         <RelativeLayout

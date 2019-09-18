@@ -17,15 +17,13 @@
     <string name="title_activity_add_favorite">Add Favorite Station</string>
     <string name="title_activity_all_lines">All Train Lines</string>
     <string name="image_elevator_out">Elevator Out Status</string>
+    <string name="status">Elevator Status</string>
     <string name="title_activity_specific_line">Specific Line</string>
     <string name="present_elevator">All elevators at this station are working properly.</string>
     <string name="no_elevator">There are no elevators at this station.</string>
     <string name="content_description_train">Background image of CTA train</string>
     <string name="content_description_right_arrow">Right arrow</string>
     <string name="content_description_train_icon">Train icon</string>
-    <string name="content_description_edit_icon">Edit favorite</string>
-    <string name="content_description_remove_icon">Remove favorite</string>
-    <string name="content_description_hamburger_icon">Remove or edit favorite</string>
     <string name="content_description_accessible_icon">Accessible station icon</string>
     <string name="content_status">Elevator status</string>
     <string name="back_arrow">Back arrow</string>

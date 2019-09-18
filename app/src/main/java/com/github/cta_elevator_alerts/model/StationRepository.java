@@ -66,23 +66,6 @@ public class StationRepository {
         return mStationDao.getAllFavorites();
     }
 
-    public List<Station> mGetAllFavoritesNotLiveData(){
-        final List<Station> list2 = new ArrayList<>();
-
-        Thread thread = new Thread() {
-            public void run() {
-                list2.addAll(mStationDao.getAllFavoritesNotLiveData());
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return list2;
-    }
-
     public List<String> mGetStationAlertIDs(){
         final List<String> list2 = new ArrayList<>();
 
@@ -157,23 +140,6 @@ public class StationRepository {
         }
     }
 
-    private int count = 0;
-    public int getFavoritesCount() {
-        Thread thread = new Thread() {
-            public void run() {
-                count = mStationDao.getFavoritesCount();
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-
-        return count;
-    }
-
     private boolean hasElevator = false;
     public boolean mGetHasElevator(String stationID) {
         Thread thread = new Thread() {
@@ -239,7 +205,7 @@ public class StationRepository {
     }
 
     public void addFavorite(String stationID, String nickname){
-        executor.execute(() -> mStationDao.addFavorite(stationID, nickname));
+        executor.execute(() -> mStationDao.addFavorite(stationID));
     }
 
     public void removeFavorite(String stationID){
@@ -407,33 +373,33 @@ public class StationRepository {
         updateAlertsTimeLD.postValue(dateFormat.format(date));
     }
 
-//    public void removeAlertKing(){
-//        Thread thread = new Thread() {
-//            public void run() {
-//                mStationDao.removeAlert("41140");
-//            }
-//        };
-//        thread.start();
-//        try{
-//            thread.join();
-//        } catch (InterruptedException e){
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void addAlertHoward(){
-//        Thread thread = new Thread() {
-//            public void run() {
-//                mStationDao.setAlert("40900", "Elevator is DOWN - TEST!");
-//            }
-//        };
-//        thread.start();
-//        try{
-//            thread.join();
-//        } catch (InterruptedException e){
-//            e.printStackTrace();
-//        }
-//    }
+    public void removeAlertKing(){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.removeAlert("41140");
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addAlertHoward(){
+        Thread thread = new Thread() {
+            public void run() {
+                mStationDao.setAlert("40900", "Elevator is DOWN - TEST!");
+            }
+        };
+        thread.start();
+        try{
+            thread.join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
 
     private String pullJSONFromWebService(String url){
         StringBuilder sb = new StringBuilder();

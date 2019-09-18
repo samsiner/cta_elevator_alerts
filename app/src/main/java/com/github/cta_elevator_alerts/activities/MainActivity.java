@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,12 +23,12 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.github.cta_elevator_alerts.R;
-import com.github.cta_elevator_alerts.adapters.FavoritesAdapter;
-import com.github.cta_elevator_alerts.adapters.StationAlertsAdapter;
+import com.github.cta_elevator_alerts.adapters.StationListAdapter;
 import com.github.cta_elevator_alerts.utils.NetworkWorker;
-import com.github.cta_elevator_alerts.viewmodels.FavoritesViewModel;
-import com.github.cta_elevator_alerts.viewmodels.StationAlertsViewModel;
+import com.github.cta_elevator_alerts.utils.NotificationPusher;
+import com.github.cta_elevator_alerts.viewmodels.MainViewModel;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -39,15 +41,13 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: Check on simplifying layouts, use executor instead of threads in repository
+    //TODO: For later: Check on simplifying layouts, use executor instead of threads in repository
 
-    private StationAlertsViewModel mStationAlertsViewModel;
-    private FavoritesViewModel mFavoritesViewModel;
+    private MainViewModel vm;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView.Adapter favoritesAdapter;
+    private StationListAdapter favoritesAdapter, alertsAdapter;
     private SharedPreferences sharedPreferences;
     private TextView tv_alertsTime;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +61,19 @@ public class MainActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.img_back_arrow);
         backArrow.setVisibility(View.INVISIBLE);
 
-        //Create ViewModels for favorites and alerts
-        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
-        mStationAlertsViewModel = ViewModelProviders.of(this).get(StationAlertsViewModel.class);
+        vm = ViewModelProviders.of(this).get(MainViewModel.class);
 
         //Create adapter to display favorites
         RecyclerView favoritesRecyclerView = findViewById(R.id.recycler_favorite_stations);
-        favoritesAdapter = new FavoritesAdapter(this);
+        favoritesAdapter = new StationListAdapter(this);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //Create adapter to display alerts
+        RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
+        alertsAdapter = new StationListAdapter(this);
+        alertsRecyclerView.setAdapter(alertsAdapter);
+        alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Create SharedPreferences for last updated date/time
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -77,14 +81,17 @@ public class MainActivity extends AppCompatActivity {
         String time = sharedPreferences.getString("LastUpdatedTime", "");
         if (time != null && !time.equals("")) tv_alertsTime.setText(time);
 
+        //TODO: Testing (remove before deploy)
+        vm.addFavoriteKing();
+        vm.addFavoriteKimball();
+        addTestButtons();
+
         addSwipeRefresh();
         addAlertsObserver();
         addFavoritesObserver();
         addLastUpdatedObserver();
         addConnectionStatusObserver();
         addPeriodicWorker();
-        if (getIntent().getStringExtra("nickname") != null) addFavorite();
-//        addTestButtons();
     }
 
     @Override
@@ -102,14 +109,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addAlertsObserver(){
-        //Create adapter to display alerts
-        RecyclerView alertsRecyclerView = findViewById(R.id.recycler_station_alerts);
-        StationAlertsAdapter alertsAdapter = new StationAlertsAdapter(this);
-        alertsRecyclerView.setAdapter(alertsAdapter);
-        alertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mStationAlertsViewModel.getStationAlerts().observe(this, alerts -> {
-                alertsAdapter.updateAlerts(alerts);
+        vm.getStationAlerts().observe(this, alerts -> {
+                alertsAdapter.updateStationList(alerts);
 
                 //If no alerts
                 TextView tv = findViewById(R.id.noStationAlerts);
@@ -123,16 +124,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addFavoritesObserver(){
-        mFavoritesViewModel.getFavorites().observe(this, stations -> {
-            try{
-                favoritesAdapter.notifyDataSetChanged();
-            } catch (IllegalStateException e){
-                return;
-            }
+        vm.getFavorites().observe(this, stations -> {
+            favoritesAdapter.updateStationList(stations);
 
             //If no favorites
             TextView tv = findViewById(R.id.noFavoritesAdded);
-            if (mFavoritesViewModel.getNumFavorites() < 1) {
+            if (stations.size() < 1) {
                 tv.setVisibility(View.VISIBLE);
             } else {
                 tv.setVisibility(View.GONE);
@@ -141,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addLastUpdatedObserver(){
-        mStationAlertsViewModel.getUpdateAlertsTime().observe(this, text -> {
+        vm.getUpdateAlertsTime().observe(this, text -> {
             tv_alertsTime.setText(text);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -151,12 +148,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addConnectionStatusObserver() {
-        mStationAlertsViewModel.getConnectionStatus().observe(this, isConnected -> {
+        vm.getConnectionStatus().observe(this, isConnected -> {
             if (!isConnected) {
                 Toast toast = Toast.makeText(this, "Not connected - please refresh!", Toast.LENGTH_SHORT);
                 toast.show();
             }
-            mStationAlertsViewModel.setConnectionStatus(true);
+            vm.setConnectionStatus(true);
         });
     }
 
@@ -184,18 +181,6 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(request);
     }
 
-    private void addFavorite(){
-        String nickname = getIntent().getStringExtra("nickname");
-        String stationID = getIntent().getStringExtra("stationID");
-        mFavoritesViewModel.addFavorite(stationID, nickname);
-    }
-
-    public void toAddFavoriteActivity(View v){
-        Intent intent = new Intent(MainActivity.this, AddFavoriteActivity.class);
-        intent.putExtra("fromEdit", false);
-        startActivity(intent);
-    }
-
     public void toAllLinesActivity(View v){
         Intent intent = new Intent(MainActivity.this, AllLinesActivity.class);
         startActivity(intent);
@@ -206,31 +191,28 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public FavoritesViewModel getFavoritesViewModel(){ return mFavoritesViewModel; }
+    public MainViewModel getStationAlertsViewModel(){ return vm; }
 
-    public StationAlertsViewModel getStationAlertsViewModel(){ return mStationAlertsViewModel; }
+    private void addTestButtons(){
+        Button b = new Button(this);
+        b.setText("Remove alert King");
+        LinearLayout l = findViewById(R.id.LinearLayout);
+        b.setOnClickListener(v -> {
+            ArrayList<String> past = (ArrayList<String>) vm.mGetStationAlertIDs();
+            vm.removeAlertKing();
+            ArrayList<String> curr = (ArrayList<String>) vm.mGetStationAlertIDs();
+            NotificationPusher.createAlertNotifications(this, past, curr);
+        });
+        l.addView(b);
 
-
-//    private void addTestButtons(){
-//        Button b = new Button(this);
-//        b.setText("Remove alert King");
-//        LinearLayout l = findViewById(R.id.LinearLayout);
-//        b.setOnClickListener(v -> {
-//            ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-//            mStationAlertsViewModel.removeAlertKing();
-//            ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-//            NotificationPusher.createAlertNotifications(this, past, curr);
-//        });
-//        l.addView(b);
-//
-//        Button b1 = new Button(this);
-//        b1.setText("Add alert Howard");
-//        b1.setOnClickListener(v -> {
-//            ArrayList<String> past = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-//            mStationAlertsViewModel.addAlertHoward();
-//            ArrayList<String> curr = (ArrayList<String>) mStationAlertsViewModel.mGetStationAlertIDs();
-//            NotificationPusher.createAlertNotifications(this, past, curr);
-//        });
-//        l.addView(b1);
-//    }
+        Button b1 = new Button(this);
+        b1.setText("Add alert Howard");
+        b1.setOnClickListener(v -> {
+            ArrayList<String> past = (ArrayList<String>) vm.mGetStationAlertIDs();
+            vm.addAlertHoward();
+            ArrayList<String> curr = (ArrayList<String>) vm.mGetStationAlertIDs();
+            NotificationPusher.createAlertNotifications(this, past, curr);
+        });
+        l.addView(b1);
+    }
 }
