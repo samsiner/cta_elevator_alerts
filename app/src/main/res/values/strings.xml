@@ -31,6 +31,8 @@
     <string name="contact_email"><a href="mailto:southportdevelopers@gmail.com?subject=Elevate%20App">southportdevelopers@gmail.com</a></string>
     <string name="privacy_policy_link"><a href="https://sites.google.com/view/elevateappprivacypolicy/home">Privacy Policy</a></string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="added_to_favorites">Added to Favorites!</string>
     <string name="about_text">Elevate was created by Loyola University graduate students Sam Siner and Tyler Arndt. They are looking for software
         development jobs - hire them please!\n\nYou will receive a push notification if the status of an elevator changes at one of your saved stations. Data provided by CTA.\n\nSubmit feature requests, bug reports,
         and other comments:

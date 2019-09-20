@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,13 +23,18 @@ import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
  */
 
 public class DisplayAlertActivity extends AppCompatActivity {
-
+    ImageView starIcon;
+    TextView favoriteText;
+    Boolean isStarImageFull;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_alert);
         TextView tv_shortDesc = findViewById(R.id.txt_alert_shortDesc);
         TextView toolbarText = findViewById(R.id.txt_toolbar);
+        starIcon = this.findViewById(R.id.img_star_icon);
+        favoriteText = this.findViewById(R.id.favorited_text);
+        isStarImageFull = false;
 
         String stationID = getIntent().getStringExtra("stationID");
 
@@ -58,5 +64,19 @@ public class DisplayAlertActivity extends AppCompatActivity {
             Intent intent = new Intent(DisplayAlertActivity.this, MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    public void clickStarIcon(View v){
+        if(isStarImageFull){
+            starIcon.setImageResource(R.drawable.star_icon_empty);
+            favoriteText.setText(R.string.add_to_favorites);
+            isStarImageFull = false;
+        }
+        else {
+            starIcon.setImageResource(R.drawable.star_icon_full);
+            favoriteText.setText(R.string.added_to_favorites);
+            isStarImageFull = true;
+        }
+
     }
 }
