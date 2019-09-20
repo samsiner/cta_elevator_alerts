@@ -58,12 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView about = findViewById(R.id.img_home_icon);
         about.setImageResource(R.drawable.icon_info);
-        about.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toAboutActivity(v);
-            }
-        });
+        about.setOnClickListener(this::toAboutActivity);
 
         ImageView backArrow = findViewById(R.id.img_back_arrow);
         backArrow.setVisibility(View.INVISIBLE);
@@ -193,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void toAboutActivity(View v){
+    private void toAboutActivity(View v){
         Intent intent = new Intent(MainActivity.this, AboutActivity.class);
         startActivity(intent);
     }

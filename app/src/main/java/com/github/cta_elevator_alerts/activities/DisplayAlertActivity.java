@@ -23,9 +23,10 @@ import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
  */
 
 public class DisplayAlertActivity extends AppCompatActivity {
-    ImageView starIcon;
-    TextView favoriteText;
-    Boolean isStarImageFull;
+    private ImageView starIcon;
+    private TextView favoriteText;
+    private boolean isStarImageFull;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

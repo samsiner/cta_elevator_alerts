@@ -39,10 +39,6 @@
             android:label="@string/title_activity_all_lines"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.AddFavoriteActivity"
-            android:label="@string/title_activity_add_favorite"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".activities.DisplayAlertActivity"
             android:label="@string/title_activity_display_alert"
             android:parentActivityName=".activities.MainActivity"

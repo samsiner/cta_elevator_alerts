@@ -4,17 +4,11 @@
     <string name="app_name">ELEVATE</string>
     <string name="title_activity_display_alert">Alert Details</string>
     <string name="title_favorites">Favorites</string>
-    <string name="title_station">Select station</string>
-    <string name="add_favorite">Add Favorite</string>
-    <string name="update_favorite">Update Favorite</string>
-    <string name="button_add_favorite">+</string>
     <string name="all_lines">All Lines</string>
     <string name="view_all_lines">View All Lines</string>
     <string name="no_favorites_added">No favorites added!</string>
     <string name="no_current_alerts">No current elevator alerts!</string>
-    <string name="hint_nickname">Choose a station nickname</string>
     <string name="title_all_alerts">All Elevator Alerts</string>
-    <string name="title_activity_add_favorite">Add Favorite Station</string>
     <string name="title_activity_all_lines">All Train Lines</string>
     <string name="image_elevator_out">Elevator Out Status</string>
     <string name="status">Elevator Status</string>
@@ -25,6 +19,7 @@
     <string name="content_description_right_arrow">Right arrow</string>
     <string name="content_description_train_icon">Train icon</string>
     <string name="content_description_accessible_icon">Accessible station icon</string>
+    <string name="favorite_icon">Favorite Icon</string>
     <string name="content_status">Elevator status</string>
     <string name="back_arrow">Back arrow</string>
     <string name="about">About the App</string>

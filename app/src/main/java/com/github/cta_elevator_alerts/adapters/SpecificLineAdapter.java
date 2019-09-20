@@ -3,7 +3,6 @@ package com.github.cta_elevator_alerts.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
-import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
 
@@ -39,8 +36,6 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         private final View circle;
         private final ImageView adaImageView;
         private final ImageView statusImageView;
-        private final ImageView rightArrow;
-        private final ImageView icon_add;
 
         private SpecificLineAdapterViewHolder(View itemView) {
             super(itemView);
@@ -51,8 +46,6 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             circleDrawable = (GradientDrawable)circle.getBackground();
             adaImageView = itemView.findViewById(R.id.img_ada);
             statusImageView = itemView.findViewById(R.id.img_status);
-            rightArrow = itemView.findViewById(R.id.img_right);
-            icon_add = itemView.findViewById(R.id.img_add_button);
         }
 
         private void setUI(String lineName, View verticalBarTop, View verticalBarBottom, GradientDrawable circle){
@@ -132,14 +125,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
         int transparentColor = context.getResources().getColor(R.color.colorTransparent);
         boolean hasElevator = ((SpecificLineActivity)context).getHasElevator(currStationID);
-        boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);
 
-        if(fromFavorites){
-            holder.rightArrow.setVisibility(View.GONE);
-            if(!hasElevator){ holder.icon_add.setVisibility(View.GONE);}
-        } else{
-            holder.icon_add.setVisibility(View.GONE);
-        }
         holder.setUI(toolbarTextView.getText().toString(), holder.verticalBarTop, holder.verticalBarBottom, holder.circleDrawable);
         if(position == 0){
             holder.verticalBarTop.setBackgroundColor(transparentColor);
@@ -159,27 +145,9 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         }
 
         ((View)holder.specificLineTextView.getParent()).setOnClickListener(v -> {
-            Intent intent;
-
-            if (fromFavorites) {
-                if (!hasElevator) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                    alert.setTitle("No elevator!");
-                    alert.setMessage("No elevator is present at this station. Please choose a favorite station with an elevator.");
-                    alert.setPositiveButton("OK", null);
-                    alert.show();
-                } else {
-                    intent = new Intent(context, AddFavoriteActivity.class);
-                    intent.putExtra("stationID", currStationID);
-                    intent.putExtra("stationName", currStationName);
-                    intent.putExtra("nickname", ((Activity) context).getIntent().getStringExtra("nickname"));
-                    context.startActivity(intent);
-                }
-            } else{
-                intent = new Intent(context, DisplayAlertActivity.class);
-                intent.putExtra("stationID", currStationID);
-                context.startActivity(intent);
-            }
+            Intent intent = new Intent(context, DisplayAlertActivity.class);
+            intent.putExtra("stationID", currStationID);
+            context.startActivity(intent);
         });
     }
 

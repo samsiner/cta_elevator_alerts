@@ -11,7 +11,6 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
 import com.github.cta_elevator_alerts.activities.AllLinesActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.MainActivity;
@@ -63,16 +62,9 @@ public class InstrumentedTestMainActivity {
         stationDao.setRedTrue("40900");
         stationDao.setPurpleTrue("40900");
         stationDao.setYellowTrue("40900");
-        stationDao.addFavorite("40900", "Home");
+        stationDao.addFavorite("40900");
         stationDao.setHasElevator("40900");
         stationDao.setAlert("40900", "short description");
-    }
-
-    @Test
-    public void testAddFavoriteButton(){
-        onView(withId(R.id.button_addFavorite)).perform(click());
-        Intent receivedIntent = Iterables.getOnlyElement(getIntents());
-        assertThat(receivedIntent).hasComponentClass(AddFavoriteActivity.class);
     }
 
     @Test
