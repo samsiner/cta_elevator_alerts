@@ -6,9 +6,11 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.cta_elevator_alerts.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * AboutActivity shows information about the app.
@@ -28,6 +30,11 @@ public class AboutActivity extends AppCompatActivity {
 
         TextView contactEmail = findViewById(R.id.txt_contact_email);
         contactEmail.setMovementMethod((LinkMovementMethod.getInstance()));
+    }
+
+    public void toMainActivity(View v) {
+        Intent intent = new Intent(AboutActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void onBackPressed(View v){ this.onBackPressed(); }

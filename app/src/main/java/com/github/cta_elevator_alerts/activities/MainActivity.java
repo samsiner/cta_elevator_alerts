@@ -56,8 +56,15 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        ImageView about = findViewById(R.id.img_about);
-        about.setVisibility(View.VISIBLE);
+        ImageView about = findViewById(R.id.img_home_icon);
+        about.setImageResource(R.drawable.icon_info);
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toAboutActivity(v);
+            }
+        });
+
         ImageView backArrow = findViewById(R.id.img_back_arrow);
         backArrow.setVisibility(View.INVISIBLE);
 

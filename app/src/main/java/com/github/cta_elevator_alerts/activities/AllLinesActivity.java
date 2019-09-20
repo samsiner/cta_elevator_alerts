@@ -38,6 +38,11 @@ public class AllLinesActivity extends AppCompatActivity {
         linesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    public void toMainActivity(View v) {
+        Intent intent = new Intent(AllLinesActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
     public AllLinesViewModel getAllLinesViewModel(){ return mAllLinesViewModel; }
 
     public void onBackPressed(View v){ this.onBackPressed(); }

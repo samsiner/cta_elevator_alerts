@@ -107,6 +107,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
     private final androidx.appcompat.widget.Toolbar toolbar;
     private final TextView toolbarTextView;
     private final ImageView back_arrow;
+    private final ImageView home_icon;
 
     public SpecificLineAdapter(Context context, List<String> lineStations){
         mInflater = LayoutInflater.from(context);
@@ -115,6 +116,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         toolbar = ((Activity)context).findViewById(R.id.toolbar);
         toolbarTextView = ((Activity)context).findViewById(R.id.txt_toolbar);
         back_arrow = ((Activity)context).findViewById(R.id.img_back_arrow);
+        home_icon = ((Activity)context).findViewById(R.id.img_home_icon);
     }
 
     @Override
@@ -217,6 +219,7 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
                 toolbar.setBackgroundResource(R.color.colorYellowLine);
                 toolbarTextView.setTextColor(colorID);
                 back_arrow.setColorFilter(colorID);
+                home_icon.setColorFilter(colorID);
                 break;
         }
     }
