@@ -16,7 +16,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.cta_elevator_alerts.R;
-import com.github.cta_elevator_alerts.activities.AddFavoriteActivity;
 import com.github.cta_elevator_alerts.activities.DisplayAlertActivity;
 import com.github.cta_elevator_alerts.activities.SpecificLineActivity;
 
@@ -135,13 +134,6 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         boolean isFavorite = ((SpecificLineActivity)context).getIsFavorite(currStationID);
         boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);
 
-//        if(fromFavorites){
-//            holder.rightArrow.setVisibility(View.GONE);
-//            if(!hasElevator){ holder.icon_add.setVisibility(View.GONE);}
-//        } else{
-//            holder.icon_add.setVisibility(View.GONE);
-//        }
-
         holder.setUI(toolbarTextView.getText().toString(), holder.verticalBarTop, holder.verticalBarBottom, holder.circleDrawable);
         if(position == 0){
             holder.verticalBarTop.setBackgroundColor(transparentColor);
@@ -165,26 +157,9 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
 
         ((View)holder.specificLineTextView.getParent()).setOnClickListener(v -> {
             Intent intent;
-
-            if (fromFavorites) {
-                if (!hasElevator) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                    alert.setTitle("No elevator!");
-                    alert.setMessage("No elevator is present at this station. Please choose a favorite station with an elevator.");
-                    alert.setPositiveButton("OK", null);
-                    alert.show();
-                } else {
-                    intent = new Intent(context, AddFavoriteActivity.class);
-                    intent.putExtra("stationID", currStationID);
-                    intent.putExtra("stationName", currStationName);
-                    intent.putExtra("nickname", ((Activity) context).getIntent().getStringExtra("nickname"));
-                    context.startActivity(intent);
-                }
-            } else{
-                intent = new Intent(context, DisplayAlertActivity.class);
-                intent.putExtra("stationID", currStationID);
-                context.startActivity(intent);
-            }
+            intent = new Intent(context, DisplayAlertActivity.class);
+            intent.putExtra("stationID", currStationID);
+            context.startActivity(intent);
         });
     }
 
