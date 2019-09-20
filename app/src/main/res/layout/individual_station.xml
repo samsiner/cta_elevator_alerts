@@ -24,7 +24,15 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/img_individual_station"
             android:layout_toRightOf="@id/img_individual_station"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            />
+
+        <ImageView
+            android:id="@+id/img_star_icon"
+            style="@style/icon_small_star"
+            android:layout_toLeftOf="@id/img_right_arrow"
+            android:layout_toStartOf="@id/img_right_arrow"
+            />
 
         <ImageView
             android:id="@+id/img_right_arrow"

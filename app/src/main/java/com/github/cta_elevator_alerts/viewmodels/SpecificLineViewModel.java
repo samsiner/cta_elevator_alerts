@@ -61,6 +61,10 @@ public class SpecificLineViewModel extends AndroidViewModel {
         return repository.mGetHasElevator(stationID);
     }
 
+    public boolean getIsFavorite(String stationID){
+        return repository.isFavorite(stationID);
+    }
+
     public boolean getHasElevatorAlert(String stationID){
         return repository.mGetHasElevatorAlert(stationID);
     }

@@ -34,6 +34,7 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
         private final RelativeLayout rl;
         private final ImageView iv;
         private final TextView tv;
+        private final ImageView star_icon;
         private final View[] lineViews;
 
         private StationListViewHolder(View itemView) {
@@ -41,6 +42,7 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
             rl = itemView.findViewById(R.id.rl_individual_station);
             iv = itemView.findViewById(R.id.img_individual_station);
             tv = itemView.findViewById(R.id.txt_individual_station);
+            star_icon = itemView.findViewById(R.id.img_star_icon);
 
             //Set views for each train line
             View line_0 = itemView.findViewById(R.id.line_0);
@@ -91,6 +93,10 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
             holder.iv.setImageResource(R.drawable.status_red);
         } else{
             holder.iv.setVisibility(View.INVISIBLE);
+        }
+
+        if(current.isFavorite){
+            holder.star_icon.setVisibility(View.VISIBLE);
         }
 
         //populate line bars to show colors of each route under station name

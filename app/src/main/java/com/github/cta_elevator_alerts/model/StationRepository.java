@@ -204,7 +204,7 @@ public class StationRepository {
         return list2;
     }
 
-    public void addFavorite(String stationID, String nickname){
+    public void addFavorite(String stationID){
         executor.execute(() -> mStationDao.addFavorite(stationID));
     }
 

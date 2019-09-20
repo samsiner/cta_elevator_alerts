@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.cta_elevator_alerts.R;
+import com.github.cta_elevator_alerts.model.StationRepository;
 import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
 
 /**
@@ -25,7 +26,9 @@ import com.github.cta_elevator_alerts.viewmodels.DisplayAlertViewModel;
 public class DisplayAlertActivity extends AppCompatActivity {
     ImageView starIcon;
     TextView favoriteText;
-    Boolean isStarImageFull;
+    Boolean isFavorite;
+    String stationID;
+    StationRepository mRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +37,24 @@ public class DisplayAlertActivity extends AppCompatActivity {
         TextView toolbarText = findViewById(R.id.txt_toolbar);
         starIcon = this.findViewById(R.id.img_star_icon);
         favoriteText = this.findViewById(R.id.favorited_text);
-        isStarImageFull = false;
+        mRepository = StationRepository.getInstance(this.getApplication());
 
-        String stationID = getIntent().getStringExtra("stationID");
+        stationID = getIntent().getStringExtra("stationID");
 
         //Get ViewModel
         DisplayAlertViewModel mDisplayAlertViewModel = ViewModelProviders.of(this).get(DisplayAlertViewModel.class);
         mDisplayAlertViewModel.setStationID(stationID);
 
         toolbarText.setText(mDisplayAlertViewModel.getStationName()); //Set Station Name
+        isFavorite = mDisplayAlertViewModel.getIsFavorite();
+        if(isFavorite){
+            starIcon.setImageResource(R.drawable.star_icon_full);
+            favoriteText.setText(R.string.added_to_favorites);
+        } else{
+            starIcon.setImageResource(R.drawable.star_icon_empty);
+            favoriteText.setText(R.string.add_to_favorites);
+        }
+
 
         //Set alert description
         if (!mDisplayAlertViewModel.getHasElevator()) tv_shortDesc.setText(R.string.no_elevator);
@@ -67,15 +79,17 @@ public class DisplayAlertActivity extends AppCompatActivity {
     }
 
     public void clickStarIcon(View v){
-        if(isStarImageFull){
+        if(isFavorite){
             starIcon.setImageResource(R.drawable.star_icon_empty);
             favoriteText.setText(R.string.add_to_favorites);
-            isStarImageFull = false;
+            mRepository.removeFavorite(stationID);
+            isFavorite = false;
         }
         else {
             starIcon.setImageResource(R.drawable.star_icon_full);
             favoriteText.setText(R.string.added_to_favorites);
-            isStarImageFull = true;
+            mRepository.addFavorite(stationID);
+            isFavorite = true;
         }
 
     }

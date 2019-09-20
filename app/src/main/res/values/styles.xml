@@ -95,7 +95,6 @@
     <style name="rightArrow">
         <item name="android:layout_height">15dp</item>
         <item name="android:layout_width">30dp</item>
-        <item name="android:layout_marginLeft">15dp</item>
         <item name="android:layout_marginRight">15dp</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
@@ -110,6 +109,14 @@
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_marginRight">15dp</item>
         <item name="android:layout_marginEnd">15dp</item>
+    </style>
+
+    <style name="icon_small_star">
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:src">@drawable/star_icon_full</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:visibility">invisible</item>
     </style>
 
     <style name="icon_edit_delete">

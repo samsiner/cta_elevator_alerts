@@ -73,6 +73,10 @@ public class SpecificLineActivity extends AppCompatActivity {
         return mSpecificLineViewModel.getHasElevator(stationID);
     }
 
+    public Boolean getIsFavorite(String stationID){
+        return mSpecificLineViewModel.getIsFavorite(stationID);
+    }
+
     public Boolean getHasElevatorAlert(String stationID){
         return mSpecificLineViewModel.getHasElevatorAlert(stationID);
     }

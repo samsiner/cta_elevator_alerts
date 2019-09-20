@@ -39,6 +39,6 @@ public class MainViewModel extends AndroidViewModel {
     public void removeAlertKing(){ mRepository.removeAlertKing();}
     public void addAlertHoward(){ mRepository.addAlertHoward(); }
     public List<String> mGetStationAlertIDs(){ return mRepository.mGetStationAlertIDs(); }
-    public void addFavoriteKing(){ mRepository.addFavorite("41140", "King Drive");}
-    public void addFavoriteKimball(){ mRepository.addFavorite("41290", "Kimball");}
+//    public void addFavoriteKing(){ mRepository.addFavorite("41140");}
+//    public void addFavoriteKimball(){ mRepository.addFavorite("41290");}
 }

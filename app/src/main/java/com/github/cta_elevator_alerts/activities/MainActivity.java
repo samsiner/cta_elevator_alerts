@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
         if (time != null && !time.equals("")) tv_alertsTime.setText(time);
 
         //TODO: Testing (remove before deploy)
-        vm.addFavoriteKing();
-        vm.addFavoriteKimball();
+//        vm.addFavoriteKing();
+//        vm.addFavoriteKimball();
         addTestButtons();
 
         addSwipeRefresh();

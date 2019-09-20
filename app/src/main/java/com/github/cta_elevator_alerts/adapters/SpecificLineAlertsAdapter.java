@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,10 +28,12 @@ public class SpecificLineAlertsAdapter extends RecyclerView.Adapter<SpecificLine
 
     class SpecificLineAlertsViewHolder extends RecyclerView.ViewHolder {
         private final TextView stationAlertTextView;
+        private final ImageView star_icon;
 
         private SpecificLineAlertsViewHolder(View itemView) {
             super(itemView);
             stationAlertTextView = itemView.findViewById(R.id.txt_specific_line_alert_station);
+            star_icon = itemView.findViewById(R.id.img_star_icon);
         }
     }
 
@@ -55,6 +58,7 @@ public class SpecificLineAlertsAdapter extends RecyclerView.Adapter<SpecificLine
     public void onBindViewHolder(@NonNull SpecificLineAlertsViewHolder holder, int position) {
         String currentStationID = alertStations.get(position);
         String currentName = ((SpecificLineActivity)context).getStationName(currentStationID);
+        Boolean isFavorite = ((SpecificLineActivity)context).getIsFavorite(currentStationID);
 
         holder.stationAlertTextView.setText(currentName);
 
@@ -63,6 +67,10 @@ public class SpecificLineAlertsAdapter extends RecyclerView.Adapter<SpecificLine
             intent.putExtra("stationID", currentStationID);
             context.startActivity(intent);
         });
+
+        if(isFavorite){
+            holder.star_icon.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

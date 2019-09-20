@@ -39,8 +39,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         private final View circle;
         private final ImageView adaImageView;
         private final ImageView statusImageView;
-        private final ImageView rightArrow;
-        private final ImageView icon_add;
+        private final ImageView star_icon;
+//        private final ImageView rightArrow;
 
         private SpecificLineAdapterViewHolder(View itemView) {
             super(itemView);
@@ -51,8 +51,8 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             circleDrawable = (GradientDrawable)circle.getBackground();
             adaImageView = itemView.findViewById(R.id.img_ada);
             statusImageView = itemView.findViewById(R.id.img_status);
-            rightArrow = itemView.findViewById(R.id.img_right);
-            icon_add = itemView.findViewById(R.id.img_add_button);
+            star_icon = itemView.findViewById(R.id.img_star_icon);
+//            rightArrow = itemView.findViewById(R.id.img_right);
         }
 
         private void setUI(String lineName, View verticalBarTop, View verticalBarBottom, GradientDrawable circle){
@@ -132,14 +132,16 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         String currStationName = ((SpecificLineActivity)context).getStationName(currStationID);
         int transparentColor = context.getResources().getColor(R.color.colorTransparent);
         boolean hasElevator = ((SpecificLineActivity)context).getHasElevator(currStationID);
+        boolean isFavorite = ((SpecificLineActivity)context).getIsFavorite(currStationID);
         boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);
 
-        if(fromFavorites){
-            holder.rightArrow.setVisibility(View.GONE);
-            if(!hasElevator){ holder.icon_add.setVisibility(View.GONE);}
-        } else{
-            holder.icon_add.setVisibility(View.GONE);
-        }
+//        if(fromFavorites){
+//            holder.rightArrow.setVisibility(View.GONE);
+//            if(!hasElevator){ holder.icon_add.setVisibility(View.GONE);}
+//        } else{
+//            holder.icon_add.setVisibility(View.GONE);
+//        }
+
         holder.setUI(toolbarTextView.getText().toString(), holder.verticalBarTop, holder.verticalBarBottom, holder.circleDrawable);
         if(position == 0){
             holder.verticalBarTop.setBackgroundColor(transparentColor);
@@ -156,6 +158,9 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             holder.statusImageView.setImageResource(android.R.color.transparent);
         } else{
             holder.circle.setVisibility(View.GONE);
+        }
+        if(isFavorite){
+            holder.star_icon.setVisibility(View.VISIBLE);
         }
 
         ((View)holder.specificLineTextView.getParent()).setOnClickListener(v -> {
