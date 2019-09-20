@@ -63,8 +63,10 @@ public class DisplayAlertActivity extends AppCompatActivity {
     }
 
     public void toMainActivity(View v) {
-        Intent intent = new Intent(DisplayAlertActivity.this, MainActivity.class);
-        startActivity(intent);
+        Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        finish();
+        startActivity(i);
     }
 
     public void onBackPressed(View v){ this.onBackPressed(); }

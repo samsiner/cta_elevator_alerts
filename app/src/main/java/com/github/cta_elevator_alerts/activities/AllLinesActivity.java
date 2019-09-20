@@ -3,6 +3,7 @@ package com.github.cta_elevator_alerts.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -36,6 +37,9 @@ public class AllLinesActivity extends AppCompatActivity {
         linesAdapter.setToolbarTextView();
         linesRecyclerView.setAdapter(linesAdapter);
         linesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ImageView about = findViewById(R.id.img_home_icon);
+        about.setVisibility(View.INVISIBLE);
     }
 
     public void toMainActivity(View v) {

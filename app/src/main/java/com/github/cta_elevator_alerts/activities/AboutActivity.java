@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -30,6 +31,9 @@ public class AboutActivity extends AppCompatActivity {
 
         TextView contactEmail = findViewById(R.id.txt_contact_email);
         contactEmail.setMovementMethod((LinkMovementMethod.getInstance()));
+
+        ImageView about = findViewById(R.id.img_home_icon);
+        about.setVisibility(View.INVISIBLE);
     }
 
     public void toMainActivity(View v) {
