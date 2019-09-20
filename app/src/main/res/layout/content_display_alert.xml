@@ -30,6 +30,7 @@
                 android:layout_centerVertical="true"
                 android:clickable="true"
                 android:focusable="true"
+                android:contentDescription="@string/favorite_icon"
                 android:onClick="clickStarIcon"
                 />
             <TextView
