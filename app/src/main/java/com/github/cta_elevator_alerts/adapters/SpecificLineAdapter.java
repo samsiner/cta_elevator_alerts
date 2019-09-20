@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,6 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
             adaImageView = itemView.findViewById(R.id.img_ada);
             statusImageView = itemView.findViewById(R.id.img_status);
             star_icon = itemView.findViewById(R.id.img_star_icon);
-//            rightArrow = itemView.findViewById(R.id.img_right);
         }
 
         private void setUI(String lineName, View verticalBarTop, View verticalBarBottom, GradientDrawable circle){
@@ -132,7 +132,6 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         int transparentColor = context.getResources().getColor(R.color.colorTransparent);
         boolean hasElevator = ((SpecificLineActivity)context).getHasElevator(currStationID);
         boolean isFavorite = ((SpecificLineActivity)context).getIsFavorite(currStationID);
-        boolean fromFavorites = ((Activity)context).getIntent().getBooleanExtra("fromFavorites", false);
 
         holder.setUI(toolbarTextView.getText().toString(), holder.verticalBarTop, holder.verticalBarBottom, holder.circleDrawable);
         if(position == 0){
@@ -143,16 +142,19 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         }
 
         holder.specificLineTextView.setText(currStationName);
-        if(!hasElevator){
-            holder.adaImageView.setImageResource(android.R.color.transparent);
-        }
+        holder.adaImageView.setVisibility(View.VISIBLE);
+        if(!hasElevator) holder.adaImageView.setVisibility(View.INVISIBLE);
+
         if(!((SpecificLineActivity) context).getHasElevatorAlert(currStationID)){
             holder.statusImageView.setImageResource(android.R.color.transparent);
         } else{
             holder.circle.setVisibility(View.GONE);
         }
+
         if(isFavorite){
             holder.star_icon.setVisibility(View.VISIBLE);
+        } else {
+            holder.star_icon.setVisibility(View.INVISIBLE);
         }
 
         ((View)holder.specificLineTextView.getParent()).setOnClickListener(v -> {

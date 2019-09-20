@@ -46,15 +46,20 @@ public class DisplayAlertActivity extends AppCompatActivity {
         mDisplayAlertViewModel.setStationID(stationID);
 
         toolbarText.setText(mDisplayAlertViewModel.getStationName()); //Set Station Name
+
         isFavorite = mDisplayAlertViewModel.getIsFavorite();
-        if(isFavorite){
+        boolean hasElevator = mRepository.mGetHasElevator(stationID);
+
+        if(isFavorite && hasElevator){
             starIcon.setImageResource(R.drawable.star_icon_full);
             favoriteText.setText(R.string.added_to_favorites);
-        } else{
+        } else if (hasElevator){
             starIcon.setImageResource(R.drawable.star_icon_empty);
             favoriteText.setText(R.string.add_to_favorites);
+        } else {
+            starIcon.setVisibility(View.GONE);
+            favoriteText.setVisibility(View.GONE);
         }
-
 
         //Set alert description
         if (!mDisplayAlertViewModel.getHasElevator()) tv_shortDesc.setText(R.string.no_elevator);

@@ -58,7 +58,7 @@ public class SpecificLineAlertsAdapter extends RecyclerView.Adapter<SpecificLine
     public void onBindViewHolder(@NonNull SpecificLineAlertsViewHolder holder, int position) {
         String currentStationID = alertStations.get(position);
         String currentName = ((SpecificLineActivity)context).getStationName(currentStationID);
-        Boolean isFavorite = ((SpecificLineActivity)context).getIsFavorite(currentStationID);
+        boolean isFavorite = ((SpecificLineActivity)context).getIsFavorite(currentStationID);
 
         holder.stationAlertTextView.setText(currentName);
 
@@ -70,6 +70,8 @@ public class SpecificLineAlertsAdapter extends RecyclerView.Adapter<SpecificLine
 
         if(isFavorite){
             holder.star_icon.setVisibility(View.VISIBLE);
+        } else{
+            holder.star_icon.setVisibility(View.INVISIBLE);
         }
     }
 

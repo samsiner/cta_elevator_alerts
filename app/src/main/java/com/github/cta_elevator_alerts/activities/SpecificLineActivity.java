@@ -30,23 +30,29 @@ import java.util.List;
 
 public class SpecificLineActivity extends AppCompatActivity {
 
-    private SpecificLineViewModel mSpecificLineViewModel;
+    private SpecificLineViewModel vm;
+    private SpecificLineAlertsAdapter lineAlertsAdapter;
+    private SpecificLineAdapter specificLineAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_line);
-        mSpecificLineViewModel = ViewModelProviders.of(this).get(SpecificLineViewModel.class);
+        vm = ViewModelProviders.of(this).get(SpecificLineViewModel.class);
         String line = getIntent().getStringExtra("line");
-        mSpecificLineViewModel.setLine(line);
-        List<String> lineAlertIDs = mSpecificLineViewModel.getAllLineAlerts();
+        vm.setLine(line);
 
-        if(lineAlertIDs.size() > 0 && !getIntent().getBooleanExtra("fromFavorites", false)){
+        addFavoritesObserver();
+
+        List<String> lineAlertIDs = vm.getAllLineAlerts();
+        lineAlertsAdapter = new SpecificLineAlertsAdapter(this, lineAlertIDs);
+        specificLineAdapter = new SpecificLineAdapter(this, vm.getLine());
+
+        if(lineAlertIDs.size() > 0){
             RecyclerView lineAlertsRecyclerView = findViewById(R.id.recycler_specific_line_alert_stations);
-            final SpecificLineAlertsAdapter lineAlertsAdapter = new SpecificLineAlertsAdapter(this, lineAlertIDs);
             lineAlertsRecyclerView.setAdapter(lineAlertsAdapter);
             lineAlertsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        } else{
+        } else {
             ViewGroup alerts = (ViewGroup)findViewById(R.id.tv_elevator_alerts).getParent();
             alerts.removeView(findViewById(R.id.tv_all_stations));
             alerts.removeView(findViewById(R.id.recycler_specific_line_alert_stations));
@@ -54,10 +60,16 @@ public class SpecificLineActivity extends AppCompatActivity {
         }
 
         RecyclerView specificLineRecyclerView = findViewById(R.id.recycler_specific_line);
-        final SpecificLineAdapter specificLineAdapter = new SpecificLineAdapter(this, mSpecificLineViewModel.getLine());
         specificLineAdapter.setToolbar(getIntent().getStringExtra("line"));
         specificLineRecyclerView.setAdapter(specificLineAdapter);
         specificLineRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void addFavoritesObserver(){
+        vm.getFavorites().observe(this, stations -> {
+            lineAlertsAdapter.notifyDataSetChanged();
+            specificLineAdapter.notifyDataSetChanged();
+        });
     }
 
     public void toMainActivity(View v) {
@@ -68,19 +80,19 @@ public class SpecificLineActivity extends AppCompatActivity {
     }
 
     public String getStationName(String stationID){
-        return mSpecificLineViewModel.getStationName(stationID);
+        return vm.getStationName(stationID);
     }
 
-    public Boolean getHasElevator(String stationID){
-        return mSpecificLineViewModel.getHasElevator(stationID);
+    public boolean getHasElevator(String stationID){
+        return vm.getHasElevator(stationID);
     }
 
-    public Boolean getIsFavorite(String stationID){
-        return mSpecificLineViewModel.getIsFavorite(stationID);
+    public boolean getIsFavorite(String stationID){
+        return vm.getIsFavorite(stationID);
     }
 
-    public Boolean getHasElevatorAlert(String stationID){
-        return mSpecificLineViewModel.getHasElevatorAlert(stationID);
+    public boolean getHasElevatorAlert(String stationID){
+        return vm.getHasElevatorAlert(stationID);
     }
 
     public void onBackPressed(View v){

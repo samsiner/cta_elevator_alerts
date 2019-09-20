@@ -4,7 +4,9 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
+import com.github.cta_elevator_alerts.model.Station;
 import com.github.cta_elevator_alerts.model.StationRepository;
 
 import java.util.Arrays;
@@ -52,6 +54,8 @@ public class SpecificLineViewModel extends AndroidViewModel {
                 return Arrays.asList("", "", "");
         }
     }
+
+    public LiveData<List<Station>> getFavorites() { return repository.mGetAllFavorites(); }
 
     public String getStationName(String stationID){
         return repository.mGetStationName(stationID);
