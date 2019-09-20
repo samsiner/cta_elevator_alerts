@@ -89,8 +89,8 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
 
         if (vm.getHasElevatorAlert(current.stationID)) {
             holder.iv.setImageResource(R.drawable.status_red);
-        } else {
-            holder.iv.setImageResource(R.drawable.status_green);
+        } else{
+            holder.iv.setVisibility(View.INVISIBLE);
         }
 
         //populate line bars to show colors of each route under station name
