@@ -7,11 +7,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.cta_elevator_alerts.R;
-import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * AboutActivity shows information about the app.

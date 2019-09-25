@@ -5,9 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +23,8 @@ import androidx.work.WorkManager;
 import com.github.cta_elevator_alerts.R;
 import com.github.cta_elevator_alerts.adapters.StationListAdapter;
 import com.github.cta_elevator_alerts.utils.NetworkWorker;
-import com.github.cta_elevator_alerts.utils.NotificationPusher;
 import com.github.cta_elevator_alerts.viewmodels.MainViewModel;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**

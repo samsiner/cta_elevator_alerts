@@ -8,9 +8,7 @@
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout style="@style/ActivityStyle"
-        android:id="@+id/LinearLayout"
-        >
+    <LinearLayout style="@style/ActivityStyle">
 
         <RelativeLayout
             android:id="@+id/btn_to_all_lines"
@@ -29,17 +27,6 @@
                 android:tint="@color/colorWhite"
                 android:contentDescription="@string/content_description_right_arrow"/>
         </RelativeLayout>
-
-<!--        <TextView-->
-<!--            android:id="@+id/btn_to_all_lines"-->
-<!--            android:text="@string/view_all_lines"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:gravity="center_horizontal"-->
-<!--            style="@style/SubHeaderText"-->
-<!--            android:clickable="true"-->
-<!--            android:focusable="true"-->
-<!--            android:onClick="toAllLinesActivity"-->
-<!--            />-->
 
             <TextView
                 android:text="@string/title_favorites"
