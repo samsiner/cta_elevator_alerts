@@ -279,10 +279,10 @@ public class StationRepository {
 
                     //name length is too long for this station
                     if (mapID.equals("40850")){ stationName = "Harold Wash. Library"; }
-                    if (mapID.equals("40670")){ stationName = "Western (O'Hare Branch)"; }
-                    if (mapID.equals("40220")){ stationName = "Western (Forest Pk Branch)"; }
-                    if (mapID.equals("40750")){ stationName = "Harlem (O'Hare Branch)"; }
-                    if (mapID.equals("40980")){ stationName = "Harlem (Forest Pk Branch)"; }
+                    if (mapID.equals("40670")){ stationName = "Western (O'Hare)"; }
+                    if (mapID.equals("40220")){ stationName = "Western (Forest Pk)"; }
+                    if (mapID.equals("40750")){ stationName = "Harlem (O'Hare)"; }
+                    if (mapID.equals("40980")){ stationName = "Harlem (Forest Pk)"; }
 
                     insert(newStation);
                     mStationDao.updateName(mapID, stationName);

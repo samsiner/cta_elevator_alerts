@@ -41,8 +41,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: For later: Check on simplifying layouts, use executor instead of threads in repository
-
     private MainViewModel vm;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private StationListAdapter favoritesAdapter, alertsAdapter;
@@ -83,10 +81,7 @@ public class MainActivity extends AppCompatActivity {
         String time = sharedPreferences.getString("LastUpdatedTime", "");
         if (time != null && !time.equals("")) tv_alertsTime.setText(time);
 
-        //TODO: Testing (remove before deploy)
-//        vm.addFavoriteKing();
-//        vm.addFavoriteKimball();
-        addTestButtons();
+//        addTestButtons();
 
         addSwipeRefresh();
         addAlertsObserver();
@@ -195,26 +190,25 @@ public class MainActivity extends AppCompatActivity {
 
     public MainViewModel getStationAlertsViewModel(){ return vm; }
 
-    private void addTestButtons(){
-        Button b = new Button(this);
-        b.setText("Remove alert King");
-        LinearLayout l = findViewById(R.id.LinearLayout);
-        b.setOnClickListener(v -> {
-            ArrayList<String> past = (ArrayList<String>) vm.mGetStationAlertIDs();
-            vm.removeAlertKing();
-            ArrayList<String> curr = (ArrayList<String>) vm.mGetStationAlertIDs();
-            NotificationPusher.createAlertNotifications(this, past, curr);
-        });
-        l.addView(b);
-
-        Button b1 = new Button(this);
-        b1.setText("Add alert Howard");
-        b1.setOnClickListener(v -> {
-            ArrayList<String> past = (ArrayList<String>) vm.mGetStationAlertIDs();
-            vm.addAlertHoward();
-            ArrayList<String> curr = (ArrayList<String>) vm.mGetStationAlertIDs();
-            NotificationPusher.createAlertNotifications(this, past, curr);
-        });
-        l.addView(b1);
-    }
+//    private void addTestButtons(){
+//        Button b = new Button(this);
+//        b.setText("Remove alert King");
+//        LinearLayout l = findViewById(R.id.LinearLayout);
+//        b.setOnClickListener(v -> {
+//            ArrayList<String> past = (ArrayList<String>) vm.mGetStationAlertIDs();
+//            vm.removeAlertKing();
+//            ArrayList<String> curr = (ArrayList<String>) vm.mGetStationAlertIDs();
+//            NotificationPusher.createAlertNotifications(this, past, curr);
+//        });
+//        l.addView(b);
+//
+//        Button b1 = new Button(this);
+//        b1.setText("Add alert Howard");
+//        b1.setOnClickListener(v -> {
+//            ArrayList<String> past = (ArrayList<String>) vm.mGetStationAlertIDs();
+//            vm.addAlertHoward();
+//            ArrayList<String> curr = (ArrayList<String>) vm.mGetStationAlertIDs();
+//            NotificationPusher.createAlertNotifications(this, past, curr);
+//        });
+//        l.addView(b1);
 }
