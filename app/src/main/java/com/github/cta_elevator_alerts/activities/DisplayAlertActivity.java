@@ -1,6 +1,7 @@
 package com.github.cta_elevator_alerts.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,7 +58,8 @@ public class DisplayAlertActivity extends AppCompatActivity {
             favoriteText.setText(R.string.add_to_favorites);
         } else {
             starIcon.setVisibility(View.GONE);
-            favoriteText.setVisibility(View.GONE);
+            favoriteText.setText(R.string.no_elevator_title);
+            favoriteText.setTextColor(Color.parseColor("#757575"));
         }
 
         //Set alert description
