@@ -283,6 +283,8 @@ public class StationRepository {
                     if (mapID.equals("40220")){ stationName = "Western (Forest Pk)"; }
                     if (mapID.equals("40750")){ stationName = "Harlem (O'Hare)"; }
                     if (mapID.equals("40980")){ stationName = "Harlem (Forest Pk)"; }
+                    if (mapID.equals("40810")){ stationName = "IL Med. District"; }
+                    if (mapID.equals("41690")){ stationName = "Cermak-McCorm. Pl."; }
 
                     insert(newStation);
                     mStationDao.updateName(mapID, stationName);
