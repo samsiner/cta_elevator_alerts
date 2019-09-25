@@ -5,6 +5,8 @@
     <color name="colorGray">#757575</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteTransparent">#E6FFFFFF</color>
+    <color name="colorDarkTransparent">#E6757575</color>
 
     <!-- Android colors -->
     <color name="colorAndroidGreen">#00C853</color>
