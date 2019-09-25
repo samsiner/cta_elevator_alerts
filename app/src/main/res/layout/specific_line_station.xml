@@ -39,6 +39,8 @@
                 android:id="@+id/view_circle"
                 android:layout_height="16dp"
                 android:layout_width="16dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/circle"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
