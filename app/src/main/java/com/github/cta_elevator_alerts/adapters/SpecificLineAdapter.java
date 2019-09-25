@@ -145,10 +145,12 @@ public class SpecificLineAdapter extends RecyclerView.Adapter<SpecificLineAdapte
         holder.adaImageView.setVisibility(View.VISIBLE);
         if(!hasElevator) holder.adaImageView.setVisibility(View.INVISIBLE);
 
+        holder.statusImageView.setVisibility(View.VISIBLE);
+        holder.circle.setVisibility(View.VISIBLE);
         if(!((SpecificLineActivity) context).getHasElevatorAlert(currStationID)){
-            holder.statusImageView.setVisibility(View.GONE);
+            holder.statusImageView.setVisibility(View.INVISIBLE);
         } else{
-            holder.circle.setVisibility(View.GONE);
+            holder.circle.setVisibility(View.INVISIBLE);
         }
 
         if(isFavorite){
