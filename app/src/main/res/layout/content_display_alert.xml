@@ -44,6 +44,7 @@
                 android:layout_toEndOf="@id/img_star_icon"
                 android:layout_toRightOf="@id/img_star_icon"
                 android:layout_centerVertical="true"
+                android:onClick="clickStarIcon"
                 />
         </RelativeLayout>
 
