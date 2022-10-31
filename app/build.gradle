@@ -12,7 +12,7 @@ android {
         applicationId "com.github.cta_elevator_alerts"
         minSdkVersion 20
         targetSdkVersion 33
-        versionCode 7
+        versionCode 8
         versionName "2.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
