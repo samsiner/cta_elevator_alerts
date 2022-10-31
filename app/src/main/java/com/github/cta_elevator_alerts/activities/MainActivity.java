@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.img_back_arrow);
         backArrow.setVisibility(View.INVISIBLE);
 
-        vm = ViewModelProviders.of(this).get(MainViewModel.class);
+        vm = new ViewModelProvider(this).get(MainViewModel.class);
 
         //Create adapter to display favorites
         RecyclerView favoritesRecyclerView = findViewById(R.id.recycler_favorite_stations);
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         tv_alertsTime = findViewById(R.id.txt_update_alert_time);
         String time = sharedPreferences.getString("LastUpdatedTime", "");
-        if (time != null && !time.equals("")) tv_alertsTime.setText(time);
+        if (!time.equals("")) tv_alertsTime.setText(time);
 
 //        addTestButtons();
 
