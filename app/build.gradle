@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     useLibrary 'android.test.runner'
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
-    compileSdkVersion 28
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.github.cta_elevator_alerts"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 20
+        targetSdkVersion 33
         versionCode 7
-        versionName "2.0.1"
+        versionName "2.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -44,6 +44,8 @@ android {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
+
     implementation 'androidx.room:room-runtime:2.1.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -53,9 +55,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
     implementation 'androidx.work:work-runtime:2.2.0'
     implementation 'androidx.core:core:1.0.2'
-    implementation 'com.google.firebase:firebase-core:17.2.0'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-    implementation 'com.google.firebase:firebase-perf:19.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-perf'
     implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
     testImplementation 'junit:junit:4.13-beta-3'
     testImplementation 'org.mockito:mockito-core:2.7.22'
