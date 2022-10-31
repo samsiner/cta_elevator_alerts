@@ -29,8 +29,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
     }
     testOptions {
         unitTests {
@@ -41,6 +41,7 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
+    namespace 'com.github.cta_elevator_alerts'
 }
 
 dependencies {
