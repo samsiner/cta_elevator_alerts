@@ -1,7 +1,7 @@
 <resources>
     <string name="elevator_alerts">Elevator Alerts</string>
     <string name="all_stations">All Stations</string>
-    <string name="app_name">ELEVATE</string>
+    <string name="app_name">ELEVATE CHICAGO</string>
     <string name="title_activity_display_alert">Alert Details</string>
     <string name="title_favorites">Favorites</string>
     <string name="all_lines">All Lines</string>
