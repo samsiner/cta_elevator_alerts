@@ -57,7 +57,7 @@ public class NotificationPusher {
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
                     stackBuilder.addNextIntentWithParentStack(intent);
                     int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
-                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(uniqueInt, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(uniqueInt, PendingIntent.FLAG_IMMUTABLE);
 
                     builder.setContentIntent(resultPendingIntent)
                             .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -90,7 +90,7 @@ public class NotificationPusher {
                     stackBuilder2.addNextIntentWithParentStack(intent2);
 
                     int uniqueInt2 = (int) (System.currentTimeMillis() & 0xfffffff);
-                    PendingIntent resultPendingIntent2 = stackBuilder2.getPendingIntent(uniqueInt2, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent resultPendingIntent2 = stackBuilder2.getPendingIntent(uniqueInt2, PendingIntent.FLAG_IMMUTABLE);
 
                     builder2.setContentIntent(resultPendingIntent2)
                             .setPriority(NotificationCompat.PRIORITY_MAX)

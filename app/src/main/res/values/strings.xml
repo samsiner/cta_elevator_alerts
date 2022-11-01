@@ -1,7 +1,7 @@
 <resources>
     <string name="elevator_alerts">Elevator Alerts</string>
     <string name="all_stations">All Stations</string>
-    <string name="app_name">ELEVATE</string>
+    <string name="app_name">ELEVATE CHICAGO</string>
     <string name="title_activity_display_alert">Alert Details</string>
     <string name="title_favorites">Favorites</string>
     <string name="all_lines">All Lines</string>
@@ -29,11 +29,7 @@
     <string name="title_activity_about">AboutActivity</string>
     <string name="add_to_favorites">Add to Favorites</string>
     <string name="added_to_favorites">Added to Favorites!</string>
-    <string name="about_text">Elevate was created by Loyola University graduate students Sam Siner and Tyler Arndt. They are looking for software
-        development jobs - hire them please!\n\nYou will receive a push notification if the status of an elevator changes at one of your saved stations. Data provided by CTA.\n\nSubmit feature requests, bug reports,
-        and other comments:
-
-    </string>
+    <string name="about_text">Elevate Chicago was created by Southport Developers (Sam Siner and Tyler Arndt) to display which elevators are working on the CTA trains in Chicago. \n\nData provided by CTA.</string>
 
     <!--<string name="lines">lines</string>-->
     <!--<string name="info">info</string>-->

@@ -27,9 +27,6 @@ public class AboutActivity extends AppCompatActivity {
         TextView t2 = findViewById(R.id.txt_privacy);
         t2.setMovementMethod(LinkMovementMethod.getInstance());
 
-        TextView contactEmail = findViewById(R.id.txt_contact_email);
-        contactEmail.setMovementMethod((LinkMovementMethod.getInstance()));
-
         ImageView about = findViewById(R.id.img_home_icon);
         about.setVisibility(View.INVISIBLE);
     }

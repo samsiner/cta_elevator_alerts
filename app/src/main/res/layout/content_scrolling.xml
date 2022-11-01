@@ -24,7 +24,7 @@
             <ImageView
                 android:src="@drawable/right_arrow"
                 style="@style/rightArrow"
-                android:tint="@color/colorWhite"
+                app:tint="@color/colorWhite"
                 android:contentDescription="@string/content_description_right_arrow"/>
         </RelativeLayout>
 
